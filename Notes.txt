@@ -1,7 +1,10 @@
 I was thinking some group notes could go here, like discussion or
 extra comments on change (include name and date/time).
 
-Darrell - Oct 12, 8:21 PM
-Everything should be ready now, I uploaded the good version of Zuul from the Objects first BlueJ book. Made two quickchanges so it can run well right away: added a main method (there was none) and commented out an import that caused a compiler warning. 
+Darrell - Oct 12, 8:28 PM
+Everything should be ready now, I uploaded the good version of Zuul from the 
+Objects first BlueJ book. Made two quickchanges so it can run well right away:
+added a main method (there was none) and commented out an import that caused a compiler warning. 
 
-Also, I put everything in a package called gameCore, but like we discussed, we might split the parsing stuff into a separate package
+Also, I put everything in a package called gameCore, but like we discussed, 
+we might split the parsing stuff into a separate package
