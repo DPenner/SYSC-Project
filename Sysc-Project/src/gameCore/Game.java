@@ -182,6 +182,7 @@ public class Game
         }
     }
     
+    //Main starts game
     public static void main(String args[])
     {
     	Game g = new Game();
