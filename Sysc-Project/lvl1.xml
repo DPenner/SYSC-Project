@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<level>
+    <!-- number of steps the level starts with -->
+    <timer value="60"/>
+    <!-- defines the grid size of the level -->
+    <grid width="3" height="4"/>
+    <rooms>
+	    <!--  each tile within in the room tags make up that room -->
+	    <room>
+	        <!-- an empty tile -->
+	        <tile x="0" y="0"/> 
+	        <!--  tile holding an item -->
+	        <tile x="0" y="1">
+	            <Item type="key" name="Red Key"/>
+	        </tile>
+	        <tile x="1" y="1"/>
+	    </room>
+	    <room>
+	        <tile x ="0" y ="2">
+	            <Character type="monster" name="Slime">
+	                <Iventory>
+	                    <Item type="health-potion" name="Small Health Potion"/>  
+	                </Iventory>
+	            </Character>
+	        </tile>
+	        <tile x="1" y ="2"/>
+	        <tile x="2" y ="2"/>	        
+	    </room>
+	    <room>
+	        <tile x="1" y="1">
+	            <Item type="code" name="Full Code"/>
+	        </tile>
+	    </room>
+	    <room type="elevator">
+	        <tile x="0" y="2"/>
+	    </room>
+	    <room>
+	        <tile x="1" y="2">
+	            <Item type="weapon" name="Rusty Sword"/>
+	        </tile>
+	        <tile x="1" y="3"/>
+	        <tile x="0" y="3"/>
+	    </room>
+	    <room>
+	        <tile x="2" y="3">
+	            <Character type="monster" name="Slime"/>
+	        </tile>
+	    </room>
+	</rooms>
+	<exits>
+	    <!-- unlocked exit -->
+	    <exit>
+	    	<tile x="0" y="2"/>
+	    	<tile x="0" y="3"/>
+	    </exit>
+	    <exit>
+	        <tile x="1" y="3"/>
+	        <tile x="2" y="3"/>    
+	    </exit>
+	    <exit>
+	        <tile x="2" y="3"/>
+	        <tile x="2" y="2"/>
+	    </exit>
+	    <exit>
+	        <tile x="1" y="0"/>
+	        <tile x="2" y="0"/>
+	    </exit>
+	    <!-- a locked exit -->
+	    <exit type="locked">
+	        <Key>
+	            <Item type="key" name="Red Key"/>
+	        </Key>
+	        <tile x="1" y="1"/>
+	        <tile x="2" y="1"/>
+	    </exit>
+	</exits>
+</level>
