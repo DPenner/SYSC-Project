@@ -1,20 +1,17 @@
 package gameCore;
 
 /**
- *  This class is the main class of the "World of Zuul" application. 
- *  "World of Zuul" is a very simple, text based adventure game.  Users 
- *  can walk around some scenery. That's all. It should really be extended 
- *  to make it more interesting!
  * 
  *  To play this game, create an instance of this class and call the "play"
  *  method.
  * 
- *  This main class creates and initialises all the others: it creates all
- *  rooms, creates the parser and starts the game.  It also evaluates and
+ *  This main class creates and initialises all the others: it load a level 
+ *  from an xml file, creates the parser and starts the game.  It also evaluates and
  *  executes the commands that the parser returns.
  * 
- * @author  Michael Kölling and David J. Barnes
- * @version 2011.08.10
+ * Original by Michael Kölling and David J. Barnes
+ * @author  Trang Pham
+ * @version 2012.09.13
  */
 
 public class Game 
@@ -27,40 +24,14 @@ public class Game
      */
     public Game() 
     {
-        createRooms();
+        if(!loadLvl("lvl1.xml"))
+        {
+        	System.out.println("Unable to load the game\n");
+        }
         parser = new Parser();
     }
 
-    /**
-     * Create all the rooms and link their exits together.
-     */
-    private void createRooms()
-    {
-        Room outside, theater, pub, lab, office;
-      
-        // create the rooms
-        outside = new Room("outside the main entrance of the university");
-        theater = new Room("in a lecture theater");
-        pub = new Room("in the campus pub");
-        lab = new Room("in a computing lab");
-        office = new Room("in the computing admin office");
-        
-        // initialise room exits
-        outside.setExit("east", theater);
-        outside.setExit("south", lab);
-        outside.setExit("west", pub);
-
-        theater.setExit("west", outside);
-
-        pub.setExit("east", outside);
-
-        lab.setExit("north", outside);
-        lab.setExit("east", office);
-
-        office.setExit("west", lab);
-
-        currentRoom = outside;  // start game outside
-    }
+    
 
     /**
      *  Main play routine.  Loops until end of play.
@@ -88,9 +59,22 @@ public class Game
         System.out.println();
         System.out.println("Welcome to the World of Zuul!");
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
+        System.out.println("Type '" + CommandWord.RULES + "' to view rules of the game");
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
         System.out.println(currentRoom.getLongDescription());
+    }
+    
+    /** 
+     * Loads a level from an xml file
+     * 
+     * @param xmlFile The xml file containing the level data
+     * @return true If the level is successfully loaded
+     */
+    private boolean loadLvl(String xmlFile)
+    {
+    	
+    	return false;
     }
 
     /**
