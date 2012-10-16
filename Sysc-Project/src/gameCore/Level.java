@@ -1,6 +1,5 @@
 package gameCore;
 
-<<<<<<< HEAD
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
@@ -134,8 +133,5 @@ public class Level {
 	public void setTimer(int timer) {
 		this.timer = timer;
 	}
-=======
-public class Level {
-
->>>>>>> a514b48f32a68384679dbcda1281de822a5474eb
 }
+
