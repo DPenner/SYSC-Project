@@ -29,7 +29,7 @@ public class Exit extends Edge {
 	 * @param key The key that unlocks the door (can be null if door starts unlocked)
 	 */
 	public Exit(Tile tile1, Tile tile2, boolean locked, Item key) {
-		//Internally, a "locked" Exit is implemented as a "non crossable" Exit
+		//Internally, a "locked" Exit is implemented as a "non crossable" Exit for code reuse
 		super(tile1, tile2, locked);
 		this.key = key;
 	}
@@ -39,7 +39,7 @@ public class Exit extends Edge {
 	 * @return True if the exit is unlocked, false otherwise
 	 */
 	public boolean isLocked(){
-		return canCross();
+		return !canCross();
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class Exit extends Edge {
 	 */
 	public boolean unlock(Item key){
 		if (!isLocked()){
-			throw new IllegalStateException("Tried to unlock an already unlocked exit");
+			throw new UnsupportedOperationException("Tried to unlock an already unlocked exit");
 		}
 		
 		if (this.key.equals(key)){
