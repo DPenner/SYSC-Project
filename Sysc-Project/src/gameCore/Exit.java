@@ -39,9 +39,34 @@ public class Exit extends Edge {
 	 * @return True if the exit is unlocked, false otherwise
 	 */
 	public boolean isLocked(){
-		return !canCross();
+		return !crossable; //not crossable = is Locked
 	}
 
+	/**
+	 * Checks whether the Exit is unlocked or locked and the character has the key
+	 * @return True if it is possible to cross from one tile to the next, false otherwise
+	 */
+	@Override
+	public boolean canCross(Character crosser) //TEMP
+	{
+		return !isLocked() /* || c.hasItem(key) */ ;
+	}
+	
+	/**
+	 * Places a Character on the Tile on the other side of the Edge
+	 * @param currentTile The current tile the Character resides on
+	 * @param crosser The Character crossing the edge
+	 * @return The Character's new tile
+	 */
+	@Override
+	public Tile cross(Tile currentTile, Character crosser){
+		if (crosser == null){
+			throw new IllegalArgumentException("crosser can not be null");
+		} //other error checks done by getOtherTile method
+		
+		return super.cross(currentTile, crosser); //TEMP
+	}
+	
 	/**
 	 * Unlocks the exit
 	 * @param key The key to attempt the unlock with

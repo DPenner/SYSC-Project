@@ -90,6 +90,10 @@ public class Tile {
 	
 	//------------Setters------------//
 	public void setEdge(String direction, Edge edge){
+		if (edges.containsKey(direction)){
+			throw new IllegalArgumentException("This edge has already been set");
+		}
+		
 		edges.put(direction, edge);
 	}
 	
@@ -120,8 +124,13 @@ public class Tile {
 	}
 	
 	//------------Character Movement------------//
+	/**
+	 * Checks whether the edge in the given direction is crossable by the character in the tile
+	 * @param direction The direction of desired crossing
+	 * @return True if the edge is crossable, false otherwise
+	 */
 	private boolean canCrossEdge(String direction){
-		return getEdge(direction).canCross();
+		return getEdge(direction).canCross(character);
 	}
 	
 	/**
@@ -138,13 +147,14 @@ public class Tile {
 	 * Moves the character to the tile in the given direction.
 	 * @param direction The direction to move the player
 	 * @throws IllegalArgumentException When the player cannot move in the given direction. Try calling canMove(direction) first.
+	 * @return The new tile of the character
 	 */
-	public void moveCharacter(String direction) throws IllegalArgumentException {
+	public Tile moveCharacter(String direction) throws IllegalArgumentException {
 		if (!canMove(direction)){
 			throw new IllegalArgumentException("Cannot move in that direction, something is blocking the way!");
 		}
 		
-		getNextTile(direction).addCharacter(removeCharacter()); //move the character
+		return getEdge(direction).cross(this, character);
 	}
 	
 	//------------Character Attack------------//
@@ -161,7 +171,7 @@ public class Tile {
 	/**
 	 * The direction in which this tile's character should attack
 	 * @param direction The direction in which this tile's character should attack
-	 * @throws IllegalArgumentException When there is no character to attack in that direction. Try calling canAttack(direction) first.
+	 * @throws IllegalArgumentException When there is no character to attack in that direction. Try calling hasCharacter(direction) first.
 	 */
 	public void attackCharacter(String direction) throws IllegalArgumentException{
 		if (!hasCharacter(direction)){

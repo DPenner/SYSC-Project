@@ -39,7 +39,7 @@ public class Game
         Room outside, theater, pub, lab, office;
       
         // create the rooms
-        outside = new Room("outside the main entrance of the university");
+        /*outside = new Room("outside the main entrance of the university");
         theater = new Room("in a lecture theater");
         pub = new Room("in the campus pub");
         lab = new Room("in a computing lab");
@@ -59,7 +59,7 @@ public class Game
 
         office.setExit("west", lab);
 
-        currentRoom = outside;  // start game outside
+        currentRoom = outside;  // start game outside*/
     }
 
     /**
@@ -90,7 +90,7 @@ public class Game
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
-        System.out.println(currentRoom.getLongDescription());
+        //System.out.println(currentRoom.getLongDescription());
     }
 
     /**
@@ -155,7 +155,7 @@ public class Game
         String direction = command.getSecondWord();
 
         // Try to leave current room.
-        Room nextRoom = currentRoom.getExit(direction);
+        /*Room nextRoom = currentRoom.getExit(direction);
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
@@ -163,7 +163,7 @@ public class Game
         else {
             currentRoom = nextRoom;
             System.out.println(currentRoom.getLongDescription());
-        }
+        }*/
     }
 
     /** 

@@ -50,20 +50,37 @@ public class Edge {
 	 * 
 	 * @return True if it is possible to cross from one tile to the next, false otherwise
 	 */
-	public boolean canCross()
+	public boolean canCross(Character crosser)
 	{
 		return crossable;
 	}
 	
 	/**
+	 * Places a Character on the Tile on the other side of the Edge
+	 * @param currentTile The current tile the Character resides on
+	 * @param crosser The Character crossing the edge
+	 * @return
+	 */
+	public Tile cross(Tile currentTile, Character crosser){
+		if (crosser == null){
+			throw new IllegalArgumentException("crosser can not be null");
+		} //other error checks done by getOtherTile method
+		
+		Tile destination = getOtherTile(currentTile);
+		destination.addCharacter(crosser);
+		return destination;
+	}
+	/**
 	 * 
 	 * @param the originating tile
 	 * @return the Tile on the other side of this edge
 	 */
-	public Tile getOtherTile(Tile currentTile)
-	{
+	public Tile getOtherTile(Tile currentTile){
 		if (currentTile == null){
 			throw new IllegalArgumentException("currentTile may not be null");
+		}
+		if (!crossable){
+			throw new UnsupportedOperationException("Cannot retrieve tile when edge is not crossable");
 		}
 		
 		//return which ever tile isn't the one passed in
