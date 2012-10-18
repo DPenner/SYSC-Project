@@ -1,64 +1,93 @@
 package gameCore;
 
 import java.util.Set;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
- * A Room is a collection of Tiles. It facilitates actions that must be done
- * on all Tiles, and provides the necessary support for concepts that only
- * apply to a grouping of tiles.
- * 
- * @author Group D
- * @author Main author: Darrell Penner
- * 
- * Group D Members
- * ---------------
- * Karen Madore
- * Trang Pham
- * Darrell Penner
- * 
+ * Class Room - a room in an adventure game.
  *
- * @version 1.0
+ * This class is part of the "World of Zuul" application. 
+ * "World of Zuul" is a very simple, text based adventure game.  
+ *
+ * A "Room" represents one location in the scenery of the game.  It is 
+ * connected to other rooms via exits.  For each existing exit, the room 
+ * stores a reference to the neighboring room.
+ * 
+ * @author  Michael Kölling and David J. Barnes
+ * @version 2011.08.10
  */
 
 public class Room 
 {
-    private Set<Tile> tiles; //a set ensures that Tiles were not accidentally duplicated
-    private boolean visited; //supports future idea that when GUI is implemented, only visited rooms are visible
-    
+    private String description;
+    private HashMap<String, Room> exits;        // stores exits of this room.
+
     /**
-     * Create a room from a set of Tiles
-     * @param tiles The set of tiles from which the room is composed
+     * Create a room described "description". Initially, it has
+     * no exits. "description" is something like "a kitchen" or
+     * "an open court yard".
+     * @param description The room's description.
      */
-    public Room(Set<Tile> tiles) 
+    public Room(String description) 
     {
-    	this.tiles = tiles;
-    	visited = false; //room starts unvisited
+        this.description = description;
+        exits = new HashMap<String, Room>();
     }
-    
-    public List<Inventory> getInventories(){
-    	List<Inventory> inventories = new ArrayList<Inventory>();
-    	for (Tile t : tiles){
-    		inventories.add(t.getInventory());
-    	}
-    	return inventories; //CONSIDER making a deep copy?
+
+    /**
+     * Define an exit from this room.
+     * @param direction The direction of the exit.
+     * @param neighbor  The room to which the exit leads.
+     */
+    public void setExit(String direction, Room neighbor) 
+    {
+        exits.put(direction, neighbor);
     }
-    
-    public List<Character> getCharacters(){
-    	List<Character> character = new ArrayList<Character>();
-    	for (Tile t : tiles){
-    		character.add(t.getCharacter());
-    	}
-    	return character; //CONSIDER making a deep copy?
+
+    /**
+     * @return The short description of the room
+     * (the one that was defined in the constructor).
+     */
+    public String getShortDescription()
+    {
+        return description;
     }
-    
-    public boolean isVisited(){
-    	return visited;
+
+    /**
+     * Return a description of the room in the form:
+     *     You are in the kitchen.
+     *     Exits: north west
+     * @return A long description of this room
+     */
+    public String getLongDescription()
+    {
+        return "You are " + description + ".\n" + getExitString();
     }
-    public void setVisited(boolean visited){
-    	this.visited = visited;
+
+    /**
+     * Return a string describing the room's exits, for example
+     * "Exits: north west".
+     * @return Details of the room's exits.
+     */
+    private String getExitString()
+    {
+        String returnString = "Exits:";
+        Set<String> keys = exits.keySet();
+        for(String exit : keys) {
+            returnString += " " + exit;
+        }
+        return returnString;
+    }
+
+    /**
+     * Return the room that is reached if we go from this room in direction
+     * "direction". If there is no room in that direction, return null.
+     * @param direction The exit's direction.
+     * @return The room in the given direction.
+     */
+    public Room getExit(String direction) 
+    {
+        return exits.get(direction);
     }
 }
-
 

@@ -58,9 +58,31 @@ public class Tile {
 	public Inventory getInventory(){
 		return inventory;
 	}
+	
+	public Inventory getInventory(String direction){
+		if (!canCrossEdge(direction)){
+			throw new IllegalArgumentException("Cannot cross that edge!");
+		}
+		
+		return getNextTile(direction).getInventory();
+	}
+	/**
+	 * Null if no character resides on the tile
+	 * @return The character if one exists, null otherwise
+	 */
 	public Character getCharacter(){
 		return character;
 	}
+	
+	public Character getCharacter(String direction)
+	{
+		if (!canCrossEdge(direction)){
+			throw new IllegalArgumentException("Cannot cross that edge!");
+		}
+		
+		return getNextTile(direction).getCharacter();
+	}
+	
 	public Point getLocation(){
 		return new Point(location); //deep copy, no modifying
 	}
@@ -130,6 +152,9 @@ public class Tile {
 	 * @return True if the edge is crossable, false otherwise
 	 */
 	private boolean canCrossEdge(String direction){
+		if (!hasCharacter()){
+			throw new UnsupportedOperationException("There is no character on this tile!");
+		}
 		return getEdge(direction).canCross(character);
 	}
 	
@@ -154,10 +179,13 @@ public class Tile {
 			throw new IllegalArgumentException("Cannot move in that direction, something is blocking the way!");
 		}
 		
-		return getEdge(direction).cross(this, character);
+		return getEdge(direction).cross(this, character); //cross and return the character's new Tile
 	}
 	
-	//------------Character Attack------------//
+	//------------Checks------------//
+	public boolean hasCharacter(){
+		return character != null;
+	}
 	/**
 	 * Checks if the tile in the given direction has a Character
 	 * @param direction
@@ -168,11 +196,15 @@ public class Tile {
 		return canCrossEdge(direction) && getNextTile(direction).hasCharacter();
 	}
 	
-	/**
-	 * The direction in which this tile's character should attack
-	 * @param direction The direction in which this tile's character should attack
-	 * @throws IllegalArgumentException When there is no character to attack in that direction. Try calling hasCharacter(direction) first.
-	 */
+	public boolean hasItems(){ //TEMP
+		return false; /* inventory.isEmpty() && */
+	}
+	
+	public boolean isEmpty(){
+		return !hasItems() && !hasCharacter();
+	}
+	
+	/* REMOVED - Character class should handle these
 	public void attackCharacter(String direction) throws IllegalArgumentException{
 		if (!hasCharacter(direction)){
 			throw new IllegalArgumentException("Cannot attack in that direction");
@@ -199,23 +231,12 @@ public class Tile {
 			return null;
 		}
 
-		return null; //TEMP DEEP COPY of character
+		return null; //TEMP deep copy of character
 	}
 	
 	public Inventory lookForItems(String direction){
-		return null; //TEMP DEEP COPY of inventory
-	}
+		return null; //TEMP deep copy of inventory
+	}*/
 	
-	//------------Miscellaneous------------//
-	public boolean isEmpty(){
-		return hasItems() && !hasCharacter();
-	}
 	
-	public boolean hasCharacter(){
-		return character != null;
-	}
-	public boolean hasItems(){ //TEMP
-		return false; /* inventory.isEmpty() && */
-	}
-
 }
