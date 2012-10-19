@@ -47,19 +47,22 @@ public class Edge {
 	}
 	
 	/**
-	 * 
+	 * Checks if the given character can cross the edge
 	 * @return True if it is possible to cross from one tile to the next, false otherwise
 	 */
 	public boolean canCross(Character crosser)
 	{
+		//simply returns crossable, without using any character,
+		//but it is very possible that a derived class may base whether or not
+		//an edge is crossable based on the character crossing the edge
 		return crossable;
 	}
 	
 	/**
-	 * Places a Character on the Tile on the other side of the Edge
+	 * Places a Character on the other side of the Edge from the given Tile
 	 * @param currentTile The current tile the Character resides on
 	 * @param crosser The Character crossing the edge
-	 * @return
+	 * @return The new tile of the Character
 	 */
 	public Tile cross(Tile currentTile, Character crosser){
 		if (crosser == null){
@@ -70,10 +73,12 @@ public class Edge {
 		destination.addCharacter(crosser);
 		return destination;
 	}
+	
 	/**
-	 * 
-	 * @param the originating tile
-	 * @return the Tile on the other side of this edge
+	 * Gets the tile on the other side of the edge, given one of the tiles
+	 * (the Edge can't predict which tile is known and which is wanted)
+	 * @param currentTile The originating tile
+	 * @return The Tile on the other side of this edge
 	 */
 	public Tile getOtherTile(Tile currentTile){
 		if (currentTile == null){

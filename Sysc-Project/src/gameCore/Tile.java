@@ -5,6 +5,7 @@ import java.util.*;
 /**
  * A Tile is the minimal unit in the game. They have a location and 
  * edges. It can contain items (in the form of an inventory) and a character.
+ * A Tile can look at adjacent tiles, but no farther (relative to the public API anyways).
  * 
  * @author Group D
  * @author Main author: Darrell Penner
@@ -30,7 +31,7 @@ public class Tile {
 	
 	//------------Constructors------------//
     /**
-	 * Constructs a Tile form a point and room
+	 * Constructs a Tile from a point and room
 	 * @param Location of the Tile
 	 */
 	public Tile(Point location, Room containingRoom)
@@ -52,13 +53,18 @@ public class Tile {
 	//arbitrary access to other tiles in the room
 	
 	/**
-	 * 
-	 * @return the items on the tile
+	 * Gets the items on the current tile 
+	 * @return The inventory on the tile
 	 */
 	public Inventory getInventory(){
 		return inventory;
 	}
 	
+	/**
+	 * Gets the items on the adjacent tile in the given direction.
+	 * @param direction The direction to look in.
+	 * @return The inventory on the adjacent tile
+	 */
 	public Inventory getInventory(String direction){
 		if (!canCrossEdge(direction)){
 			throw new IllegalArgumentException("Cannot cross that edge!");
@@ -66,14 +72,20 @@ public class Tile {
 		
 		return getNextTile(direction).getInventory();
 	}
+	
 	/**
-	 * Null if no character resides on the tile
+	 * Gets the character on the current tile
 	 * @return The character if one exists, null otherwise
 	 */
 	public Character getCharacter(){
 		return character;
 	}
 	
+	/**
+	 * Gets the character on the adjacent tile in the given direction
+	 * @param direction The direction to search for
+	 * @return the Character on the adjacent tile, null if none exists 
+	 */
 	public Character getCharacter(String direction)
 	{
 		if (!canCrossEdge(direction)){
@@ -83,10 +95,19 @@ public class Tile {
 		return getNextTile(direction).getCharacter();
 	}
 	
+	/**
+	 * The location of the tile
+	 * @return A deep copy of the location on the tile.
+	 */
 	public Point getLocation(){
 		return new Point(location); //deep copy, no modifying
 	}
 
+	/**
+	 * Gets the edge in the given direction
+	 * @param direction The direction in which to get the edge
+	 * @return 
+	 */
 	private Edge getEdge(String direction){
 		if (!edges.containsKey(direction))
 		{
@@ -111,6 +132,11 @@ public class Tile {
 	}
 	
 	//------------Setters------------//
+	/**
+	 * Sets an edge of a tile
+	 * @param direction The direction in which to set the edge
+	 * @param edge The edge to be set
+	 */
 	public void setEdge(String direction, Edge edge){
 		if (edges.containsKey(direction)){
 			throw new IllegalArgumentException("This edge has already been set");
@@ -141,8 +167,21 @@ public class Tile {
 		character = null;
 		return removed;
 	}
-	public void addItem(Inventory item){ //TEMP
-		//inventory.add(item);
+	
+	/**
+	 * Adds an item to the tile
+	 * @param item the Item to be added
+	 */
+	public void addItem(Item item){
+		inventory.addItem(item);
+	}
+	
+	/**
+	 * removes an Item from the tile
+	 * @param the Item to be removed
+	 */
+	public void removeItem(Item item){
+		inventory.removeItem(item);
 	}
 	
 	//------------Character Movement------------//
@@ -150,8 +189,9 @@ public class Tile {
 	 * Checks whether the edge in the given direction is crossable by the character in the tile
 	 * @param direction The direction of desired crossing
 	 * @return True if the edge is crossable, false otherwise
+	 * @throws UnsupportedOperationException When this method is called when there is no character standing on the tile
 	 */
-	private boolean canCrossEdge(String direction){
+	private boolean canCrossEdge(String direction) throws UnsupportedOperationException {
 		if (!hasCharacter()){
 			throw new UnsupportedOperationException("There is no character on this tile!");
 		}
@@ -183,25 +223,47 @@ public class Tile {
 	}
 	
 	//------------Checks------------//
+	/**
+	 * Checks if the tile has a Character on it
+	 * @return True if the tile has a character, false otherwise
+	 */
 	public boolean hasCharacter(){
 		return character != null;
 	}
+	
 	/**
-	 * Checks if the tile in the given direction has a Character
-	 * @param direction
-	 * @return
+	 * Checks if the adjacent tile in the given direction has a Character
+	 * @param direction The direction in which to check for a character
+	 * @return True if the adjacent Tile has a Character, false otherwise
 	 */
 	public boolean hasCharacter(String direction)
 	{
 		return canCrossEdge(direction) && getNextTile(direction).hasCharacter();
 	}
 	
-	public boolean hasItems(){ //TEMP
-		return false; /* inventory.isEmpty() && */
+	/**
+	 * Checks if the tile has any items
+	 * @return True if the tile has items, false otherwise.
+	 */
+	public boolean hasItems(){
+		return !inventory.isEmpty();
 	}
 	
+	/**
+	 * Checks if the tile is empty. A tile is considered empty if it has no Items an on Character
+	 * @return True if the tile is empty, false otherwise
+	 */
 	public boolean isEmpty(){
 		return !hasItems() && !hasCharacter();
+	}
+	
+	/**
+	 * Checks if the adjacent tile is empty. A tile is considered empty if it has no Items and no Character
+	 * @param direction The direction in which to check
+	 * @return True if the adjacent tile is empty, false otherwise
+	 */
+	public boolean isEmpty(String direction){
+		return getNextTile(direction).isEmpty();
 	}
 	
 	/* REMOVED - Character class should handle these
@@ -237,6 +299,5 @@ public class Tile {
 	public Inventory lookForItems(String direction){
 		return null; //TEMP deep copy of inventory
 	}*/
-	
 	
 }

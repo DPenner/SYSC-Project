@@ -1,7 +1,7 @@
 package gameCore;
 
 /**
- * An edge exists between 2 tiles, or a tile and the boundary of a level.
+ * An exit is an Edge with a "lock." When locked, it is crossable only by a character with the specified key.
  * 
  * @author Group D
  * @author Main Author: Darrell Penner
@@ -21,7 +21,7 @@ public class Exit extends Edge {
 	private Item key;
 	
 	/**
-	 * Exit constructor
+	 * Constructs an exit
 	 * 
 	 * @param tile1 One side of the edge
 	 * @param tile2 The other side of the edge
@@ -47,9 +47,9 @@ public class Exit extends Edge {
 	 * @return True if it is possible to cross from one tile to the next, false otherwise
 	 */
 	@Override
-	public boolean canCross(Character crosser) //TEMP
+	public boolean canCross(Character crosser)
 	{
-		return !isLocked() /* || c.hasItem(key) */ ;
+		return !isLocked() || crosser.hasItem(key);
 	}
 	
 	/**
@@ -57,14 +57,19 @@ public class Exit extends Edge {
 	 * @param currentTile The current tile the Character resides on
 	 * @param crosser The Character crossing the edge
 	 * @return The Character's new tile
-	 */
+	 * @throws IllegalArgumentException crosser was either null or did not have a key. Use canCross(Character) first.
+	 */ 
 	@Override
-	public Tile cross(Tile currentTile, Character crosser){
+	public Tile cross(Tile currentTile, Character crosser) throws IllegalArgumentException {
 		if (crosser == null){
 			throw new IllegalArgumentException("crosser can not be null");
 		} //other error checks done by getOtherTile method
 		
-		return super.cross(currentTile, crosser); //TEMP
+		if (unlock(key))
+		{
+			return super.cross(currentTile, crosser);
+		}
+		else throw new IllegalArgumentException("crosser did not have key");
 	}
 	
 	/**
@@ -73,14 +78,11 @@ public class Exit extends Edge {
 	 * @return True if unlocking succeeded, false otherwise
 	 */
 	public boolean unlock(Item key){
-		if (!isLocked()){
-			throw new UnsupportedOperationException("Tried to unlock an already unlocked exit");
-		}
-		
 		if (this.key.equals(key)){
 			crossable = true;
 		}
 		
+		System.out.println("unlocking exit");
 		return isLocked();
 	}
 }
