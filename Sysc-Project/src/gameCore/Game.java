@@ -62,7 +62,7 @@ public class Game
         System.out.println("Type '" + CommandWord.RULES + "' to view rules of the game");
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
-        System.out.println(currentRoom.getLongDescription());
+        //System.out.println(currentRoom.getLongDescription());
     }
     
     /** 
@@ -139,7 +139,7 @@ public class Game
         String direction = command.getSecondWord();
 
         // Try to leave current room.
-        Room nextRoom = currentRoom.getExit(direction);
+        /*Room nextRoom = currentRoom.getExit(direction);
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
@@ -147,7 +147,7 @@ public class Game
         else {
             currentRoom = nextRoom;
             System.out.println(currentRoom.getLongDescription());
-        }
+        }*/
     }
 
     /** 
