@@ -20,7 +20,7 @@ public class Game
     private Room currentRoom;
         
     /**
-     * Create the game and initialise its internal map.
+     * Create the game and initialize its internal map.
      */
     public Game() 
     {
@@ -30,8 +30,6 @@ public class Game
         }
         parser = new Parser();
     }
-
-    
 
     /**
      *  Main play routine.  Loops until end of play.
