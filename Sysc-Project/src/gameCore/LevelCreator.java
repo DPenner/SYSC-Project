@@ -10,6 +10,7 @@ import org.w3c.dom.Element;
 
 import java.io.*;
 import java.util.List;
+import java.util.Set;
 
 /**
 * loads a level from an XML file and instantiates a level
@@ -29,12 +30,13 @@ import java.util.List;
 */
 public class LevelCreator {
 	
+	//move this data to a class called Level later
 	private int timer;
 	private int gridWidth;
 	private int gridHeight;
 	
 	private List<Room> roomList;
-	private Set<Tile> tileSet;
+	private Tile[][] tileGrid;
 	private Room elevator;
 	
 	/**
@@ -80,7 +82,12 @@ public class LevelCreator {
 		}
 		return false;
 	}
-	
+	/**
+	 * Loads the timer value from doc
+	 * 
+	 * @param doc The xml document that should contain timer value
+	 * @return true if timer value was successfully loaded
+	 */
 	private boolean parseTimer(Document doc)
 	{
 		//get all nodes with tag timer
@@ -94,6 +101,12 @@ public class LevelCreator {
 		}
 		return false;
 	}
+	/**
+	 * Loads the grid width and height from doc
+	 * 
+	 * @param doc The xml document that should contain grid width and height
+	 * @return true if grid height and width successfully loaded
+	 */
 	private boolean parseGrid(Document doc)
 	{
 		NodeList nodes = doc.getElementsByTagName(XmlTag.GRID.toString());
@@ -104,10 +117,18 @@ public class LevelCreator {
 		{
 			this.gridWidth = Integer.parseInt(gridWidth);
 			this.gridHeight = Integer.parseInt(gridHeight);
+			tileGrid = new Tile[gridHeight][gridWidth]();
 			return true;
 		}
 		return false;
 	}
+	/**
+	 * Loads and instantiates the rooms and tiles along with any items and characters that are
+	 * held inside the tiles
+	 * 
+	 * @param doc The xml document that should the elevator room (the room that the game starts in)
+	 * @return true if the elevator room was loaded
+	 */
 	private boolean parseRooms(Document doc)
 	{
 		int x, y;
@@ -150,9 +171,15 @@ public class LevelCreator {
 	}
 	private boolean parseExits(Document doc)
 	{
+		NodeList nodes = doc.getElementsByTagName(XmlTag.EXIT_SECTION.toString());
+		NodeList exits = nodes.item(0).getChildNodes();
+		for(int exit_num = 0; exit_num < exits.getLength(); exit_num++)
+		{
+			//At this point all the tiles have been made already
+		}
 		return false;
 	}
-	private boolean parseIventory(Node tileNode, Tile tile)
+	private boolean parseInventory(Node tileNode, Tile tile)
 	{
 		return false;
 	}
