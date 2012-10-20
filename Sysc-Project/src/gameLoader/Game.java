@@ -1,4 +1,4 @@
-package gameCore;
+package gameLoader;
 
 import gameCore.Room;
 import textInterface.Command;

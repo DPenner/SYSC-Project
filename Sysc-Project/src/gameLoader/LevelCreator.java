@@ -1,4 +1,7 @@
-package gameCore;
+package gameLoader;
+
+import gameCore.Room;
+import gameCore.Tile;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;

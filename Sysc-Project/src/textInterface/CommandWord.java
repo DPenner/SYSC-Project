@@ -1,4 +1,4 @@
-package gameCore;
+package textInterface;
 
 /**
  * Representations for all the valid command words for the game

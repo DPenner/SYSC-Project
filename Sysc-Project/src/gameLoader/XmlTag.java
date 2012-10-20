@@ -1,4 +1,4 @@
-package gameCore;
+package gameLoader;
 /**
 * All xml keywords (tags and attributes)
 *
