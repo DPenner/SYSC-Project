@@ -21,12 +21,14 @@ public class Character {
 	private int health;
 	private String name;
 	private int attack;
+	protected Tile myPosition;
 	
-	public Character(String name, int health, int attack){
+	public Character(String name, int health, int attack, Tile myPosition){
 		this.name=name;
 		this.health=health;
 		this.attack=attack;
 		inventory = new Inventory();
+		this.myPosition =myPosition;
 	}
 	
 	public void attack(Character c){
