@@ -18,7 +18,7 @@ package gameCore;
  */
 public class Character {
 	protected Inventory inventory;
-	private int health;
+	protected int health;
 	private String name;
 	private int attack;
 	protected Tile myPosition;

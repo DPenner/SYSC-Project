@@ -148,5 +148,8 @@ public class Player extends Character
 		return retString;
 	}
 	
+	public String viewHealth(){
+		return  "Your health is: " + this.health +"\n";
+	}
 	
 }
