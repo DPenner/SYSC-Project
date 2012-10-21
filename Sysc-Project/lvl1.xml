@@ -11,18 +11,16 @@
 	        <tile x="0" y="0"/> 
 	        <!--  tile holding an item -->
 	        <tile x="0" y="1">
-	            <inventory>
-	            	<item type="key" name="Red key"/>
-	            </inventory>
+	            <item type="item" name="Red key" wieght="1"/>
 	        </tile>
 	        <tile x="1" y="1"/>
 	    </room>
 	    <room>
 	        <tile x ="0" y ="2">
 	            <character type="monster" name="Slime">
-	                <iventory>
-	                    <item type="health-potion" name="Small Health Potion"/>  
-	                </iventory>
+	             	<attack>10</attack>
+	             	<health>20</health>
+	            	<item type="item" name="Junk"/>  
 	            </character>
 	        </tile>
 	        <tile x="1" y ="2"/>
@@ -30,9 +28,7 @@
 	    </room>
 	    <room>
 	        <tile x="1" y="1">
-	            <inventory>
-	            	<item type="code" name="Full Code"/>
-	            </inventory>
+	            <item type="item" name="Junk"/>
 	        </tile>
 	    </room>
 	    <room type="elevator">
@@ -47,9 +43,10 @@
 	    </room>
 	    <room>
 	        <tile x="2" y="3">
-	            <iventory>
-	            	<character type="monster" name="Slime"/>
-	            </iventory>
+	            <character type="monster" name="Slime">
+	            	<attack>10</attack>
+	             	<health>20</health>
+	            </character>
 	        </tile>
 	    </room>
 	</rooms>
@@ -73,9 +70,7 @@
 	    </exit>
 	    <!-- a locked exit -->
 	    <exit type="locked">
-	        <key>
-	            <item type="key" name="Red key"/>
-	        </key>
+	        <item type="item" name="Red key"/>
 	        <tile x="1" y="1"/>
 	        <tile x="2" y="1"/>
 	    </exit>

@@ -36,12 +36,12 @@ public class Game
      */
     public Game() 
     {
-    	undoList = new ArrayList<Level>();
-    	undo_index = 0;
         if(!loadLvl("lvl1.xml"))
         {
-        	System.out.println("Unable to load the game\n");
+        	System.out.println("Unable to load the game.");
         }
+    	undoList = new ArrayList<Level>();
+    	undo_index = 0;
         parser = new Parser();
     }
 
@@ -84,8 +84,12 @@ public class Game
      */
     private boolean loadLvl(String xmlFile)
     {
-    	
-    	undoList.add(new Level(level));
+    	LevelCreator lc = new LevelCreator();
+    	if(lc.loadLevel(xmlFile))
+    	{
+    		level = lc.getLevel();
+    		undoList.add(new Level(level));
+    	}
     	return false;
     }
 
@@ -218,7 +222,7 @@ public class Game
 
         String itemname = command.getSecondWord();
 
-        if(!player.pickup(itemname))
+        if(!player.pickUpItem(itemname))
         {
         	System.out.println("Item is not on the ground. Can't pick up what's not there.");
         	return false;

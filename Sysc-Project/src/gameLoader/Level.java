@@ -1,5 +1,6 @@
 package gameLoader;
 
+import gameCore.Item;
 import gameCore.Room;
 import gameCore.Tile;
 
@@ -105,6 +106,11 @@ public class Level {
 		if(tileGrid != null)
 			return tileGrid[y][x];
 		else return null;
+	}
+	
+	public void addEdge(Tile tile1, Tile tile2, Item key)
+	{
+		
 	}
 	
 	/**
