@@ -1,5 +1,21 @@
 package gameCore;
 
+/**
+ * A Character is a superclass for all of the animated creatures inside the game.
+ * Player, and Monsters (subclass of NPC) are subclasses of character.
+ * 
+ * @author Group D
+ * @author Main author: Karen Madore
+ * 
+ * Group D Members
+ * ---------------
+ * Karen Madore
+ * Trang Pham
+ * Darrell Penner
+ * 
+ *
+ * @version 1.0
+ */
 public class Character {
 	protected Inventory inventory;
 	private int health;
