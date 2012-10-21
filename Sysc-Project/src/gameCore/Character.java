@@ -31,6 +31,10 @@ public class Character {
 		this.myPosition =myPosition;
 	}
 	
+	/*
+	 * Subtract the myHealth by value of the other character attack value
+	 * Same for the defender.
+	 */
 	public void attack(Character c){
 		
 	}
