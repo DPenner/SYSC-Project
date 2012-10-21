@@ -1,10 +1,28 @@
 package gameCore;
+
 import java.util.ArrayList;
 import java.util.List;
+/**
+ * Inventory is a collection of Items.  Items can be Weapons in this first revision.
+ * 
+ * @author Group D
+ * @author Main author: Karen Madore
+ * 
+ * Group D Members
+ * ---------------
+ * Karen Madore
+ * Trang Pham
+ * Darrell Penner
+ * 
+ *
+ * @version 1.0
+ */
 
 public class Inventory {
 	private List<Item> items;
-	
+	/*
+	 * Constr
+	 */
 	public Inventory(){
 		items= new ArrayList<Item>();
 	}
