@@ -11,6 +11,7 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 
+import java.awt.Point;
 import java.io.*;
 import java.util.List;
 import java.util.Set;
@@ -31,27 +32,19 @@ import java.util.Set;
 * @version 1.0
 *
 */
+
 public class LevelCreator {
 	
-	//move this data to a class called Level later
-	private int timer;
-	private int gridWidth;
-	private int gridHeight;
+	private Level level;
+	private boolean loaded;
 	
-	private List<Room> roomList;
-	private Tile[][] tileGrid;
-	private Room elevator;
-	
-	/**
-	 * Instantiates a level with the data in the xmlFilePath
-	 * 
-	 * @param xmlFilePath the file path to the xml file that holds the level data
-	 */
-	public LevelCreator(String xmlFilePath)
+	public LevelCreator()
 	{
-		loadLevel(xmlFilePath);
+		level = new Level();
+		loaded = false;
 	}
 	
+	public Level getLevel() { if(loaded)return level; return null; }
 	/**
 	 * Loads a level from an xml file: parses the xml and instantiates the level
 	 * fields
@@ -76,7 +69,10 @@ public class LevelCreator {
 					if(parseGrid(doc))
 						if(parseRooms(doc))
 							if(parseExits(doc))
+							{
+								loaded = true;
 								return true;
+							}
 			}
 		}
 		catch(Exception e)
@@ -99,7 +95,7 @@ public class LevelCreator {
 		String timerValue = getAttributeValueWithName(nodes.item(0), XmlTag.VALUE);
 		if(timerValue !=null)
 		{
-			this.setTimer(Integer.parseInt(timerValue));
+			level.setTimer(Integer.parseInt(timerValue));
 			return true;
 		}
 		return false;
@@ -118,9 +114,7 @@ public class LevelCreator {
 		String gridHeight= getAttributeValueWithName(nodes.item(0), XmlTag.HEIGHT);
 		if(gridWidth !=null && gridHeight != null)
 		{
-			this.gridWidth = Integer.parseInt(gridWidth);
-			this.gridHeight = Integer.parseInt(gridHeight);
-			tileGrid = new Tile[gridHeight][gridWidth]();
+			level.setLevelSize(Integer.parseInt(gridWidth), Integer.parseInt(gridHeight));
 			return true;
 		}
 		return false;
@@ -142,32 +136,28 @@ public class LevelCreator {
 		{
 			NodeList tiles = rooms.item(room_num).getChildNodes();
 			Room r = new Room();
-			roomList.add(r);
+			level.addRoom(r);
 			//is elevator room?
 			String roomType = getAttributeValueWithName(rooms.item(room_num), XmlTag.TYPE);
 			if(roomType.equals(XmlTag.ELEVATOR.toString()))
 			{
 				//set the room as an elevator
-				elevator = r;
+				level.setElevator(r);
 				rv = true; 
 			}
 			for(int tile_num = 0; tile_num < tiles.getLength(); tile_num++)
 			{
 				x = Integer.parseInt(getAttributeValueWithName(tiles.item(tile_num), XmlTag.X));
 				y = Integer.parseInt(getAttributeValueWithName(tiles.item(tile_num), XmlTag.Y));
-				if(x < gridWidth && y < gridHeight) //only parse the tile if it fits inside the defined grid
+
+				Tile t = new Tile(new Point(x, y), r);
+				if(level.setTile(x, y, t))
 				{
-					Tile t = new Tile(new Point(x, y), r);
-					if(tileSet.add(t)) //only if tile is unique
-					{
-						r.addTile(t); //then add it to the room
-						//find other properties of the tile
-						//holds items?
-						parseInventory(tiles.item(tile_num), t);
-						//hold character?
-						parseCharacter(tiles.item(tile_num), t);
-					}
+					parseInventory(tiles.item(tile_num), t);
+					//hold character?
+					parseCharacter(tiles.item(tile_num), t);
 				}
+				
 			}
 		}
 		return rv;
@@ -202,14 +192,6 @@ public class LevelCreator {
 			}
 		}
 		return null;
-	}
-
-	public int getTimer() {
-		return timer;
-	}
-
-	public void setTimer(int timer) {
-		this.timer = timer;
 	}
 }
 

@@ -1,5 +1,9 @@
 package gameLoader;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import gameCore.Player;
 import gameCore.Room;
 import textInterface.Command;
 import textInterface.CommandWord;
@@ -22,13 +26,18 @@ import textInterface.Parser;
 public class Game 
 {
     private Parser parser;
-    private Room currentRoom;
+    private Player player;
+    private Level level;
+    private List<Level> undoList;
+    private int undo_index;
         
     /**
      * Create the game and initialize its internal map.
      */
     public Game() 
     {
+    	undoList = new ArrayList<Level>();
+    	undo_index = 0;
         if(!loadLvl("lvl1.xml"))
         {
         	System.out.println("Unable to load the game\n");
@@ -62,7 +71,6 @@ public class Game
         System.out.println();
         System.out.println("Welcome to the World of Zuul!");
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
-        System.out.println("Type '" + CommandWord.RULES + "' to view rules of the game");
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
         //System.out.println(currentRoom.getLongDescription());
@@ -77,6 +85,7 @@ public class Game
     private boolean loadLvl(String xmlFile)
     {
     	
+    	undoList.add(new Level(level));
     	return false;
     }
 
@@ -88,6 +97,7 @@ public class Game
     private boolean processCommand(Command command) 
     {
         boolean wantToQuit = false;
+        boolean actionDone = false;
 
         CommandWord commandWord = command.getCommandWord();
 
@@ -99,18 +109,61 @@ public class Game
             case HELP:
                 printHelp();
                 break;
-
-            case GO:
-                goRoom(command);
-                break;
-
+                
             case QUIT:
                 wantToQuit = quit(command);
                 break;
+                
+            case LOOK:
+            	
+            	break;
+
+            case PICKUP:
+            	actionDone = pickup(command);
+            	break;
+            	
+            case DROP:
+            	actionDone = drop(command);
+            	break;
+            	
+            case GO:
+                actionDone = go(command);
+                break;
+
+            case VIEW:
+            	
+            	break;
+            	
+            case UNDO:
+            	undo();
+            	break;
+            case REDO:
+            	redo();
+            	break;
+            
+        }
+        if(actionDone)
+        {
+        	saveGameState();
         }
         return wantToQuit;
     }
 
+    private void saveGameState()
+    {
+    	if(undo_index + 1 != undoList.size())
+    	{
+    		//override the available redos
+    		for(int i = undoList.size(); i > undo_index; i--)
+    		{
+    			//remove the saved state 
+    			undoList.remove(i);
+    		}
+    	}
+    	
+    	undoList.add(new Level(level));
+    	undo_index++;
+    }
     // implementations of user commands:
 
     /**
@@ -121,38 +174,106 @@ public class Game
     private void printHelp() 
     {
         System.out.println("You are lost. You are alone. You wander");
-        System.out.println("around at the university.");
+        System.out.println("around the maze searching for an exit.");
         System.out.println();
         System.out.println("Your command words are:");
         parser.showCommands();
     }
 
+    private void undo()
+    {
+    	if(undo_index != 0)
+    	{	
+    		undo_index--;
+    		level = undoList.get(undo_index);
+    		System.out.println("Successfully undone.");
+    	}
+    	else
+    		System.out.println("Nothing to undo.");
+    }
+    
+    private void redo()
+    {
+    	if(undo_index < undoList.size())
+    	{
+    		undo_index++;
+    		level = undoList.get(undo_index);
+    		System.out.println("Successfully redone.");
+    	}
+    	else
+    		System.out.println("Nothing to redo.");
+    }
+    /**
+     * Try to pick up an item. If the item exists, pick it up, otherwise print
+     * an error message
+     */
+    
+    private boolean pickup(Command command)
+    {
+    	if(!command.hasSecondWord()) {
+            // if there is no second word, we don't know where to go...
+            System.out.println("Pick up what?");
+            return false;
+        }
+
+        String itemname = command.getSecondWord();
+
+        if(!player.pickup(itemname))
+        {
+        	System.out.println("Item is not on the ground. Can't pick up what's not there.");
+        	return false;
+        }
+        return true;
+    }
+    
+    /**
+     * Try to drop an item. If the item is in player's inventory then drop it, otherwise
+     * print error message
+     */
+    
+    private boolean drop(Command command)
+    {
+    	if(!command.hasSecondWord()) {
+            // if there is no second word, we don't know where to go...
+            System.out.println("Drop what?");
+            return false;
+        }
+
+        String itemname = command.getSecondWord();
+
+        if(!player.drop(itemname))
+        {
+        	System.out.println("Item is not in your inventory. Can't drop what you don't have.");
+        	return false;
+        }
+        return true;
+    }
+    
     /** 
      * Try to go in one direction. If there is an exit, enter the new
      * room, otherwise print an error message.
      */
-    private void goRoom(Command command) 
+    private boolean go(Command command) 
     {
         if(!command.hasSecondWord()) {
             // if there is no second word, we don't know where to go...
             System.out.println("Go where?");
-            return;
+            return false;
         }
 
         String direction = command.getSecondWord();
 
-        // Try to leave current room.
-        /*Room nextRoom = currentRoom.getExit(direction);
-
-        if (nextRoom == null) {
-            System.out.println("There is no door!");
+        if(!player.move(direction))
+        {
+        	System.out.println("There is a wall in that direction. You cannot walk through walls.");
+        	return false;
         }
-        else {
-            currentRoom = nextRoom;
-            System.out.println(currentRoom.getLongDescription());
-        }*/
+        return true;
     }
 
+    /**
+     * 
+     */
     /** 
      * "Quit" was entered. Check the rest of the command to see
      * whether we really quit the game.

@@ -1,6 +1,7 @@
 package gameLoader;
 
 import gameCore.Room;
+import gameCore.Tile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,13 @@ public class Level {
 	private Tile[][] tileGrid;
 	private Room elevator;
 	
+	
+	//copy constructor
+	public Level(Level l)
+	{
+		this.timer = l.timer;
+		
+	}
 	public Level()
 	{
 		roomList = new ArrayList<Room>();
@@ -73,10 +81,16 @@ public class Level {
 	 * @param y position
 	 * @param t tile to set to
 	 */
-	public void setTile(int x, int y, Tile t)
+	public boolean setTile(int x, int y, Tile t)
 	{
-		if(tileGrid != null)
-			tileGrid[y][x] = t;
+		if(x < gridWidth)
+			if(y < gridHeight)
+				if(tileGrid != null)
+				{
+					tileGrid[y][x] = t;
+					return true;
+				}
+		return false;
 	}
 	
 	/**
