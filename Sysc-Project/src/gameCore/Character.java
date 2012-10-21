@@ -18,7 +18,7 @@ package gameCore;
  */
 public class Character {
 	protected Inventory inventory;
-	private int health;
+	protected int health;
 	private String name;
 	private int attack;
 	protected Tile myPosition;
@@ -31,7 +31,7 @@ public class Character {
 		this.myPosition =myPosition;
 	}
 	
-	/*
+	/**
 	 * Subtract the myHealth by value of the other character attack value
 	 * Same for the defender.
 	 */
@@ -47,12 +47,32 @@ public class Character {
 		
 	}
 	
+	/**
+	 * A
+	 * @param value
+	 */
+	
 	public void adjustHealth(int value){
+		int h=0;
+		h=this.health+value;
 		
 	}
-		
+	/**
+	 * A method to clean up the character from the tile
+	 */
+	public void die(){
+		if(this.isDead()){
+			myPosition.removeCharacter();
+		}
+	}
+	/**
+	 * Removes the item from the Characters inventory and add it to the tile's inventory
+	 * 
+	 * @param i
+	 */
 	public void dropItem(Item i){
-		inventory.removeItem(i);
+		inventory.removeItem(i); 
+		myPosition.addItem(i);
 	}
 	
 	public boolean hasItem(Item i){
