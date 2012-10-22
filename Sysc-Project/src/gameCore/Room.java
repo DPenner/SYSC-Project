@@ -1,7 +1,6 @@
 package gameCore;
 
 import java.util.Set;
-import java.util.HashMap;
 
 /**
  * A room is a collection of tiles. It provides methods which can
@@ -51,7 +50,7 @@ public class Room
 	 * Makes the room visited (a room cannot be "un-visited")
 	 */
 	public void setVisited() {
-		this.visited = true;;
+		this.visited = true;
 	}
 }
 
