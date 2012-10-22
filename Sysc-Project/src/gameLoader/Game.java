@@ -36,10 +36,6 @@ public class Game
      */
     public Game() 
     {
-        if(!loadLvl("lvl1.xml"))
-        {
-        	System.out.println("Unable to load the game.");
-        }
     	undoList = new ArrayList<Level>();
     	undo_index = 0;
         parser = new Parser();
@@ -49,18 +45,25 @@ public class Game
      *  Main play routine.  Loops until end of play.
      */
     public void play() 
-    {            
-        printWelcome();
-
-        // Enter the main command loop.  Here we repeatedly read commands and
-        // execute them until the game is over.
-                
-        boolean finished = false;
-        while (! finished) {
-            Command command = parser.getCommand();
-            finished = processCommand(command);
+    {   
+        if(!loadLvl("lvl1.xml"))
+        {
+        	System.out.println("Unable to load the game.");
         }
-        System.out.println("Thank you for playing.  Good bye.");
+        else
+        {
+	        printWelcome();
+	
+	        // Enter the main command loop.  Here we repeatedly read commands and
+	        // execute them until the game is over.
+	                
+	        boolean finished = false;
+	        while (! finished) {
+	            Command command = parser.getCommand();
+	            finished = processCommand(command);
+	        }
+	        System.out.println("Thank you for playing.  Good bye.");
+        }
     }
 
     /**
@@ -88,7 +91,9 @@ public class Game
     	if(lc.loadLevel(xmlFile))
     	{
     		level = lc.getLevel();
+    		player = level.getPlayer();
     		undoList.add(new Level(level));
+    		return true;
     	}
     	return false;
     }
@@ -198,7 +203,7 @@ public class Game
     
     private void redo()
     {
-    	if(undo_index < undoList.size())
+    	if(undo_index + 1 < undoList.size())
     	{
     		undo_index++;
     		level = undoList.get(undo_index);

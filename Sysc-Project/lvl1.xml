@@ -11,7 +11,7 @@
 	        <tile x="0" y="0"/> 
 	        <!--  tile holding an item -->
 	        <tile x="0" y="1">
-	            <item type="item" name="Red key" wieght="1"/>
+	            <item type="item" name="Red key" weight="1"/>
 	        </tile>
 	        <tile x="1" y="1"/>
 	    </room>
@@ -20,7 +20,7 @@
 	            <character type="monster" name="Slime">
 	             	<attack>10</attack>
 	             	<health>20</health>
-	            	<item type="item" name="Junk"/>  
+	            	<item type="item" name="Junk" weight="1"/>  
 	            </character>
 	        </tile>
 	        <tile x="1" y ="2"/>
@@ -28,7 +28,7 @@
 	    </room>
 	    <room>
 	        <tile x="1" y="1">
-	            <item type="item" name="Junk"/>
+	            <item type="item" name="Junk" weight="1"/>
 	        </tile>
 	    </room>
 	    <room type="elevator">
@@ -36,7 +36,7 @@
 	    </room>
 	    <room>
 	        <tile x="1" y="2">
-	            <item type="weapon" name="Rusty Sword"/>
+	            <item type="weapon" name="Rusty Sword" weight="1"/>
 	        </tile>
 	        <tile x="1" y="3"/>
 	        <tile x="0" y="3"/>
@@ -70,7 +70,7 @@
 	    </exit>
 	    <!-- a locked exit -->
 	    <exit type="locked">
-	        <item type="item" name="Red key"/>
+	        <item type="item" name="Red key" weight="1"/>
 	        <tile x="1" y="1"/>
 	        <tile x="2" y="1"/>
 	    </exit>

@@ -1,6 +1,7 @@
 package gameLoader;
 
 import gameCore.Item;
+import gameCore.Player;
 import gameCore.Room;
 import gameCore.Tile;
 
@@ -37,7 +38,7 @@ public class Level {
 	private List<Room> roomList;
 	private Tile[][] tileGrid;
 	private Room elevator;
-	
+	private Player player;
 	
 	//copy constructor
 	public Level(Level l)
@@ -50,6 +51,15 @@ public class Level {
 		roomList = new ArrayList<Room>();
 		timer = 0; 
 	}
+	
+	/**
+	 * Returns the player
+	 */
+	public Player getPlayer()
+	{
+		return player;
+	}
+	
 	/**
 	 * Adds a room to the current level
 	 * 
@@ -149,7 +159,11 @@ public class Level {
 	/**
 	 * @param elevator the elevator to set
 	 */
-	public void setElevator(Room elevator) {
-		if(elevator != null) this.elevator = elevator;
+	public void setElevator(Room elevator, Tile tileInElevator) {
+		if(elevator != null) 
+		{
+			this.elevator = elevator;
+			player = new Player("Trang", 10, 2, 1, tileInElevator);
+		}
 	}
 }

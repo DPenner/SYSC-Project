@@ -127,46 +127,50 @@ public class LevelCreator {
 	private boolean parseRooms(Document doc)
 	{
 		int x, y;
-		boolean rv = false;
 		NodeList nodes = doc.getElementsByTagName(XmlTag.ROOM_SECTION.toString());
-		NodeList rooms = nodes.item(0).getChildNodes();
+		NodeList rooms = ((Element)nodes.item(0)).getElementsByTagName(XmlTag.ROOM.toString());
 		for(int room_num = 0; room_num < rooms.getLength(); room_num++)
 		{
 			Element room = (Element) rooms.item(room_num);
-			NodeList tiles = room.getElementsByTagName(XmlTag.ROOM.toString());
+			NodeList tiles = room.getElementsByTagName(XmlTag.TILE.toString());
 			Room r = new Room();
 			level.addRoom(r);
 			//is elevator room?
 			String roomType = room.getAttribute(XmlTag.TYPE.toString());
-			if(roomType.equalsIgnoreCase(XmlTag.ELEVATOR.toString()))
-			{
-				//set the room as an elevator
-				level.setElevator(r);
-				rv = true; 
-			}
+			Tile elevatorTile = null;
 			for(int tile_num = 0; tile_num < tiles.getLength(); tile_num++)
 			{
 				Element tile = (Element) tiles.item(tile_num);
-				x = Integer.parseInt(room.getAttribute(XmlTag.X.toString()));
-				y = Integer.parseInt(room.getAttribute(XmlTag.Y.toString()));
+				x = Integer.parseInt(tile.getAttribute(XmlTag.X.toString()));
+				y = Integer.parseInt(tile.getAttribute(XmlTag.Y.toString()));
 
 				Tile t = new Tile(new Point(x, y), r);
 				if(level.setTile(x, y, t))
 				{
+					if(tile_num == 0 && roomType.equalsIgnoreCase(XmlTag.ELEVATOR.toString()))
+					{
+						elevatorTile = t;
+					}
 					r.addTile(t);
 					parseInventory(tile, t);
 					//hold character?
 					parseCharacter(tile, t);
-				}
-				
+					
+				}	
+			}
+			if(elevatorTile != null)
+			{
+				//set the room as an elevator
+				level.setElevator(r, elevatorTile);
+				return true;
 			}
 		}
-		return rv;
+		return false;
 	}
 	private boolean parseExits(Document doc)
 	{
 		NodeList nodes = doc.getElementsByTagName(XmlTag.EXIT_SECTION.toString());
-		NodeList exits = nodes.item(0).getChildNodes();
+		NodeList exits = ((Element)nodes.item(0)).getElementsByTagName(XmlTag.EXIT.toString());
 		for(int exit_num = 0; exit_num < exits.getLength(); exit_num++)
 		{
 			Item key = null;
@@ -195,7 +199,7 @@ public class LevelCreator {
 			}
 			level.addEdge(level.getTile(x1,y1),level.getTile(x2,y2), key);
 		}
-		return false;
+		return true;
 	}
 	private boolean parseInventory(Element tileNode, Object obj)
 	{
