@@ -24,6 +24,11 @@ public class Edge {
 	protected boolean crossable;
 	
 	/**
+	 * Default constructor for internal use
+	 */
+	private Edge(){}
+	
+	/**
 	 * If the edge is between a tile and the boundary of a level, the extra tile is to be null
 	 * @param tile1 One side of the edge
 	 * @param tile2 The other side of the edge
@@ -31,6 +36,35 @@ public class Edge {
 	 */
 	public Edge(Tile tile1, Tile tile2, boolean crossable)
 	{
+		createEdge(tile1, tile2, crossable);
+	}
+	
+	/**
+	 * Creates the edge, and sets the edge for the two tiles in the given directions. If the
+	 * edge is between a tile and the boundary of a level, the extra tile is to be null.
+	 * @param tile1 One side of the edge
+	 * @param tile2 The other side of the edge
+	 * @param crossable True if the two tiles can be directly moved between, false otherwise
+	 * @param direction1 The direction of the edge relative to tile1
+	 * @param direction2 The direction of the edge relative to tile2
+	 */
+	public Edge(Tile tile1, Tile tile2, boolean crossable, String direction1, String direction2)
+	{
+		Edge edge = createEdge(tile1, tile2, crossable);
+		tile1.setEdge(direction1, edge);
+		tile2.setEdge(direction2, edge);
+	}
+	
+	/**
+	 * Creates an edge, setting the two tiles and the crossable variable
+	 * @param tile1 One side of the edge
+	 * @param tile2 The other side of the edge
+	 * @param crossable True if the two tiles can be directly moved between, false otherwise
+	 * @return The new edge
+	 */
+	private Edge createEdge(Tile tile1, Tile tile2, boolean crossable)
+	{
+		Edge retval = new Edge();
 		if (tile1 == null && tile2 == null){
 			throw new IllegalArgumentException("Cannot have edge unattached to a tile");
 		}
@@ -40,20 +74,10 @@ public class Edge {
 		if (tile1 == tile2){
 			throw new IllegalArgumentException("tile1 and tile2 are the same reference");
 		}
-		
-		//TODO: 
-		//calculate the edge's direction of tile2 in respect to tile1
-		//if direction not good (null or something because tiles are not adjacent
-		//throw exception
-		
-		
-		this.tile1 = tile1;
-		this.tile2 = tile2;
-		this.crossable = crossable;
-		
-		
-		//add this edge to tile1
-		//add this edge to tile2
+		retval.tile1 = tile1;
+		retval.tile2 = tile2;
+		retval.crossable = crossable;
+		return retval;
 	}
 	
 	/**

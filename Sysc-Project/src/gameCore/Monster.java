@@ -22,7 +22,9 @@ public class Monster extends Character implements NPC {
 	}
 	
 	/*
-	 * Move toward the player
+	 * Move the monster
+	 * 
+	 * ---Implement in second version - monsters are static in current version ---
 	 * (non-Javadoc)
 	 * @see gameCore.NPC#move(java.lang.String)
 	 */

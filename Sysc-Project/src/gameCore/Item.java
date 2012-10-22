@@ -15,10 +15,16 @@ package gameCore;
  * @version 1.0
  */
 public class Item {
-	
+	//------------Fields------------//
 	private String name;
 	private int weight;
 	
+	//------------Constructors------------//
+	/**
+	 * Construct the item
+	 * @param name
+	 * @param weight
+	 */
 	public Item(String name, int weight){
 		this.name=name;
 		this.weight=weight;
@@ -37,7 +43,7 @@ public class Item {
 		return false;
 	}
 	//------------Getters------------//
-	/*
+	/**
 	 * Method to get the weight of the item.
 	 * 
 	 * @return	the weight of the item 
@@ -46,7 +52,7 @@ public class Item {
 		return weight;
 	}
 	
-	/*
+	/**
 	 * Method to the name of the item
 	 * 
 	 * @return	the name of the item

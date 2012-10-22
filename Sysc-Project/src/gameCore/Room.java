@@ -2,7 +2,6 @@ package gameCore;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.HashMap;
 
 /**
  * A room is a collection of tiles. It provides methods which can
