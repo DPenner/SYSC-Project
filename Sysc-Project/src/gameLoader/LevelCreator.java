@@ -34,7 +34,7 @@ public class LevelCreator {
 	private Level level;
 	private boolean loaded;
 	
-	public LevelCreator()
+	protected LevelCreator()
 	{
 		level = new Level();
 		loaded = false;
@@ -203,6 +203,7 @@ public class LevelCreator {
 	}
 	private boolean parseInventory(Element tileNode, Object obj)
 	{
+		//TODO: 
 		if(obj instanceof Tile)
 		{
 			
@@ -211,6 +212,7 @@ public class LevelCreator {
 	}
 	private boolean parseCharacter(Element tileNode, Tile tile)
 	{
+		//TODO:
 		return false;
 	}
 }
