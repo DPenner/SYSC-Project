@@ -60,7 +60,7 @@ public class Room
 	 * Makes the room visited (a room cannot be "un-visited")
 	 */
 	public void setVisited() {
-		this.visited = true;;
+		this.visited = true;
 	}
 }
 

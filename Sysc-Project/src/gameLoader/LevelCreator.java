@@ -34,7 +34,11 @@ public class LevelCreator {
 	private Level level;
 	private boolean loaded;
 	
+<<<<<<< HEAD
 	public LevelCreator()
+=======
+	protected LevelCreator()
+>>>>>>> branch 'trang' of https://github.com/DPenner/SYSC-Project.git
 	{
 		level = new Level();
 		loaded = false;
@@ -203,6 +207,10 @@ public class LevelCreator {
 	}
 	private boolean parseInventory(Element tileNode, Object obj)
 	{
+<<<<<<< HEAD
+=======
+		//TODO: 
+>>>>>>> branch 'trang' of https://github.com/DPenner/SYSC-Project.git
 		if(obj instanceof Tile)
 		{
 			
@@ -211,6 +219,10 @@ public class LevelCreator {
 	}
 	private boolean parseCharacter(Element tileNode, Tile tile)
 	{
+<<<<<<< HEAD
+=======
+		//TODO:
+>>>>>>> branch 'trang' of https://github.com/DPenner/SYSC-Project.git
 		return false;
 	}
 }

@@ -41,9 +41,19 @@ public class Edge {
 			throw new IllegalArgumentException("tile1 and tile2 are the same reference");
 		}
 		
+		//TODO: 
+		//calculate the edge's direction of tile2 in respect to tile1
+		//if direction not good (null or something because tiles are not adjacent
+		//throw exception
+		
+		
 		this.tile1 = tile1;
 		this.tile2 = tile2;
 		this.crossable = crossable;
+		
+		
+		//add this edge to tile1
+		//add this edge to tile2
 	}
 	
 	/**
