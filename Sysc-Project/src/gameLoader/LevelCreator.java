@@ -1,19 +1,16 @@
 package gameLoader;
 
-import gameCore.Room;
-import gameCore.Tile;
+import gameCore.*;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 
+import java.awt.Point;
 import java.io.*;
-import java.util.List;
-import java.util.Set;
 
 /**
 * loads a level from an XML file and instantiates a level
@@ -31,27 +28,19 @@ import java.util.Set;
 * @version 1.0
 *
 */
+
 public class LevelCreator {
 	
-	//move this data to a class called Level later
-	private int timer;
-	private int gridWidth;
-	private int gridHeight;
+	private Level level;
+	private boolean loaded;
 	
-	private List<Room> roomList;
-	private Tile[][] tileGrid;
-	private Room elevator;
-	
-	/**
-	 * Instantiates a level with the data in the xmlFilePath
-	 * 
-	 * @param xmlFilePath the file path to the xml file that holds the level data
-	 */
-	public LevelCreator(String xmlFilePath)
+	public LevelCreator()
 	{
-		loadLevel(xmlFilePath);
+		level = new Level();
+		loaded = false;
 	}
 	
+	public Level getLevel() { if(loaded)return level; return null; }
 	/**
 	 * Loads a level from an xml file: parses the xml and instantiates the level
 	 * fields
@@ -76,7 +65,10 @@ public class LevelCreator {
 					if(parseGrid(doc))
 						if(parseRooms(doc))
 							if(parseExits(doc))
+							{
+								loaded = true;
 								return true;
+							}
 			}
 		}
 		catch(Exception e)
@@ -96,10 +88,11 @@ public class LevelCreator {
 		//get all nodes with tag timer
 		NodeList nodes = doc.getElementsByTagName(XmlTag.TIMER.toString());
 		//only care about the first timer set (ignore all other timer elements)
-		String timerValue = getAttributeValueWithName(nodes.item(0), XmlTag.VALUE);
+		Element timer = (Element) nodes.item(0);
+		String timerValue = timer.getAttribute(XmlTag.VALUE.toString());
 		if(timerValue !=null)
 		{
-			this.setTimer(Integer.parseInt(timerValue));
+			level.setTimer(Integer.parseInt(timerValue));
 			return true;
 		}
 		return false;
@@ -114,13 +107,12 @@ public class LevelCreator {
 	{
 		NodeList nodes = doc.getElementsByTagName(XmlTag.GRID.toString());
 		//only care about the first timer set (ignore all other timer elements)
-		String gridWidth= getAttributeValueWithName(nodes.item(0), XmlTag.WIDTH);
-		String gridHeight= getAttributeValueWithName(nodes.item(0), XmlTag.HEIGHT);
+		Element gridNode = (Element) nodes.item(0);
+		String gridWidth= gridNode.getAttribute(XmlTag.WIDTH.toString());
+		String gridHeight= gridNode.getAttribute(XmlTag.HEIGHT.toString());
 		if(gridWidth !=null && gridHeight != null)
 		{
-			this.gridWidth = Integer.parseInt(gridWidth);
-			this.gridHeight = Integer.parseInt(gridHeight);
-			tileGrid = new Tile[gridHeight][gridWidth]();
+			level.setLevelSize(Integer.parseInt(gridWidth), Integer.parseInt(gridHeight));
 			return true;
 		}
 		return false;
@@ -135,81 +127,91 @@ public class LevelCreator {
 	private boolean parseRooms(Document doc)
 	{
 		int x, y;
-		boolean rv = false;
 		NodeList nodes = doc.getElementsByTagName(XmlTag.ROOM_SECTION.toString());
-		NodeList rooms = nodes.item(0).getChildNodes();
+		NodeList rooms = ((Element)nodes.item(0)).getElementsByTagName(XmlTag.ROOM.toString());
 		for(int room_num = 0; room_num < rooms.getLength(); room_num++)
 		{
-			NodeList tiles = rooms.item(room_num).getChildNodes();
+			Element room = (Element) rooms.item(room_num);
+			NodeList tiles = room.getElementsByTagName(XmlTag.TILE.toString());
 			Room r = new Room();
-			roomList.add(r);
+			level.addRoom(r);
 			//is elevator room?
-			String roomType = getAttributeValueWithName(rooms.item(room_num), XmlTag.TYPE);
-			if(roomType.equals(XmlTag.ELEVATOR.toString()))
-			{
-				//set the room as an elevator
-				elevator = r;
-				rv = true; 
-			}
+			String roomType = room.getAttribute(XmlTag.TYPE.toString());
+			Tile elevatorTile = null;
 			for(int tile_num = 0; tile_num < tiles.getLength(); tile_num++)
 			{
-				x = Integer.parseInt(getAttributeValueWithName(tiles.item(tile_num), XmlTag.X));
-				y = Integer.parseInt(getAttributeValueWithName(tiles.item(tile_num), XmlTag.Y));
-				if(x < gridWidth && y < gridHeight) //only parse the tile if it fits inside the defined grid
+				Element tile = (Element) tiles.item(tile_num);
+				x = Integer.parseInt(tile.getAttribute(XmlTag.X.toString()));
+				y = Integer.parseInt(tile.getAttribute(XmlTag.Y.toString()));
+
+				Tile t = new Tile(new Point(x, y), r);
+				if(level.setTile(x, y, t))
 				{
-					Tile t = new Tile(new Point(x, y), r);
-					if(tileSet.add(t)) //only if tile is unique
+					if(tile_num == 0 && roomType.equalsIgnoreCase(XmlTag.ELEVATOR.toString()))
 					{
-						r.addTile(t); //then add it to the room
-						//find other properties of the tile
-						//holds items?
-						parseInventory(tiles.item(tile_num), t);
-						//hold character?
-						parseCharacter(tiles.item(tile_num), t);
+						elevatorTile = t;
 					}
-				}
+					r.addTile(t);
+					parseInventory(tile, t);
+					//hold character?
+					parseCharacter(tile, t);
+					
+				}	
+			}
+			if(elevatorTile != null)
+			{
+				//set the room as an elevator
+				level.setElevator(r, elevatorTile);
+				return true;
 			}
 		}
-		return rv;
+		return false;
 	}
 	private boolean parseExits(Document doc)
 	{
 		NodeList nodes = doc.getElementsByTagName(XmlTag.EXIT_SECTION.toString());
-		NodeList exits = nodes.item(0).getChildNodes();
+		NodeList exits = ((Element)nodes.item(0)).getElementsByTagName(XmlTag.EXIT.toString());
 		for(int exit_num = 0; exit_num < exits.getLength(); exit_num++)
 		{
+			Item key = null;
+			Element exit = (Element) exits.item(exit_num);
 			//At this point all the tiles have been made already
-		}
-		return false;
-	}
-	private boolean parseInventory(Node tileNode, Tile tile)
-	{
-		return false;
-	}
-	private boolean parseCharacter(Node tileNode, Tile tile)
-	{
-		return false;
-	}
-	private String getAttributeValueWithName(Node node, XmlTag name)
-	{
-		NamedNodeMap attr = node.getAttributes();
-		if(attr != null)
-		{
-			Node attrNode = attr.getNamedItem(name.toString());
-			if(attrNode != null)
+			NodeList tiles = exit.getElementsByTagName(XmlTag.TILE.toString());
+			//get tile1
+			Element tile1 = (Element) tiles.item(0);
+			int x1 = Integer.parseInt(tile1.getAttribute(XmlTag.X.toString()));
+			int y1 = Integer.parseInt(tile1.getAttribute(XmlTag.Y.toString()));
+			//get tile2
+			Element tile2 = (Element) tiles.item(1);
+			int x2 = Integer.parseInt(tile2.getAttribute(XmlTag.X.toString()));
+			int y2 = Integer.parseInt(tile2.getAttribute(XmlTag.Y.toString()));
+			
+			//is it locked 
+			String type = exit.getAttribute(XmlTag.TYPE.toString());
+			if(type.equalsIgnoreCase(XmlTag.LOCKED.toString()))
 			{
-				return 	attrNode.getNodeValue();
+				//if so what is the key
+				NodeList items = exit.getElementsByTagName(XmlTag.ITEM.toString());
+				Element item = (Element) items.item(0);
+				String keyname = item.getAttribute(XmlTag.NAME.toString());
+				int keyweight = Integer.parseInt(item.getAttribute(XmlTag.WEIGHT.toString()));
+				key = new Item(keyname, keyweight);
 			}
+			level.addEdge(level.getTile(x1,y1),level.getTile(x2,y2), key);
 		}
-		return null;
+		return true;
 	}
-
-	public int getTimer() {
-		return timer;
+	private boolean parseInventory(Element tileNode, Object obj)
+	{
+		if(obj instanceof Tile)
+		{
+			
+		}
+		return false;
 	}
-
-	public void setTimer(int timer) {
-		this.timer = timer;
+	private boolean parseCharacter(Element tileNode, Tile tile)
+	{
+		return false;
 	}
 }
 

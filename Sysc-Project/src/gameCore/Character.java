@@ -1,18 +1,42 @@
 package gameCore;
 
+/**
+ * A Character is a superclass for all of the animated creatures inside the game.
+ * Player, and Monsters (subclass of NPC) are subclasses of character.
+ * 
+ * @author Group D
+ * @author Main author: Karen Madore
+ * 
+ * Group D Members
+ * ---------------
+ * Karen Madore
+ * Trang Pham
+ * Darrell Penner
+ * 
+ *
+ * @version 1.0
+ */
 public class Character {
 	protected Inventory inventory;
-	private int health;
+	protected int health;
 	private String name;
 	private int attack;
+	protected Tile myPosition;
 	
-	public Character(String name, int health, int attack){
+	public Character(String name, int health, int attack, Tile myPosition){
 		this.name=name;
 		this.health=health;
 		this.attack=attack;
 		inventory = new Inventory();
+		this.myPosition =myPosition;
+		//add myself to the tile 
+		myPosition.addCharacter(this); 
 	}
 	
+	/**
+	 * Subtract the myHealth by value of the other character attack value
+	 * Same for the defender.
+	 */
 	public void attack(Character c){
 		
 	}
@@ -25,12 +49,32 @@ public class Character {
 		
 	}
 	
+	/**
+	 * A
+	 * @param value
+	 */
+	
 	public void adjustHealth(int value){
+		int h=0;
+		h=this.health+value;
 		
 	}
-		
+	/**
+	 * A method to clean up the character from the tile
+	 */
+	public void die(){
+		if(this.isDead()){
+			myPosition.removeCharacter();
+		}
+	}
+	/**
+	 * Removes the item from the Characters inventory and add it to the tile's inventory
+	 * 
+	 * @param i
+	 */
 	public void dropItem(Item i){
-		inventory.removeItem(i);
+		inventory.removeItem(i); 
+		myPosition.addItem(i);
 	}
 	
 	public boolean hasItem(Item i){
