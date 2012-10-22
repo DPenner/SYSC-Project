@@ -34,11 +34,7 @@ public class LevelCreator {
 	private Level level;
 	private boolean loaded;
 	
-<<<<<<< HEAD
-	public LevelCreator()
-=======
 	protected LevelCreator()
->>>>>>> branch 'trang' of https://github.com/DPenner/SYSC-Project.git
 	{
 		level = new Level();
 		loaded = false;
@@ -159,7 +155,6 @@ public class LevelCreator {
 					parseInventory(tile, t);
 					//hold character?
 					parseCharacter(tile, t);
-					
 				}	
 			}
 			if(elevatorTile != null)
@@ -185,10 +180,12 @@ public class LevelCreator {
 			Element tile1 = (Element) tiles.item(0);
 			int x1 = Integer.parseInt(tile1.getAttribute(XmlTag.X.toString()));
 			int y1 = Integer.parseInt(tile1.getAttribute(XmlTag.Y.toString()));
+			String dir1 = tile1.getAttribute(XmlTag.DIRECTION.toString());
 			//get tile2
 			Element tile2 = (Element) tiles.item(1);
 			int x2 = Integer.parseInt(tile2.getAttribute(XmlTag.X.toString()));
 			int y2 = Integer.parseInt(tile2.getAttribute(XmlTag.Y.toString()));
+			String dir2 = tile2.getAttribute(XmlTag.DIRECTION.toString());
 			
 			//is it locked 
 			String type = exit.getAttribute(XmlTag.TYPE.toString());
@@ -201,16 +198,12 @@ public class LevelCreator {
 				int keyweight = Integer.parseInt(item.getAttribute(XmlTag.WEIGHT.toString()));
 				key = new Item(keyname, keyweight);
 			}
-			level.addEdge(level.getTile(x1,y1),level.getTile(x2,y2), key);
+			level.addEdge(level.getTile(x1,y1),level.getTile(x2,y2),dir1, dir2, key);
 		}
 		return true;
 	}
 	private boolean parseInventory(Element tileNode, Object obj)
 	{
-<<<<<<< HEAD
-=======
-		//TODO: 
->>>>>>> branch 'trang' of https://github.com/DPenner/SYSC-Project.git
 		if(obj instanceof Tile)
 		{
 			
@@ -219,10 +212,6 @@ public class LevelCreator {
 	}
 	private boolean parseCharacter(Element tileNode, Tile tile)
 	{
-<<<<<<< HEAD
-=======
-		//TODO:
->>>>>>> branch 'trang' of https://github.com/DPenner/SYSC-Project.git
 		return false;
 	}
 }

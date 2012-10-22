@@ -1,10 +1,7 @@
 package gameLoader;
 
-<<<<<<< HEAD
-=======
 import gameCore.Edge;
 import gameCore.Exit;
->>>>>>> branch 'trang' of https://github.com/DPenner/SYSC-Project.git
 import gameCore.Item;
 import gameCore.Player;
 import gameCore.Room;
@@ -47,21 +44,12 @@ public class Level {
 	private Player player;
 	
 	//copy constructor
-<<<<<<< HEAD
-	public Level(Level l)
-	{
-		this.timer = l.timer;
-		
-	}
-	public Level()
-=======
 	protected Level(Level l)
 	{
 		this.timer = l.timer;
 		
 	}
 	protected Level()
->>>>>>> branch 'trang' of https://github.com/DPenner/SYSC-Project.git
 	{
 		roomList = new ArrayList<Room>();
 		edgeList = new ArrayList<Edge>();
@@ -134,22 +122,18 @@ public class Level {
 		else return null;
 	}
 	
-	public void addEdge(Tile tile1, Tile tile2, Item key)
+	public void addEdge(Tile tile1, Tile tile2, String direction1, String direction2, Item key)
 	{
-<<<<<<< HEAD
-		
-=======
 		Edge e;
 		if(key != null)
 		{
-			e = new Exit(tile1, tile2, true, key);
+			e = new Exit(tile1, tile2, direction1, direction2, true, key);
 		}
 		else
 		{
-			e = new Edge(tile1, tile2, true);
+			e = new Edge(tile1, tile2, true, direction1, direction2);
 		}
 		edgeList.add(e);
->>>>>>> branch 'trang' of https://github.com/DPenner/SYSC-Project.git
 	}
 	
 	/**

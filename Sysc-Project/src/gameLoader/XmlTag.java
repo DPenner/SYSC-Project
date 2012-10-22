@@ -27,7 +27,7 @@ public enum XmlTag {
 	
 	//attributes
 	VALUE("value"), WIDTH("width"), HEIGHT("height"),
-	X("x"), Y("y"), 
+	X("x"), Y("y"), DIRECTION("direction"),
 	TYPE("type"), NAME("name"), WEIGHT("weight"),
 	
 	//special attribute values

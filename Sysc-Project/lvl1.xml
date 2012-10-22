@@ -53,26 +53,26 @@
 	<exits>
 	    <!-- unlocked exit -->
 	    <exit>
-	    	<tile x="0" y="2"/>
-	    	<tile x="0" y="3"/>
+	    	<tile x="0" y="2" direction="south"/>
+	    	<tile x="0" y="3" direction="north"/>
 	    </exit>
 	    <exit>
-	        <tile x="1" y="3"/>
-	        <tile x="2" y="3"/>    
+	        <tile x="1" y="3" direction="west"/>
+	        <tile x="2" y="3" direction="east"/>    
 	    </exit>
 	    <exit>
-	        <tile x="2" y="3"/>
-	        <tile x="2" y="2"/>
+	        <tile x="2" y="3" direction="north"/>
+	        <tile x="2" y="2" direction="south"/>
 	    </exit>
 	    <exit>
-	        <tile x="1" y="0"/>
-	        <tile x="2" y="0"/>
+	        <tile x="1" y="0" direction="west"/>
+	        <tile x="2" y="0" direction="east"/>
 	    </exit>
 	    <!-- a locked exit -->
 	    <exit type="locked">
 	        <item type="item" name="Red key" weight="1"/>
-	        <tile x="1" y="1"/>
-	        <tile x="2" y="1"/>
+	        <tile x="1" y="1" direction="west"/>
+	        <tile x="2" y="1" direction="east"/>
 	    </exit>
 	</exits>
 </level>
