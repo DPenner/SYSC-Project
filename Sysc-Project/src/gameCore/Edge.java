@@ -23,7 +23,9 @@ public class Edge {
 	protected Tile tile2;
 	protected boolean crossable;
 	
+	
 	/**
+	 * Creates an edge, setting the two tiles and the crossable variable
 	 * If the edge is between a tile and the boundary of a level, the extra tile is to be null
 	 * @param tile1 One side of the edge
 	 * @param tile2 The other side of the edge
@@ -40,11 +42,28 @@ public class Edge {
 		if (tile1 == tile2){
 			throw new IllegalArgumentException("tile1 and tile2 are the same reference");
 		}
-		
 		this.tile1 = tile1;
 		this.tile2 = tile2;
 		this.crossable = crossable;
 	}
+	
+	/**
+	 * Creates the edge, and sets the edge for the two tiles in the given directions. If the
+	 * edge is between a tile and the boundary of a level, the extra tile is to be null.
+	 * @param tile1 One side of the edge
+	 * @param tile2 The other side of the edge
+	 * @param crossable True if the two tiles can be directly moved between, false otherwise
+	 * @param direction1 The direction of the edge relative to tile1
+	 * @param direction2 The direction of the edge relative to tile2
+	 */
+	public Edge(Tile tile1, Tile tile2, boolean crossable, String direction1, String direction2)
+	{
+		this(tile1, tile2, crossable);
+		if(tile1 != null) tile1.setEdge(direction1, this);
+		if(tile2 != null) tile2.setEdge(direction2, this);
+	}
+
+
 	
 	/**
 	 * Checks if the given character can cross the edge
@@ -70,6 +89,7 @@ public class Edge {
 		} //other error checks done by getOtherTile method
 		
 		Tile destination = getOtherTile(currentTile);
+		currentTile.removeCharacter();
 		destination.addCharacter(crosser);
 		return destination;
 	}
@@ -84,9 +104,10 @@ public class Edge {
 		if (currentTile == null){
 			throw new IllegalArgumentException("currentTile may not be null");
 		}
-		if (!crossable){
-			throw new UnsupportedOperationException("Cannot retrieve tile when edge is not crossable");
-		}
+		// REMOVED - crossing is character-dependent, the check should not be here.
+		//if (!crossable){
+		//	throw new UnsupportedOperationException("Cannot retrieve tile when edge is not crossable");
+		//}
 		
 		//return which ever tile isn't the one passed in
 		if (currentTile == tile1) return tile2;

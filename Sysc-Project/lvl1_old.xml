@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<level>
+    <!-- number of steps the level starts with -->
+    <timer value="60"/>
+    <!-- defines the grid size of the level -->
+    <grid width="3" height="4"/>
+    <rooms>
+	    <!--  each tile within in the room tags make up that room -->
+	    <room>
+	        <tile y="0" x="0"/> 
+	        <tile y="0" x="1"/>
+	        <tile y="1" x="0"/>
+	    </room>
+	    <room>
+	        <tile y="0" x="2"/>
+	        <tile y="1" x="2"/>
+	        <tile y="2" x="2"/>	        
+	    </room>
+	    <room>
+	        <tile y="1" x="1"/>
+	    </room>
+	    <room>
+	        <tile y="3" x="1"/>
+	        <tile y="3" x="0"/>
+	        <tile y="2" x="1"/>
+	    </room>
+	    <room>
+	        <tile y="3" x="2"/>
+	    </room>
+	    <room type="elevator">
+	        <tile y="2" x="0"/>
+	    </room>
+	</rooms>
+	<exits>
+	    <!-- unlocked exit -->
+	    <exit>
+	    	<tile y="2" x="0" direction="south"/>
+	    	<tile y="3" x="0" direction="north"/>
+	    </exit>
+	    <exit>
+	        <tile y="3" x="1" direction="west"/>
+	        <tile y="3" x="2" direction="east"/>    
+	    </exit>
+	    <exit>
+	        <tile y="3" x="2" direction="north"/>
+	        <tile y="2" x="2" direction="south"/>
+	    </exit>
+	    <exit>
+	        <tile y="0" x="1" direction="west"/>
+	        <tile y="0" x="2" direction="east"/>
+	    </exit>
+	    <!-- a locked exit -->
+	    <exit type="locked">
+	        <item type="item" name="Red key" weight="1"/>
+	        <tile y="1" x="1" direction="west"/>
+	        <tile y="1" x="2" direction="east"/>
+	    </exit>
+	</exits>
+	<items>
+	    <item type="item" name="Red key" weight="1" y="1" x="0"/>
+	    <item type="item" name="Junk" weight="1" y="1" x="1"/>
+	    <item type="weapon" name="Rusty Sword" weight="1" y="2" x="1"/>
+	</items>
+	<characters>
+	     <character type="monster" name="Slime" y="3" x="2">
+            	<attack>10</attack>
+             	<health>20</health>
+	     </character>
+	     <character type="monster" name="Slime" y="0" x="2">
+             	<attack>10</attack>
+             	<health>20</health>
+            	<item type="item" name="Junk" weight="1"/>  
+	     </character>
+	</characters>
+</level>

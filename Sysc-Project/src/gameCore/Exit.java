@@ -30,7 +30,22 @@ public class Exit extends Edge {
 	 */
 	public Exit(Tile tile1, Tile tile2, boolean locked, Item key) {
 		//Internally, a "locked" Exit is implemented as a "non crossable" Exit for code reuse
-		super(tile1, tile2, locked);
+		super(tile1, tile2, !locked);
+		this.key = key;
+	}
+	
+	/**
+	 * Creates the edge, and sets the edge for the two tiles in the given directions. If the
+	 * edge is between a tile and the boundary of a level, the extra tile is to be null.
+	 * @param tile1 One side of the edge
+	 * @param tile2 The other side of the edge
+	 * @param crossable True if the two tiles can be directly moved between, false otherwise
+	 * @param direction1 The direction of the edge relative to tile1
+	 * @param direction2 The direction of the edge relative to tile2
+	 */
+	public Exit(Tile tile1, Tile tile2, boolean locked, String direction1, String direction2, Item key)
+	{
+		super(tile1, tile2, !locked, direction1, direction2);
 		this.key = key;
 	}
 	
