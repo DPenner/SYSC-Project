@@ -11,12 +11,14 @@ Karen Madore:
    Classes: Charcter, Player, Monster, Inventory, Item, Weapon, and expanding list of characters and items in future.
 
 Trang Pham:
+- I/O
 
 Darrell Penner:
-- Game Layout.
+- Game Layout
     Classes: Room, Tile, Edge, Exit
 
 DELIVERABLES:
+Design Documentation.docx - Our documentation on the design of our game.
 
 KNOWN ISSUES:
 
@@ -28,6 +30,3 @@ ROADMAP:
 
 - Create friendly characters. 
 - Add Keys, a type of item.
-
-DESIGN DECISIONS:
-- Our game is based on the book...
