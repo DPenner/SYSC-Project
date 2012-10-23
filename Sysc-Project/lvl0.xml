@@ -42,6 +42,10 @@
 	        <tile y="1" x="0"/>   
 	    </edge>
 	    <edge crossable="true">
+	        <tile y="1" x="0" direction="south"/>
+	        <tile y="2" x="0"/>   
+	    </edge>
+	    <edge crossable="true">
 	        <tile y="0" x="0" direction="east"/>
 	        <tile y="0" x="1"/>   
 	    </edge>
@@ -69,7 +73,7 @@
 	        <tile y="1" x="2"/>
 	    </edge>
 	    <edge type="exit" locked="true">
-	        <item type="item" name="Blue key" weight="1"/>
+	        <item type="item" name="BlueKey" weight="1"/>
 	        <tile y="2" x="1" direction="west"/>
 	        <tile y="2" x="0"/>
 	    </edge>

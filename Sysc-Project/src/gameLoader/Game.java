@@ -315,7 +315,10 @@ public class Game
 
         try
         {
-        	System.out.println(player.move(direction));
+        	StringBuffer output = new StringBuffer();
+        	boolean hasMoved = player.move(direction, output);
+        	System.out.println(output.toString());
+        	return hasMoved;
         }
         catch(Exception e)
         {
@@ -326,7 +329,6 @@ public class Game
         	System.out.println(e.getMessage());
         	return false;
         }
-		return false;
     }
 
     private void view(Command command)
@@ -363,7 +365,9 @@ public class Game
     		{
     			try
     			{
-    				System.out.println(d.toString() +": " + player.look(d.toString()));
+    				StringBuffer output = new StringBuffer();
+    				player.look(d.toString(), output);
+    				System.out.println(d.toString() +": " + output);
     			}
     			catch(Exception e)
     			{
@@ -375,7 +379,9 @@ public class Game
     	{
     		try
     		{
-    			System.out.println(player.look(command.getSecondWord()));
+    			StringBuffer output = new StringBuffer();
+				player.look(command.getSecondWord(), output);
+				System.out.println(output);
     		}
     		catch(Exception e)
     		{

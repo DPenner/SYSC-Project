@@ -42,9 +42,8 @@ public class Player extends Character
 	 * @param direction - direction string ie north, south, etc.
 	 * @return	
 	 */
-	public String move(String direction) throws EndGameException{
-		//boolean hasMoved=false;
-		String msg;
+	public boolean move(String direction, StringBuffer output) throws EndGameException{
+		boolean hasMoved=false;
 		if(myPosition.isCrossable(direction)){
 			if (myPosition.hasCharacter(direction))
 			{
@@ -52,25 +51,28 @@ public class Player extends Character
 				if(attack(defender)){
 					//other character died
 					this.myPosition=myPosition.moveCharacter(direction);  //move character to the next tile
-					return "You attacked and killed " + defender +". You moved " + direction;
+					output.append("You attacked and killed " + defender +". You moved " + direction);
+					hasMoved = true;
 				}
 				else//defender is still alive.
 				{
 					if(isDead()) throw new EndGameException("Player has died. GAME OVER!");
 					
-					return "You attacked: \n" + defender.toString() +"\n "+ this.toString();
+					output.append("You attacked: \n" + defender.toString() +"\n "+ this.toString());
 				}
-				
-				
 			}
 			else
 			{
 				this.myPosition=myPosition.moveCharacter(direction);  //move character to the next tile
-				return "You moved "+ direction;
+				output.append("You moved "+ direction);
+				hasMoved = true;
 			}
-			//hasMoved=true;
 		}
-		return "Cannot move " + direction;
+		else
+		{
+			output.append(checkIfLockedExit(direction));
+		}
+		return hasMoved;
 	}
 	
 	/*
@@ -147,33 +149,39 @@ public class Player extends Character
 	 * @param 	direction to move
 	 * @return	string of characters it sees
 	 */
-	public String look(String direction){
-		String retString;
+	public boolean look(String direction, StringBuffer output){
 		if(myPosition.isCrossable(direction))
 		{
 			if(myPosition.hasCharacter(direction)){//there is a character in the direction the player wishes to move
-				retString =  myPosition.getCharacter(direction).toString() + " is located " + direction +" of you.";
+				output.append(myPosition.getCharacter(direction).toString() + " is located " + direction +" of you.");
 			}else{
-				retString = "Can move " + direction + ". No character in front of you.";
+				output.append("Can move " + direction + ". No character in front of you.");
 			}
+			return true;
 		}
 		else //cannot move in that direction
 		{
-			//is this a locked exit or is it an uncrossable edge?
-			if (myPosition.hasExit(direction) ){
-				
-				retString = "Exit Locked.  Need " + myPosition.getExitKey(direction);
-			}else{
-			//if locked exit
-				//retString = locked exit require item name to open
-			//else
-				//this is a wall
-				retString = "There is a wall.";
-			}
+			output.append(checkIfLockedExit(direction));
+			return false;
+		}
+	}
+	
+	private String checkIfLockedExit(String direction)
+	{
+		String retString;
+		//is this a locked exit or is it an uncrossable edge?
+		if (myPosition.hasExit(direction) ){
+			
+			retString = "Exit Locked.  Need " + myPosition.getExitKey(direction);
+		}else{
+		//if locked exit
+			//retString = locked exit require item name to open
+		//else
+			//this is a wall
+			retString = "There is a wall.";
 		}
 		return retString;
 	}
-	
 
 	/**
 	 * ViewInventory method returns an string representation of the player's inventory
