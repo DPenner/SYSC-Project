@@ -235,7 +235,7 @@ public class Game
     private boolean pickup(Command command)
     {
     	if(!command.hasSecondWord()) {
-            // if there is no second word, we don't know where to go...
+            // if there is no second word, we don't know what to pick up...
             System.out.println("Pick up what?");
             return false;
         }
@@ -302,8 +302,12 @@ public class Game
         	if(!player.move(direction))
         	{
         		System.out.println("Cannot move through the wall in " + direction);
+        		return false;
         	}
-            System.out.println("You have moved " + direction);
+        	else
+        	{
+        		System.out.println("You have moved " + direction);
+        	}
             return true;
         }
         catch(Exception e)
