@@ -51,6 +51,9 @@ public class Player extends Character
 				Character defender= myPosition.getCharacter(direction);
 				if(attack(defender)){
 					//other character died
+					
+					defender.kill();//make other monster drop its items
+					
 					this.myPosition=myPosition.moveCharacter(direction);  //move character to the next tile
 					return "You attacked and killed " + defender +". You moved " + direction;
 				}

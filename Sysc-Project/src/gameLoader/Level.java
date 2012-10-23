@@ -143,7 +143,10 @@ public class Level {
 	}
 	
 	public boolean addCharacter()
-	{	new Monster("Batman", 5, 1, tileGrid[0][0]);
+	{	Monster m =new Monster("Batman", 5, 1, tileGrid[0][0]);
+		Item kd=new Item("kd",1);
+		m.loadInventory(kd);
+		
 		return true;
 	}
 	
