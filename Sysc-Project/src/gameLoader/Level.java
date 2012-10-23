@@ -1,6 +1,7 @@
 package gameLoader;
 
 import gameCore.*;
+import gameCore.Character;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -142,9 +143,10 @@ public class Level {
 		return false;
 	}
 	
-	public boolean addCharacter()
-	{	new Monster("Batman", 5, 1, tileGrid[0][0]);
-		return true;
+	public Character addCharacter(String name, int health, int attack, int x, int y)
+	{	
+		if(tileGrid[y][x] == null) return null;
+		else return new Character(name, health, attack, tileGrid[y][x]);
 	}
 	
 	public boolean addItem(String name, int weight, int x, int y)
@@ -206,7 +208,7 @@ public class Level {
 		if(elevator != null) 
 		{
 			this.elevator = elevator;
-			player = new Player("Trang", 10, 2, 1, tileInElevator);
+			player = new Player("Babak", 10, 2, 1, tileInElevator);
 		}
 	}
 }

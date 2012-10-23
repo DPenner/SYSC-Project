@@ -101,7 +101,13 @@
 	<characters>
 	     <character type="monster" name="Slime" y="0" x="0">
             	<attack>1</attack>
-             	<health>10</health>
+             	<health>5</health>
+             	<item type="item" name="SlimeDung" weight="1"/>
+	     </character>
+	     <character type="monster" name="Batman" y="0" x="2">
+            	<attack>2</attack>
+             	<health>7</health>
+             	<item type="item" name="KD" weight="1"/>
 	     </character>
 	</characters>
 </level>

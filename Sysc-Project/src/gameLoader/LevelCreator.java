@@ -1,6 +1,7 @@
 package gameLoader;
 
 import gameCore.*;
+import gameCore.Character;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
@@ -11,7 +12,6 @@ import org.w3c.dom.Element;
 
 import java.awt.Point;
 import java.io.*;
-import java.security.InvalidParameterException;
 
 /**
 * loads a level from an XML file and instantiates a level
@@ -279,7 +279,40 @@ public class LevelCreator {
 	}
 	private boolean parseCharacters(Document doc)
 	{
-		level.addCharacter();
+		NodeList nodes = doc.getElementsByTagName(XmlTag.CHARACTER_SECTION.toString());
+		NodeList characters = ((Element)nodes).getElementsByTagName(XmlTag.CHARACTER.toString());
+		for(int char_num = 0; char_num < characters.getLength(); char_num++)
+		{
+			Element character = (Element) characters.item(char_num);
+			String name = character.getAttribute(XmlTag.NAME.toString());
+			String type = character.getAttribute(XmlTag.TYPE.toString());
+			int x = Integer.parseInt(XmlTag.X.toString());
+			int y = Integer.parseInt(XmlTag.Y.toString());
+
+			//get attack
+			NodeList attackNodeList = character.getElementsByTagName(XmlTag.ATTACK.toString());
+			Element attackElement = (Element) attackNodeList.item(0);
+			int attack = Integer.parseInt(attackElement.getNodeValue());
+			//get health
+			NodeList healthNodeList = character.getElementsByTagName(XmlTag.HEALTH.toString());
+			Element healthElement = (Element) healthNodeList.item(0);
+			int health = Integer.parseInt(healthElement.getNodeValue());
+			
+			Character c = level.addCharacter(name, health, attack, x, y);
+			if(c!=null)
+			{
+				//parseItemsOnCharacter
+				NodeList items = character.getElementsByTagName(XmlTag.ITEM.toString());
+				for(int item_num = 0; item_num < items.getLength(); item_num++)
+				{
+					Element item = (Element) items.item(item_num);
+					String itemname = item.getAttribute(XmlTag.NAME.toString());
+					int weight = Integer.parseInt(item.getAttribute(XmlTag.WEIGHT.toString()));
+					
+					c.addItemToInvetory(new Item(itemname, weight));
+				}
+			}
+		}
 		return true;
 	}
 }

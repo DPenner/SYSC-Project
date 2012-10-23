@@ -47,7 +47,7 @@ public class Character  {
 	 * Attack method allows one character to attack another.  Health points are lost during an attack.
 	 * 
 	 * @param c - another character.  The defender of the attack.
-	 * @return true if defender died
+	 * @return true if defender died and I have moved. 
 	 * Comments: Subtract the myHealth by value of the other character attack value
 	 * Same for the defender.
 	 */
@@ -165,7 +165,24 @@ public class Character  {
 	public String getInventoryString(){
 		return inventory.toString();
 	}
-
+	
+	/**
+	 * LoadInventory is a method used to load the non-player's inventory
+	 * 
+	 */
+	public void loadInventory(Item i){
+		this.inventory.addItem(i);
+	}
+	/**
+	 * Method to handle killing of the monster.  
+	 * It should drop all of its inventory onto the tile
+	 */
+	protected void kill(){
+		for(int i=0; i<this.inventory.size(); i++){
+			this.myPosition.addItem(this.inventory.getItem(i));
+		}
+	}
+	
 	@Override
 	public String toString(){
 		return name + "(hp: " + health + " atk:" + attack +")" ;

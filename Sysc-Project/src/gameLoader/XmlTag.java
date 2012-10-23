@@ -21,14 +21,15 @@ public enum XmlTag {
 	LEVEL("level"), TIMER("timer"), GRID("grid"), 
 	ROOM_SECTION("rooms"), ROOM("room"),  
 	EDGE_SECTION("edges"), EDGE("edge"), KEY("key"),
-	CHARACTER("character"), 
+	CHARACTER("character"), CHARACTER_SECTION("characters"),
 	ITEM_SECTION("items"), ITEM("item"),
 	TILE("tile"),
 	
 	//attributes
 	VALUE("value"), WIDTH("width"), HEIGHT("height"),
 	X("x"), Y("y"), DIRECTION("direction"),
-	TYPE("type"), NAME("name"), WEIGHT("weight"), ATTACK("attack"),
+	TYPE("type"), NAME("name"), WEIGHT("weight"), 
+	ATTACK("attack"), HEALTH("health"),
 	LOCKED("locked"), CROSSABLE("crossable"), 
 	
 	//special attribute values

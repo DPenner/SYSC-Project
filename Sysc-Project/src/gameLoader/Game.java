@@ -42,12 +42,6 @@ public class Game
         parser = new Parser();
         endGame = false;
     }
-    /**
-     * 
-     */
-    private void addItemstoCharacter(){
-    	
-    }
 
     /**
      *  Main play routine.  Loops until end of play.
