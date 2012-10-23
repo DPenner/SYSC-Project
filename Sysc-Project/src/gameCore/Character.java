@@ -54,12 +54,12 @@ public class Character  {
 	public boolean attack(Character c){
 		
 		this.adjustHealth(0-c.attack);
-		c.adjustHealth(0-this.attack);
-		
 		if(this.isDead()){
 			this.die();
+			return false;
 		}
 		
+		c.adjustHealth(0-this.attack);
 		if(c.isDead()){
 			c.die();
 			return true;

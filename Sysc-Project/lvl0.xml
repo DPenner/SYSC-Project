@@ -104,7 +104,7 @@
              	<health>5</health>
              	<item type="item" name="SlimeDung" weight="1"/>
 	     </character>
-	     <character type="monster" name="Batman" y="0" x="2">
+	     <character type="monster" name="Batman" y="2" x="0">
             	<attack>2</attack>
              	<health>7</health>
              	<item type="item" name="KD" weight="1"/>

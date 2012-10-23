@@ -57,13 +57,13 @@ public class Player extends Character
 				{
 					if(isDead()) throw new EndGameException("Player has died. GAME OVER!");
 					
-					output.append("You attacked: \n" + defender.toString() +"\n "+ this.toString());
+					output.append("You attacked: \n" + defender.toString() +"\n"+ this.toString());
 				}
 			}
 			else
 			{
 				this.myPosition=myPosition.moveCharacter(direction);  //move character to the next tile
-				output.append("You moved "+ direction);
+				output.append("You moved "+ direction + ".");
 				hasMoved = true;
 			}
 		}

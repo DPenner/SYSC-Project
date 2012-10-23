@@ -165,13 +165,13 @@ public class Game
 
     private void saveGameState(Command command)
     {
-    	if(undo_index + 1 != undoList.size())
+    	if(undo_index != undoList.size())
     	{
     		//override the available redos
     		for(int i = undoList.size(); i > undo_index; i--)
     		{
     			//remove the saved state 
-    			undoList.remove(i);
+    			undoList.remove(i-1);
     		}
     	}
     	

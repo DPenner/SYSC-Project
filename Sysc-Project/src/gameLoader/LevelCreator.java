@@ -280,23 +280,23 @@ public class LevelCreator {
 	private boolean parseCharacters(Document doc)
 	{
 		NodeList nodes = doc.getElementsByTagName(XmlTag.CHARACTER_SECTION.toString());
-		NodeList characters = ((Element)nodes).getElementsByTagName(XmlTag.CHARACTER.toString());
+		NodeList characters = ((Element)nodes.item(0)).getElementsByTagName(XmlTag.CHARACTER.toString());
 		for(int char_num = 0; char_num < characters.getLength(); char_num++)
 		{
 			Element character = (Element) characters.item(char_num);
 			String name = character.getAttribute(XmlTag.NAME.toString());
 			String type = character.getAttribute(XmlTag.TYPE.toString());
-			int x = Integer.parseInt(XmlTag.X.toString());
-			int y = Integer.parseInt(XmlTag.Y.toString());
+			int x = Integer.parseInt(character.getAttribute(XmlTag.X.toString()));
+			int y = Integer.parseInt(character.getAttribute(XmlTag.Y.toString()));
 
 			//get attack
 			NodeList attackNodeList = character.getElementsByTagName(XmlTag.ATTACK.toString());
 			Element attackElement = (Element) attackNodeList.item(0);
-			int attack = Integer.parseInt(attackElement.getNodeValue());
+			int attack = Integer.parseInt(attackElement.getTextContent());
 			//get health
 			NodeList healthNodeList = character.getElementsByTagName(XmlTag.HEALTH.toString());
 			Element healthElement = (Element) healthNodeList.item(0);
-			int health = Integer.parseInt(healthElement.getNodeValue());
+			int health = Integer.parseInt(healthElement.getTextContent());
 			
 			Character c = level.addCharacter(name, health, attack, x, y);
 			if(c!=null)
