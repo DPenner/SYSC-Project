@@ -4,17 +4,14 @@ package gameCore;
  * Representations for all the valid command words for the game
  * along with a string in a particular language.
  * 
- * Original from Michael Kölling and David J. Barnes
- * @author  Trang Pham
- * @version 2012.09.13
+ * @author  Michael Kölling and David J. Barnes
+ * @version 2011.08.10
  */
 public enum CommandWord
 {
     // A value for each command word along with its
     // corresponding user interface string.
-    GO("go"), QUIT("quit"), HELP("help"), UNKNOWN("?"),
-    VIEW("view"), LOOK("look"), PICKUP("pick up"), DROP("drop"),
-    CODE("code"), RULES("rules");
+    GO("go"), QUIT("quit"), HELP("help"), UNKNOWN("?");
     
     // The command string.
     private String commandString;
