@@ -123,7 +123,11 @@ public class Game
                 break;
                 
             case LOOK:
+            	look(command);
+            	break;
             	
+            case SEARCHITEM:
+            	searchForItemOnGround(command);
             	break;
 
             case PICKUP:
@@ -139,7 +143,7 @@ public class Game
                 break;
 
             case VIEW:
-            	
+            	view(command);
             	break;
             	
             case UNDO:
@@ -246,6 +250,16 @@ public class Game
         return true;
     }
     
+    private void searchForItemOnGround(Command command)
+    {
+    	if(command.hasSecondWord())
+    	{
+    		System.out.println("Cannot serach for " + command.getSecondWord());
+    		return;
+    	}
+    	System.out.println(player.searchForItemOnGround());
+    }
+    
     /**
      * Try to drop an item. If the item is in player's inventory then drop it, otherwise
      * print error message
@@ -299,6 +313,43 @@ public class Game
         }
     }
 
+    private void view(Command command)
+    {
+    	if(!command.hasSecondWord())
+    	{
+    		System.out.println(player.viewHealth());
+    		System.out.println(player.viewInventory());
+    	}
+    	else
+    	{
+    		String secondWord = command.getSecondWord();
+    		if(secondWord.equalsIgnoreCase("inventory"))
+    		{
+    			System.out.println(player.viewInventory());
+    		}
+    		else if(secondWord.equalsIgnoreCase("health"))
+    		{
+    			System.out.println(player.viewHealth());
+    		}
+    		else
+    		{
+    			System.out.println("View what now?");
+    		}
+    	}
+    }
+    private void look(Command command)
+    {
+    	if(!command.hasSecondWord())
+    	{
+    		//look in all directions
+    		for(Direction d:Direction.values())
+    		{
+    			System.out.println(d.toString() +": " + player.look(d.toString()));
+    		}
+    	}
+    	else
+    		System.out.println(player.look(command.getSecondWord()));
+    }
     /**
      * 
      */

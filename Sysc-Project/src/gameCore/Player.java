@@ -121,12 +121,18 @@ public class Player extends Character
 	 */
 	public String look(String direction){
 		String retString;
-		if(myPosition.canMove(direction) && myPosition.hasCharacter(direction)){//there is a character in the direction the player wishes to move
-			retString =  myPosition.getCharacter(direction).toString() + " is located " + direction +" of you.";
-		}else{
-			retString = "No characters.";
+		if(myPosition.canMove(direction))
+		{
+			if(myPosition.hasCharacter(direction)){//there is a character in the direction the player wishes to move
+				retString =  myPosition.getCharacter(direction).toString() + " is located " + direction +" of you.";
+			}else{
+				retString = "Can move " + direction + ". No character in front of you.";
+			}
 		}
-		retString +="\n";
+		else
+		{
+			retString = "There is a wall.";
+		}
 		return retString;
 	}
 	
@@ -143,13 +149,19 @@ public class Player extends Character
 		}else{
 			retString = "The following items are in your inventory: " + this.inventory.toString();
 		}
-		
-		retString +="\n";
 		return retString;
 	}
 	
 	public String viewHealth(){
-		return  "Your health is: " + this.health +"\n";
+		return  "Your health is: " + this.health;
+	}
+
+	public String searchForItemOnGround() {
+		if(myPosition.getInventory().isEmpty())
+		{
+			return "Nothing on the ground";
+		}
+		return "The following items are on the ground: " + myPosition.getInventory().toString();
 	}
 	
 }

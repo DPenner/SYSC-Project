@@ -225,8 +225,17 @@ public class LevelCreator {
 		}
 		return true;
 	}
+	/**
+	 * Parses items from a document
+	 * @param doc the document to parse items from
+	 * @return true if items section found
+	 */
 	private boolean parseItems(Document doc)
 	{
+		NodeList nodes = doc.getElementsByTagName(XmlTag.ITEM_SECTION.toString());
+		NodeList items = ((Element)nodes.item(0)).getElementsByTagName(XmlTag.ITEM.toString());
+		if(items.getLength() == 0) return true;
+		
 		return true;
 	}
 	private boolean parseCharacters(Document doc)

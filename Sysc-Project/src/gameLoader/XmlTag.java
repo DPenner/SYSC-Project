@@ -22,7 +22,7 @@ public enum XmlTag {
 	ROOM_SECTION("rooms"), ROOM("room"),  
 	EDGE_SECTION("edges"), EDGE("edge"), KEY("key"),
 	CHARACTER("character"), 
-	IVENTORY("inventory"), ITEM("item"),
+	ITEM_SECTION("items"), ITEM("item"),
 	TILE("tile"),
 	
 	//attributes
