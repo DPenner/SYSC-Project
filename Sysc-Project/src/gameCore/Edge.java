@@ -23,10 +23,6 @@ public class Edge {
 	protected Tile tile2;
 	protected boolean crossable;
 	
-	/**
-	 * Default constructor for internal use
-	 */
-	private Edge(){}
 	
 	/**
 	 * Creates an edge, setting the two tiles and the crossable variable
@@ -66,14 +62,7 @@ public class Edge {
 		if(tile1 != null) tile1.setEdge(direction1, this);
 		if(tile2 != null) tile2.setEdge(direction2, this);
 	}
-	
-	/**
-	 * Creates an edge, setting the two tiles and the crossable variable
-	 * @param tile1 One side of the edge
-	 * @param tile2 The other side of the edge
-	 * @param crossable True if the two tiles can be directly moved between, false otherwise
-	 * @return The new edge
-	 */
+
 
 	
 	/**
@@ -115,9 +104,10 @@ public class Edge {
 		if (currentTile == null){
 			throw new IllegalArgumentException("currentTile may not be null");
 		}
-		if (!crossable){
-			throw new UnsupportedOperationException("Cannot retrieve tile when edge is not crossable");
-		}
+		// REMOVED - crossing is character-dependent, the check should not be here.
+		//if (!crossable){
+		//	throw new UnsupportedOperationException("Cannot retrieve tile when edge is not crossable");
+		//}
 		
 		//return which ever tile isn't the one passed in
 		if (currentTile == tile1) return tile2;
