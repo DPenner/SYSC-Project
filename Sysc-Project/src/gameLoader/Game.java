@@ -301,7 +301,7 @@ public class Game
         {
         	if(!player.move(direction))
         	{
-        		System.out.println("Cannot move through the wall in " + direction);
+        		System.out.println("Cannot move " + direction +". Use 'look " + direction +"' to see why.");
         		return false;
         	}
         	else

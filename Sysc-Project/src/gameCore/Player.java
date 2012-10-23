@@ -131,6 +131,11 @@ public class Player extends Character
 		}
 		else
 		{
+			//is this a locked exit or is it an uncrossable edge?
+			//if locked exit
+				//retString = locked exit require item name to open
+			//else
+				//this is a wall
 			retString = "There is a wall.";
 		}
 		return retString;

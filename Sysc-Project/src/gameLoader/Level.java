@@ -134,7 +134,7 @@ public class Level {
 			}
 			else
 			{
-				e = new Edge(tile1, tile2, true, direction1, direction2);
+				e = new Edge(tile1, tile2, crossable, direction1, direction2);
 			}
 			edgeList.add(e);
 			return true;
