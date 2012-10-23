@@ -23,10 +23,6 @@ public class Edge {
 	protected Tile tile2;
 	protected boolean crossable;
 	
-	/**
-	 * Default constructor for internal use
-	 */
-	private Edge(){}
 	
 	/**
 	 * If the edge is between a tile and the boundary of a level, the extra tile is to be null
