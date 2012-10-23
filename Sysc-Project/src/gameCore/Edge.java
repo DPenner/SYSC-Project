@@ -25,6 +25,7 @@ public class Edge {
 	
 	
 	/**
+	 * Creates an edge, setting the two tiles and the crossable variable
 	 * If the edge is between a tile and the boundary of a level, the extra tile is to be null
 	 * @param tile1 One side of the edge
 	 * @param tile2 The other side of the edge
@@ -58,9 +59,11 @@ public class Edge {
 	public Edge(Tile tile1, Tile tile2, boolean crossable, String direction1, String direction2)
 	{
 		this(tile1, tile2, crossable);
-		tile1.setEdge(direction1, this);
-		tile2.setEdge(direction2, this);
+		if(tile1 != null) tile1.setEdge(direction1, this);
+		if(tile2 != null) tile2.setEdge(direction2, this);
 	}
+
+
 	
 	/**
 	 * Checks if the given character can cross the edge
