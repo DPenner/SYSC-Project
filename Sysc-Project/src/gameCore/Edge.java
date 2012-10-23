@@ -101,9 +101,10 @@ public class Edge {
 		if (currentTile == null){
 			throw new IllegalArgumentException("currentTile may not be null");
 		}
-		if (!crossable){
-			throw new UnsupportedOperationException("Cannot retrieve tile when edge is not crossable");
-		}
+		// REMOVED - crossing is character-dependent, the check should not be here.
+		//if (!crossable){
+		//	throw new UnsupportedOperationException("Cannot retrieve tile when edge is not crossable");
+		//}
 		
 		//return which ever tile isn't the one passed in
 		if (currentTile == tile1) return tile2;
