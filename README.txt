@@ -12,6 +12,9 @@ Karen Madore:
 
 Trang Pham:
 - I/O
+   Command, CommandWord, Parser, CommandWords
+- gameLoader
+   lvl0.xml, Level, LevelCreator, Game, EndGameException
 
 Darrell Penner:
 - Game Layout
