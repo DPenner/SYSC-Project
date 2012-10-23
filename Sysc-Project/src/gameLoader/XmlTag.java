@@ -38,7 +38,7 @@ public enum XmlTag {
     
     /**
      * Initialise with the corresponding command string.
-     * @param commandString The command string.
+     * @param tag the xml tag string.
      */
     XmlTag(String tag)
     {
@@ -46,7 +46,7 @@ public enum XmlTag {
     }
     
     /**
-     * @return The command word as a string.
+     * @return The xml keyword as a string.
      */
     public String toString()
     {

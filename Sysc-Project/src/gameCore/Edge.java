@@ -104,6 +104,7 @@ public class Edge {
 		} //other error checks done by getOtherTile method
 		
 		Tile destination = getOtherTile(currentTile);
+		currentTile.removeCharacter();
 		destination.addCharacter(crosser);
 		return destination;
 	}

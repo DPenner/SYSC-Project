@@ -276,6 +276,7 @@ public class Game
         	System.out.println("There is a wall in that direction. You cannot walk through walls.");
         	return false;
         }
+        System.out.println("You have moved " + direction);
         return true;
     }
 

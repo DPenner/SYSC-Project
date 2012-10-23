@@ -87,6 +87,10 @@ public class Level {
 			gridWidth = width;
 			gridHeight = height;
 			tileGrid = new Tile[height][width];
+			for(int i = 0; i < height; i++)
+			{
+				tileGrid[i] = new Tile[width];
+			}
 		}
 	}
 	/**
@@ -119,20 +123,21 @@ public class Level {
 	{
 		if(tileGrid != null)
 			return tileGrid[y][x];
-		else return null;
+		else throw new NullPointerException("Level getTile() returns null for " + x + "," + y + ".");
 	}
 	
 	public void addEdge(Tile tile1, Tile tile2, String direction1, String direction2, Item key)
 	{
 		Edge e;
-		if(key != null)
+		e = new Edge(tile1, tile2, true, direction1, direction2);
+		/*if(key != null)
 		{
 			e = new Exit(tile1, tile2, direction1, direction2, true, key);
 		}
 		else
 		{
 			e = new Edge(tile1, tile2, true, direction1, direction2);
-		}
+		}*/
 		edgeList.add(e);
 	}
 	

@@ -7,72 +7,69 @@
     <rooms>
 	    <!--  each tile within in the room tags make up that room -->
 	    <room>
-	        <!-- an empty tile -->
-	        <tile x="0" y="0"/> 
-	        <!--  tile holding an item -->
-	        <tile x="0" y="1">
-	            <item type="item" name="Red key" weight="1"/>
-	        </tile>
-	        <tile x="1" y="1"/>
+	        <tile y="0" x="0"/> 
+	        <tile y="0" x="1"/>
+	        <tile y="1" x="0"/>
 	    </room>
 	    <room>
-	        <tile x ="0" y ="2">
-	            <character type="monster" name="Slime">
-	             	<attack>10</attack>
-	             	<health>20</health>
-	            	<item type="item" name="Junk" weight="1"/>  
-	            </character>
-	        </tile>
-	        <tile x="1" y ="2"/>
-	        <tile x="2" y ="2"/>	        
+	        <tile y="0" x="2"/>
+	        <tile y="1" x="2"/>
+	        <tile y="2" x="2"/>	        
 	    </room>
 	    <room>
-	        <tile x="1" y="1">
-	            <item type="item" name="Junk" weight="1"/>
-	        </tile>
+	        <tile y="1" x="1"/>
+	    </room>
+	    <room>
+	        <tile y="3" x="1"/>
+	        <tile y="3" x="0"/>
+	        <tile y="2" x="1"/>
+	    </room>
+	    <room>
+	        <tile y="3" x="2"/>
 	    </room>
 	    <room type="elevator">
-	        <tile x="0" y="2"/>
-	    </room>
-	    <room>
-	        <tile x="1" y="2">
-	            <item type="weapon" name="Rusty Sword" weight="1"/>
-	        </tile>
-	        <tile x="1" y="3"/>
-	        <tile x="0" y="3"/>
-	    </room>
-	    <room>
-	        <tile x="2" y="3">
-	            <character type="monster" name="Slime">
-	            	<attack>10</attack>
-	             	<health>20</health>
-	            </character>
-	        </tile>
+	        <tile y="2" x="0"/>
 	    </room>
 	</rooms>
 	<exits>
 	    <!-- unlocked exit -->
 	    <exit>
-	    	<tile x="0" y="2" direction="south"/>
-	    	<tile x="0" y="3" direction="north"/>
+	    	<tile y="2" x="0" direction="south"/>
+	    	<tile y="3" x="0" direction="north"/>
 	    </exit>
 	    <exit>
-	        <tile x="1" y="3" direction="west"/>
-	        <tile x="2" y="3" direction="east"/>    
+	        <tile y="3" x="1" direction="west"/>
+	        <tile y="3" x="2" direction="east"/>    
 	    </exit>
 	    <exit>
-	        <tile x="2" y="3" direction="north"/>
-	        <tile x="2" y="2" direction="south"/>
+	        <tile y="3" x="2" direction="north"/>
+	        <tile y="2" x="2" direction="south"/>
 	    </exit>
 	    <exit>
-	        <tile x="1" y="0" direction="west"/>
-	        <tile x="2" y="0" direction="east"/>
+	        <tile y="0" x="1" direction="west"/>
+	        <tile y="0" x="2" direction="east"/>
 	    </exit>
 	    <!-- a locked exit -->
 	    <exit type="locked">
 	        <item type="item" name="Red key" weight="1"/>
-	        <tile x="1" y="1" direction="west"/>
-	        <tile x="2" y="1" direction="east"/>
+	        <tile y="1" x="1" direction="west"/>
+	        <tile y="1" x="2" direction="east"/>
 	    </exit>
 	</exits>
+	<items>
+	    <item type="item" name="Red key" weight="1" y="1" x="0"/>
+	    <item type="item" name="Junk" weight="1" y="1" x="1"/>
+	    <item type="weapon" name="Rusty Sword" weight="1" y="2" x="1"/>
+	</items>
+	<characters>
+	     <character type="monster" name="Slime" y="3" x="2">
+            	<attack>10</attack>
+             	<health>20</health>
+	     </character>
+	     <character type="monster" name="Slime" y="0" x="2">
+             	<attack>10</attack>
+             	<health>20</health>
+            	<item type="item" name="Junk" weight="1"/>  
+	     </character>
+	</characters>
 </level>

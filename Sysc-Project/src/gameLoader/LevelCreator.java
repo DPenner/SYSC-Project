@@ -11,6 +11,7 @@ import org.w3c.dom.Element;
 
 import java.awt.Point;
 import java.io.*;
+import java.security.InvalidParameterException;
 
 /**
 * loads a level from an XML file and instantiates a level
@@ -65,14 +66,17 @@ public class LevelCreator {
 					if(parseGrid(doc))
 						if(parseRooms(doc))
 							if(parseExits(doc))
-							{
-								loaded = true;
-								return true;
-							}
+								if(parseItems(doc))
+									if(parseCharacters(doc))
+									{
+										loaded = true;
+										return true;
+									}
 			}
 		}
 		catch(Exception e)
 		{
+			System.out.println(e.toString());
 			return false;
 		}
 		return false;
@@ -127,6 +131,7 @@ public class LevelCreator {
 	private boolean parseRooms(Document doc)
 	{
 		int x, y;
+		Tile elevatorTile = null;
 		NodeList nodes = doc.getElementsByTagName(XmlTag.ROOM_SECTION.toString());
 		NodeList rooms = ((Element)nodes.item(0)).getElementsByTagName(XmlTag.ROOM.toString());
 		for(int room_num = 0; room_num < rooms.getLength(); room_num++)
@@ -137,7 +142,6 @@ public class LevelCreator {
 			level.addRoom(r);
 			//is elevator room?
 			String roomType = room.getAttribute(XmlTag.TYPE.toString());
-			Tile elevatorTile = null;
 			for(int tile_num = 0; tile_num < tiles.getLength(); tile_num++)
 			{
 				Element tile = (Element) tiles.item(tile_num);
@@ -152,19 +156,15 @@ public class LevelCreator {
 						elevatorTile = t;
 					}
 					r.addTile(t);
-					parseInventory(tile, t);
-					//hold character?
-					parseCharacter(tile, t);
-				}	
-			}
-			if(elevatorTile != null)
-			{
-				//set the room as an elevator
-				level.setElevator(r, elevatorTile);
-				return true;
+				}
+				if(elevatorTile != null)
+				{
+					//set the room as an elevator
+					level.setElevator(r, elevatorTile);
+				}
 			}
 		}
-		return false;
+		return (elevatorTile != null);
 	}
 	private boolean parseExits(Document doc)
 	{
@@ -202,17 +202,13 @@ public class LevelCreator {
 		}
 		return true;
 	}
-	private boolean parseInventory(Element tileNode, Object obj)
+	private boolean parseItems(Document doc)
 	{
-		if(obj instanceof Tile)
-		{
-			
-		}
-		return false;
+		return true;
 	}
-	private boolean parseCharacter(Element tileNode, Tile tile)
+	private boolean parseCharacters(Document doc)
 	{
-		return false;
+		return true;
 	}
 }
 
