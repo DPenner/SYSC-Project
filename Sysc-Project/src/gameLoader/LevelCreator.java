@@ -233,9 +233,26 @@ public class LevelCreator {
 	private boolean parseItems(Document doc)
 	{
 		NodeList nodes = doc.getElementsByTagName(XmlTag.ITEM_SECTION.toString());
+		if(nodes.getLength() == 0) return false; //ITEM_SECTION not found
 		NodeList items = ((Element)nodes.item(0)).getElementsByTagName(XmlTag.ITEM.toString());
-		if(items.getLength() == 0) return true;
-		
+		for(int item_num = 0; item_num < items.getLength(); item_num++)
+		{
+			Element item = (Element) items.item(item_num);
+			int x = Integer.parseInt(item.getAttribute(XmlTag.X.toString()));
+			int y = Integer.parseInt(item.getAttribute(XmlTag.Y.toString()));
+			String name = item.getAttribute(XmlTag.NAME.toString());
+			String type = item.getAttribute(XmlTag.TYPE.toString());
+			int weight = Integer.parseInt(item.getAttribute(XmlTag.WEIGHT.toString()));
+			
+			if(type.equalsIgnoreCase("weapon"))
+			{
+				
+			}
+			else
+			{
+				level.addItem(name, weight, x, y);
+			}
+		}
 		return true;
 	}
 	private boolean parseCharacters(Document doc)

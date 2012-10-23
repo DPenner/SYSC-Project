@@ -244,7 +244,7 @@ public class Game
 
         if(!player.pickUpItem(itemname))
         {
-        	System.out.println("Item is not on the ground. Can't pick up what's not there.");
+        	System.out.println(itemname + " is not on the ground. Can't pick up what's not there.");
         	return false;
         }
         return true;
@@ -348,12 +348,29 @@ public class Game
     		//look in all directions
     		for(Direction d:Direction.values())
     		{
-    			System.out.println(d.toString() +": " + player.look(d.toString()));
+    			try
+    			{
+    				System.out.println(d.toString() +": " + player.look(d.toString()));
+    			}
+    			catch(Exception e)
+    			{
+    				System.out.println(d.toString() +": " + e.getMessage());
+    			}
     		}
     	}
     	else
-    		System.out.println(player.look(command.getSecondWord()));
+    	{
+    		try
+    		{
+    			System.out.println(player.look(command.getSecondWord()));
+    		}
+    		catch(Exception e)
+    		{
+    			System.out.println(e.toString());
+    		}
+    	}
     }
+
     /**
      * 
      */
