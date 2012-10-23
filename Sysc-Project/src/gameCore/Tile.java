@@ -66,7 +66,7 @@ public class Tile {
 	 * @return The inventory on the adjacent tile
 	 */
 	public Inventory getInventory(String direction){
-		if (!canCrossEdge(direction)){
+		if (!isCrossable(direction)){
 			throw new IllegalArgumentException("Cannot cross that edge!");
 		}
 		
@@ -88,7 +88,7 @@ public class Tile {
 	 */
 	public Character getCharacter(String direction)
 	{
-		if (!canCrossEdge(direction)){
+		if (!isCrossable(direction)){
 			throw new IllegalArgumentException("Cannot cross that edge!");
 		}
 		
@@ -124,7 +124,7 @@ public class Tile {
 	 * @return the Tile in the specified direction
 	 */
 	private Tile getNextTile(String direction){
-		if (!canCrossEdge(direction))
+		if (!isCrossable(direction))
 		{
 			throw new IllegalArgumentException("Tried get next tile, but edge between is not crossable");
 		}
@@ -191,7 +191,7 @@ public class Tile {
 	 * @return True if the edge is crossable, false otherwise
 	 * @throws UnsupportedOperationException When this method is called when there is no character standing on the tile
 	 */
-	private boolean canCrossEdge(String direction) throws UnsupportedOperationException {
+	public boolean isCrossable(String direction) throws UnsupportedOperationException {
 		if (!hasCharacter()){
 			throw new UnsupportedOperationException("There is no character on this tile!");
 		}
@@ -205,12 +205,9 @@ public class Tile {
 	 * @return whether or not the character can move in that direction
 	 */
 	public boolean canMove(String direction){
-		return canCrossEdge(direction) && !getNextTile(direction).hasCharacter();
+		return isCrossable(direction) && !getNextTile(direction).hasCharacter();
 	}
 
-	public boolean isCrossable(String direction){
-		return canCrossEdge(direction);
-	}
 	/**
 	 * Moves the character to the tile in the given direction.
 	 * @param direction The direction to move the player
@@ -241,7 +238,7 @@ public class Tile {
 	 */
 	public boolean hasCharacter(String direction)
 	{
-		return canCrossEdge(direction) && getNextTile(direction).hasCharacter();
+		return isCrossable(direction) && getNextTile(direction).hasCharacter();
 	}
 	
 	/**
