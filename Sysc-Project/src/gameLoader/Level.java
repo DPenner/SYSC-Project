@@ -39,12 +39,6 @@ public class Level {
 	private Room elevator;
 	private Player player;
 	
-	//copy constructor
-	protected Level(Level l)
-	{
-		this.timer = l.timer;
-		
-	}
 	protected Level()
 	{
 		roomList = new ArrayList<Room>();
