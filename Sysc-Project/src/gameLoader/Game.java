@@ -40,6 +40,12 @@ public class Game
     	undo_index = 0;
         parser = new Parser();
     }
+    /**
+     * 
+     */
+    private void addItemstoCharacter(){
+    	
+    }
 
     /**
      *  Main play routine.  Loops until end of play.

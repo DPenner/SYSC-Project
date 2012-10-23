@@ -91,6 +91,7 @@ public class Player extends Character
 			Item itemToPickup = myPosition.getInventory().getItem(index);
 			this.inventory.addItem(itemToPickup);
 			myPosition.removeItem(itemToPickup);
+			
 			itemPickedUp=true;
 		}
 		return itemPickedUp;
@@ -109,13 +110,15 @@ public class Player extends Character
 			//pick-up the single item 
 			Item itemToDrop = inventory.getItem(index);
 			this.inventory.removeItem(itemToDrop);
+			
 			itemDropped=true;
 		}
 		return itemDropped;
 	}
 	
 	/**
-	 * Look method returns a string of characters it sees in that direction
+	 * Look method any characters it sees in direction requested. If it is a wall in that direction, indicate it.
+	 * If an exit is there but is locked, then get the key that is required.
 	 * @param 	direction to move
 	 * @return	string of characters it sees
 	 */
