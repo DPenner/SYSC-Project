@@ -1,5 +1,7 @@
 package gameCore;
 
+import org.omg.DynamicAny.DynAnyPackage.InvalidValue;
+
 public enum Direction {
 	NORTH("north"), EAST("east"), SOUTH("south"), WEST("west");
 	
@@ -21,5 +23,22 @@ public enum Direction {
     public String toString()
     {
         return direction;
+    }
+    
+    public Direction getOppositeDirection()
+    {
+    	switch(this)
+    	{
+    	case NORTH:
+    		return SOUTH;
+    	case SOUTH:
+    		return NORTH;
+    	case WEST:
+    		return EAST;
+    	case EAST:
+    		return WEST;
+    	default:
+    		return this;
+    	}
     }
 }
