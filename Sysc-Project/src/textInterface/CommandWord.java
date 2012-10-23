@@ -35,5 +35,18 @@ public enum CommandWord
     {
         return commandString;
     }
+    
+    public CommandWord getOppositeCommand()
+    {
+    	switch(this)
+    	{
+    	case PICKUP:
+    		return DROP;
+    	case DROP:
+    		return PICKUP;
+    	default:
+    		return this;
+    	}
+    }
 }
 

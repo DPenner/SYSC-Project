@@ -168,37 +168,60 @@ public class LevelCreator {
 	}
 	private boolean parseExits(Document doc)
 	{
-		NodeList nodes = doc.getElementsByTagName(XmlTag.EXIT_SECTION.toString());
-		NodeList exits = ((Element)nodes.item(0)).getElementsByTagName(XmlTag.EXIT.toString());
+		NodeList nodes = doc.getElementsByTagName(XmlTag.EDGE_SECTION.toString());
+		NodeList exits = ((Element)nodes.item(0)).getElementsByTagName(XmlTag.EDGE.toString());
 		for(int exit_num = 0; exit_num < exits.getLength(); exit_num++)
 		{
 			Item key = null;
+			int x1=-1, y1=-1, x2=-1, y2=-1;
+			boolean crossable = false;
+			String dir1="", dir2="";
 			Element exit = (Element) exits.item(exit_num);
-			//At this point all the tiles have been made already
 			NodeList tiles = exit.getElementsByTagName(XmlTag.TILE.toString());
+			
 			//get tile1
 			Element tile1 = (Element) tiles.item(0);
-			int x1 = Integer.parseInt(tile1.getAttribute(XmlTag.X.toString()));
-			int y1 = Integer.parseInt(tile1.getAttribute(XmlTag.Y.toString()));
-			String dir1 = tile1.getAttribute(XmlTag.DIRECTION.toString());
-			//get tile2
-			Element tile2 = (Element) tiles.item(1);
-			int x2 = Integer.parseInt(tile2.getAttribute(XmlTag.X.toString()));
-			int y2 = Integer.parseInt(tile2.getAttribute(XmlTag.Y.toString()));
-			String dir2 = tile2.getAttribute(XmlTag.DIRECTION.toString());
+			x1 = Integer.parseInt(tile1.getAttribute(XmlTag.X.toString()));
+			y1 = Integer.parseInt(tile1.getAttribute(XmlTag.Y.toString()));
+			dir1 = tile1.getAttribute(XmlTag.DIRECTION.toString());
 			
-			//is it locked 
+ 
 			String type = exit.getAttribute(XmlTag.TYPE.toString());
-			if(type.equalsIgnoreCase(XmlTag.LOCKED.toString()))
+			if(type.equalsIgnoreCase(XmlTag.BOUNDRIES.toString()))
 			{
-				//if so what is the key
-				NodeList items = exit.getElementsByTagName(XmlTag.ITEM.toString());
-				Element item = (Element) items.item(0);
-				String keyname = item.getAttribute(XmlTag.NAME.toString());
-				int keyweight = Integer.parseInt(item.getAttribute(XmlTag.WEIGHT.toString()));
-				key = new Item(keyname, keyweight);
+				if(!level.addEdge(level.getTile(x1,y1),null,dir1, dir2, key, false)) return false;
 			}
-			level.addEdge(level.getTile(x1,y1),level.getTile(x2,y2),dir1, dir2, key);
+			else
+			{
+				//get tile2
+				Element tile2 = (Element) tiles.item(1);
+				x2 = Integer.parseInt(tile2.getAttribute(XmlTag.X.toString()));
+				y2 = Integer.parseInt(tile2.getAttribute(XmlTag.Y.toString()));
+				dir2 = tile2.getAttribute(XmlTag.DIRECTION.toString());
+				String crossableString = exit.getAttribute(XmlTag.CROSSABLE.toString());
+				if(crossableString.equalsIgnoreCase("true")) 
+					crossable = true;
+				else
+					crossable = false;
+				if(type.equalsIgnoreCase(XmlTag.EXIT.toString()))
+				{
+					String locked = exit.getAttribute(XmlTag.LOCKED.toString());
+					if(locked.equalsIgnoreCase("true"))
+					{
+						//if so what is the key
+						NodeList items = exit.getElementsByTagName(XmlTag.ITEM.toString());
+						Element item = (Element) items.item(0);
+						String keyname = item.getAttribute(XmlTag.NAME.toString());
+						int keyweight = Integer.parseInt(item.getAttribute(XmlTag.WEIGHT.toString()));
+						key = new Item(keyname, keyweight);
+		
+						crossable = false;
+					}
+					else
+						crossable = true;
+				}
+				if(!level.addEdge(level.getTile(x1,y1),level.getTile(x2,y2),dir1, dir2, key, crossable)) return false;
+			}
 		}
 		return true;
 	}

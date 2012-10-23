@@ -20,7 +20,7 @@ public enum XmlTag {
 	//tags
 	LEVEL("level"), TIMER("timer"), GRID("grid"), 
 	ROOM_SECTION("rooms"), ROOM("room"),  
-	EXIT_SECTION("exits"), EXIT("exit"), KEY("key"),
+	EDGE_SECTION("edges"), EDGE("edge"), KEY("key"),
 	CHARACTER("character"), 
 	IVENTORY("inventory"), ITEM("item"),
 	TILE("tile"),
@@ -29,9 +29,13 @@ public enum XmlTag {
 	VALUE("value"), WIDTH("width"), HEIGHT("height"),
 	X("x"), Y("y"), DIRECTION("direction"),
 	TYPE("type"), NAME("name"), WEIGHT("weight"),
+	LOCKED("locked"), CROSSABLE("crossable"), 
 	
 	//special attribute values
-	ELEVATOR("elevator"), LOCKED("locked");
+	ELEVATOR("elevator"), EXIT("exit"), BOUNDRIES("boundries"),
+	
+	EMPTYSTRING("");
+	
 	
     // The xml tag or attribute string.
     private String tag;

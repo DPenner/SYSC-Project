@@ -3,6 +3,7 @@ package gameLoader;
 import java.util.ArrayList;
 import java.util.List;
 
+import gameCore.Direction;
 import gameCore.Player;
 import textInterface.Command;
 import textInterface.CommandWord;
@@ -27,7 +28,7 @@ public class Game
     private Parser parser;
     private Player player;
     private Level level;
-    private List<Level> undoList;
+    private List<Command> undoList;
     private int undo_index;
         
     /**
@@ -35,7 +36,7 @@ public class Game
      */
     public Game() 
     {
-    	undoList = new ArrayList<Level>();
+    	undoList = new ArrayList<Command>();
     	undo_index = 0;
         parser = new Parser();
     }
@@ -45,7 +46,7 @@ public class Game
      */
     public void play() 
     {   
-        if(!loadLvl("lvl1.xml"))
+        if(!loadLvl("lvl0.xml"))
         {
         	System.out.println("Unable to load the game.");
         }
@@ -59,7 +60,7 @@ public class Game
 	        boolean finished = false;
 	        while (! finished) {
 	            Command command = parser.getCommand();
-	            finished = processCommand(command);
+	            finished = processCommand(command, false);
 	        }
 	        System.out.println("Thank you for playing.  Good bye.");
         }
@@ -91,7 +92,6 @@ public class Game
     	{
     		level = lc.getLevel();
     		player = level.getPlayer();
-    		undoList.add(new Level(level));
     		return true;
     	}
     	return false;
@@ -102,7 +102,7 @@ public class Game
      * @param command The command to be processed.
      * @return true If the command ends the game, false otherwise.
      */
-    private boolean processCommand(Command command) 
+    private boolean processCommand(Command command, boolean isRedoOrUndo) 
     {
         boolean wantToQuit = false;
         boolean actionDone = false;
@@ -150,14 +150,14 @@ public class Game
             	break;
             
         }
-        if(actionDone)
+        if(actionDone && !isRedoOrUndo)
         {
-        	saveGameState();
+        	saveGameState(command);
         }
         return wantToQuit;
     }
 
-    private void saveGameState()
+    private void saveGameState(Command command)
     {
     	if(undo_index + 1 != undoList.size())
     	{
@@ -169,7 +169,7 @@ public class Game
     		}
     	}
     	
-    	undoList.add(new Level(level));
+    	undoList.add(command);
     	undo_index++;
     }
     // implementations of user commands:
@@ -193,7 +193,19 @@ public class Game
     	if(undo_index != 0)
     	{	
     		undo_index--;
-    		level = undoList.get(undo_index);
+    		//undo
+    		Command c = undoList.get(undo_index);
+    		CommandWord oppositeCommandWord = c.getCommandWord().getOppositeCommand();
+    		switch(oppositeCommandWord)
+    		{
+    		case GO:
+    			String oppositeDirection = Direction.valueOf(c.getSecondWord().toUpperCase()).getOppositeDirection().toString();
+    			processCommand(new Command(oppositeCommandWord, oppositeDirection), true);
+    			break;
+    		case PICKUP:
+    		case DROP:
+    			processCommand(new Command(oppositeCommandWord, c.getSecondWord()), true);
+    		}
     		System.out.println("Successfully undone.");
     	}
     	else
@@ -202,11 +214,11 @@ public class Game
     
     private void redo()
     {
-    	if(undo_index + 1 < undoList.size())
+    	if(undo_index < undoList.size())
     	{
-    		undo_index++;
-    		level = undoList.get(undo_index);
+    		processCommand(undoList.get(undo_index), true);
     		System.out.println("Successfully redone.");
+    		undo_index++;
     	}
     	else
     		System.out.println("Nothing to redo.");
@@ -271,13 +283,20 @@ public class Game
 
         String direction = command.getSecondWord();
 
-        if(!player.move(direction))
+        try
         {
-        	System.out.println("There is a wall in that direction. You cannot walk through walls.");
+        	if(!player.move(direction))
+        	{
+        		System.out.println("Cannot move through the wall in " + direction);
+        	}
+            System.out.println("You have moved " + direction);
+            return true;
+        }
+        catch(Exception e)
+        {
+        	System.out.println(e.getMessage());
         	return false;
         }
-        System.out.println("You have moved " + direction);
-        return true;
     }
 
     /**

@@ -1,11 +1,6 @@
 package gameLoader;
 
-import gameCore.Edge;
-import gameCore.Exit;
-import gameCore.Item;
-import gameCore.Player;
-import gameCore.Room;
-import gameCore.Tile;
+import gameCore.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -126,19 +121,26 @@ public class Level {
 		else throw new NullPointerException("Level getTile() returns null for " + x + "," + y + ".");
 	}
 	
-	public void addEdge(Tile tile1, Tile tile2, String direction1, String direction2, Item key)
+	public boolean addEdge(Tile tile1, Tile tile2, String direction1, String direction2, Item key, boolean crossable)
 	{
 		Edge e;
-		e = new Edge(tile1, tile2, true, direction1, direction2);
-		/*if(key != null)
+		Direction dir1 = Direction.valueOf(direction1.toUpperCase());
+		if(dir1 != null)
 		{
-			e = new Exit(tile1, tile2, direction1, direction2, true, key);
+			if(direction2.isEmpty()) direction2 = dir1.getOppositeDirection().toString();
+			e = new Edge(tile1, tile2, crossable, direction1, direction2);
+			/*if(key != null)
+			{
+				e = new Exit(tile1, tile2, direction1, direction2, true, key);
+			}
+			else
+			{
+				e = new Edge(tile1, tile2, true, direction1, direction2);
+			}*/
+			edgeList.add(e);
+			return true;
 		}
-		else
-		{
-			e = new Edge(tile1, tile2, true, direction1, direction2);
-		}*/
-		edgeList.add(e);
+		return false;
 	}
 	
 	/**

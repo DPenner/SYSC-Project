@@ -29,6 +29,7 @@ public class Edge {
 	private Edge(){}
 	
 	/**
+	 * Creates an edge, setting the two tiles and the crossable variable
 	 * If the edge is between a tile and the boundary of a level, the extra tile is to be null
 	 * @param tile1 One side of the edge
 	 * @param tile2 The other side of the edge
@@ -36,7 +37,18 @@ public class Edge {
 	 */
 	public Edge(Tile tile1, Tile tile2, boolean crossable)
 	{
-		createEdge(tile1, tile2, crossable);
+		if (tile1 == null && tile2 == null){
+			throw new IllegalArgumentException("Cannot have edge unattached to a tile");
+		}
+		if ((tile1 == null || tile2 == null) && crossable){
+			throw new IllegalArgumentException("Cannot cross into null tile");
+		}
+		if (tile1 == tile2){
+			throw new IllegalArgumentException("tile1 and tile2 are the same reference");
+		}
+		this.tile1 = tile1;
+		this.tile2 = tile2;
+		this.crossable = crossable;
 	}
 	
 	/**
@@ -50,9 +62,9 @@ public class Edge {
 	 */
 	public Edge(Tile tile1, Tile tile2, boolean crossable, String direction1, String direction2)
 	{
-		Edge edge = createEdge(tile1, tile2, crossable);
-		tile1.setEdge(direction1, edge);
-		tile2.setEdge(direction2, edge);
+		this(tile1, tile2, crossable);
+		if(tile1 != null) tile1.setEdge(direction1, this);
+		if(tile2 != null) tile2.setEdge(direction2, this);
 	}
 	
 	/**
@@ -62,23 +74,7 @@ public class Edge {
 	 * @param crossable True if the two tiles can be directly moved between, false otherwise
 	 * @return The new edge
 	 */
-	private Edge createEdge(Tile tile1, Tile tile2, boolean crossable)
-	{
-		Edge retval = new Edge();
-		if (tile1 == null && tile2 == null){
-			throw new IllegalArgumentException("Cannot have edge unattached to a tile");
-		}
-		if ((tile1 == null || tile2 == null) && crossable){
-			throw new IllegalArgumentException("Cannot cross into null tile");
-		}
-		if (tile1 == tile2){
-			throw new IllegalArgumentException("tile1 and tile2 are the same reference");
-		}
-		retval.tile1 = tile1;
-		retval.tile2 = tile2;
-		retval.crossable = crossable;
-		return retval;
-	}
+
 	
 	/**
 	 * Checks if the given character can cross the edge
