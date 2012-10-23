@@ -100,4 +100,13 @@ public class Exit extends Edge {
 		System.out.println("unlocking exit");
 		return isLocked();
 	}
+	
+	/**
+	 * Gets the name of the key required to unlock the exit.
+	 * Can't return the key itself, otherwise, that gives a way to easily unlock the exit!
+	 * @return
+	 */
+	public String getKeyName(){
+		return key.toString();
+	}
 }

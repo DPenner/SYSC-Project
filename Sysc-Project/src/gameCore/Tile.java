@@ -106,7 +106,7 @@ public class Tile {
 	/**
 	 * Gets the edge in the given direction
 	 * @param direction The direction in which to get the edge
-	 * @return 
+	 * @return The edge in the given direction
 	 */
 	private Edge getEdge(String direction){
 		if (!edges.containsKey(direction))
@@ -264,6 +264,28 @@ public class Tile {
 	 */
 	public boolean isEmpty(String direction){
 		return getNextTile(direction).isEmpty();
+	}
+	
+	/**
+	 * Checks whether there is an Exit in a given the direction
+	 * @param direction The direction in which to check
+	 * @return True if there is an Exit, false otherwise
+	 */
+	public boolean hasExit(String direction){
+		return getEdge(direction) instanceof Exit;
+	}
+	
+	/**
+	 * Returns the String representation of the key needed to get across the Exit
+	 * @param direction The direction in which to search
+	 * @return The string representation of the needed key
+	 */
+	public String getExitKey(String direction){
+		if (!hasExit(direction))
+		{
+			throw new IllegalArgumentException("No exit in that direction!");
+		}
+		return ((Exit)getEdge(direction)).getKeyName();
 	}
 	
 	/* REMOVED - Character class should handle these

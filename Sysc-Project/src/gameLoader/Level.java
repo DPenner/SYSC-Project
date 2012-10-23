@@ -142,6 +142,25 @@ public class Level {
 		return false;
 	}
 	
+	public boolean addItem(String name, int weight, int x, int y)
+	{
+		Tile tileToAddItemTo = tileGrid[y][x];
+		if(tileToAddItemTo == null)
+			return false;
+		
+		tileToAddItemTo.addItem(new Item(name, weight));
+		return true;
+	}
+	
+	public boolean addWeapon(String name, int weight, int attack, int x, int y)
+	{
+		Tile tileToAddItemTo = tileGrid[y][x];
+		if(tileToAddItemTo == null)
+			return false;
+		
+		tileToAddItemTo.addItem(new Weapon(name, weight, attack));
+		return true;
+	}
 	/**
 	 * @return the timer
 	 */
