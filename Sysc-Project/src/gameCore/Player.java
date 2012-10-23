@@ -1,6 +1,8 @@
 
 package gameCore;
 
+import gameLoader.EndGameException;
+
 import java.util.Scanner;
 /**
  * A Character is a superclass for all of the animated creatures inside the game.
@@ -38,14 +40,37 @@ public class Player extends Character
 	/*
 	 * Moves the player in the direction specified by the direction string.  ie north, south, east,etc
 	 * @param direction - direction string ie north, south, etc.
+	 * @return	
 	 */
-	public boolean move(String direction){
-		boolean hasMoved=false;
-		if(myPosition.canMove(direction)){
-			this.myPosition=myPosition.moveCharacter(direction);  //move character to the next tile
-			hasMoved=true;
+	public String move(String direction) throws EndGameException{
+		//boolean hasMoved=false;
+		String msg;
+		if(myPosition.isCrossable(direction)){
+			if (myPosition.hasCharacter(direction))
+			{
+				Character defender= myPosition.getCharacter(direction);
+				if(attack(defender)){
+					//other character died
+					this.myPosition=myPosition.moveCharacter(direction);  //move character to the next tile
+					return "You attacked and killed " + defender +". You moved " + direction;
+				}
+				else//defender is still alive.
+				{
+					if(isDead()) throw new EndGameException("Player has died. GAME OVER!");
+					
+					return "You attacked: \n" + defender.toString() +"\n "+ this.toString();
+				}
+				
+				
+			}
+			else
+			{
+				this.myPosition=myPosition.moveCharacter(direction);  //move character to the next tile
+				return "You moved "+ direction;
+			}
+			//hasMoved=true;
 		}
-		return hasMoved;
+		return "Cannot move " + direction;
 	}
 	
 	/*
@@ -124,7 +149,7 @@ public class Player extends Character
 	 */
 	public String look(String direction){
 		String retString;
-		if(myPosition.canMove(direction))
+		if(myPosition.isCrossable(direction))
 		{
 			if(myPosition.hasCharacter(direction)){//there is a character in the direction the player wishes to move
 				retString =  myPosition.getCharacter(direction).toString() + " is located " + direction +" of you.";
@@ -132,14 +157,19 @@ public class Player extends Character
 				retString = "Can move " + direction + ". No character in front of you.";
 			}
 		}
-		else
+		else //cannot move in that direction
 		{
 			//is this a locked exit or is it an uncrossable edge?
+			if (myPosition.hasExit(direction) ){
+				
+				retString = "Exit Locked.  Need " + myPosition.getExitKey(direction);
+			}else{
 			//if locked exit
 				//retString = locked exit require item name to open
 			//else
 				//this is a wall
-			retString = "There is a wall.";
+				retString = "There is a wall.";
+			}
 		}
 		return retString;
 	}

@@ -32,5 +32,4 @@ public class Monster extends Character implements NPC {
 		// TODO Auto-generated method stub
 		
 	}
-
 }

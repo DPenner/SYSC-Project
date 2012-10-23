@@ -142,6 +142,11 @@ public class Level {
 		return false;
 	}
 	
+	public boolean addCharacter()
+	{	new Monster("Batman", 5, 1, tileGrid[0][0]);
+		return true;
+	}
+	
 	public boolean addItem(String name, int weight, int x, int y)
 	{
 		Tile tileToAddItemTo = tileGrid[y][x];

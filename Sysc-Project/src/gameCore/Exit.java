@@ -98,7 +98,7 @@ public class Exit extends Edge {
 		}
 		
 		System.out.println("unlocking exit");
-		return isLocked();
+		return !isLocked();
 	}
 	
 	/**

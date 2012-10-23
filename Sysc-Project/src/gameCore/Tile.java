@@ -208,6 +208,9 @@ public class Tile {
 		return canCrossEdge(direction) && !getNextTile(direction).hasCharacter();
 	}
 
+	public boolean isCrossable(String direction){
+		return canCrossEdge(direction);
+	}
 	/**
 	 * Moves the character to the tile in the given direction.
 	 * @param direction The direction to move the player

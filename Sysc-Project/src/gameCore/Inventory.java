@@ -104,7 +104,7 @@ public class Inventory {
 	public String toString(){
 		String s="";
 		for(Item i: items){
-			s+=i.toString() +" ";
+			s+=i.toString() +", ";
 		}
 		return s;
 	}

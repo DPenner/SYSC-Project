@@ -43,11 +43,6 @@ public class Item {
 		return false;
 	}
 	
-	@Override
-	public String toString()
-	{
-		return name;
-	}
 
 	//------------Getters------------//
 	/**
@@ -67,9 +62,9 @@ public class Item {
 	public String getName(){
 		return name;
 	}
-	
+	@Override
 	public String toString(){
-		return "Item:" + name + " weight: " + weight;
+		return name + "(w:" + weight +")";
 	}
 
 }

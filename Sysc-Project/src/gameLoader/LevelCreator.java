@@ -258,6 +258,7 @@ public class LevelCreator {
 	}
 	private boolean parseCharacters(Document doc)
 	{
+		level.addCharacter();
 		return true;
 	}
 }

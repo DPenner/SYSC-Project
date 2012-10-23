@@ -30,6 +30,7 @@ public class Game
     private Level level;
     private List<Command> undoList;
     private int undo_index;
+    private boolean endGame;
         
     /**
      * Create the game and initialize its internal map.
@@ -39,6 +40,7 @@ public class Game
     	undoList = new ArrayList<Command>();
     	undo_index = 0;
         parser = new Parser();
+        endGame = false;
     }
     /**
      * 
@@ -64,7 +66,7 @@ public class Game
 	        // execute them until the game is over.
 	                
 	        boolean finished = false;
-	        while (! finished) {
+	        while (! finished && !endGame) {
 	            Command command = parser.getCommand();
 	            finished = processCommand(command, false);
 	        }
@@ -78,10 +80,10 @@ public class Game
     private void printWelcome()
     {
         System.out.println();
-        System.out.println("Welcome to the World of Zuul!");
-        System.out.println("World of Zuul is a new, incredibly boring adventure game.");
+        System.out.println("Welcome to the World of Kraft Dinner Table(KDT) Maze!");
+        System.out.println("KDT is the first version of an incredibly boring adventure game.");
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
-        System.out.println();
+        System.out.println("If you find KD, you win! And the prize is an actual box of KD.");
         //System.out.println(currentRoom.getLongDescription());
     }
     
@@ -313,29 +315,26 @@ public class Game
 
         try
         {
-        	if(!player.move(direction))
-        	{
-        		System.out.println("Cannot move " + direction +". Use 'look " + direction +"' to see why.");
-        		return false;
-        	}
-        	else
-        	{
-        		System.out.println("You have moved " + direction);
-        	}
-            return true;
+        	System.out.println(player.move(direction));
         }
         catch(Exception e)
         {
+        	if(e instanceof EndGameException)
+        	{
+        		endGame = true;
+        	}
         	System.out.println(e.getMessage());
         	return false;
         }
+		return false;
     }
 
     private void view(Command command)
     {
     	if(!command.hasSecondWord())
     	{
-    		System.out.println(player.viewHealth());
+    		System.out.println(player.toString());
+    		//System.out.println(player.viewHealth());
     		System.out.println(player.viewInventory());
     	}
     	else
@@ -380,14 +379,11 @@ public class Game
     		}
     		catch(Exception e)
     		{
-    			System.out.println(e.toString());
+    			System.out.println(e.getMessage());
     		}
     	}
     }
 
-    /**
-     * 
-     */
     /** 
      * "Quit" was entered. Check the rest of the command to see
      * whether we really quit the game.

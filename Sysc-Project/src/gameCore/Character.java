@@ -16,7 +16,7 @@ package gameCore;
  *
  * @version 1.0
  */
-public class Character {
+public class Character  {
 	//------------Fields------------//
 	protected Inventory inventory;
 	protected int health;
@@ -47,13 +47,14 @@ public class Character {
 	 * Attack method allows one character to attack another.  Health points are lost during an attack.
 	 * 
 	 * @param c - another character.  The defender of the attack.
-	 * 
+	 * @return true if defender died
 	 * Comments: Subtract the myHealth by value of the other character attack value
 	 * Same for the defender.
 	 */
-	public void attack(Character c){
-		this.adjustHealth(c.attack);
-		c.adjustHealth(this.attack);
+	public boolean attack(Character c){
+		
+		this.adjustHealth(0-c.attack);
+		c.adjustHealth(0-this.attack);
 		
 		if(this.isDead()){
 			//remove the attacker 
@@ -63,7 +64,9 @@ public class Character {
 		if(c.isDead()){
 			//remove the defender
 			Character defender=c.myPosition.removeCharacter();
+			return true;
 		}
+		return false;
 	}
 	
 	/**
@@ -161,6 +164,11 @@ public class Character {
 	 */
 	public String getInventoryString(){
 		return inventory.toString();
+	}
+
+	@Override
+	public String toString(){
+		return name + "(hp: " + health + " atk:" + attack +")" ;
 	}
 
 }

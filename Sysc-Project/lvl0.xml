@@ -64,7 +64,7 @@
 	    </edge>
 	    <!-- a locked exit -->
 	    <edge type="exit" locked="true">
-	        <item type="item" name="Red key" weight="1"/>
+	        <item type="item" name="RedKey" weight="1"/>
 	        <tile y="0" x="2" direction="south"/>
 	        <tile y="1" x="2"/>
 	    </edge>
