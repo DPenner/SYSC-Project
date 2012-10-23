@@ -178,21 +178,20 @@ public class LevelCreator {
 			String dir1="", dir2="";
 			Element exit = (Element) exits.item(exit_num);
 			NodeList tiles = exit.getElementsByTagName(XmlTag.TILE.toString());
-			
-			//get tile1
-			Element tile1 = (Element) tiles.item(0);
-			x1 = Integer.parseInt(tile1.getAttribute(XmlTag.X.toString()));
-			y1 = Integer.parseInt(tile1.getAttribute(XmlTag.Y.toString()));
-			dir1 = tile1.getAttribute(XmlTag.DIRECTION.toString());
-			
- 
+
 			String type = exit.getAttribute(XmlTag.TYPE.toString());
 			if(type.equalsIgnoreCase(XmlTag.BOUNDRIES.toString()))
 			{
-				if(!level.addEdge(level.getTile(x1,y1),null,dir1, dir2, key, false)) return false;
+				if(!parseBoundaries(exit)) return false;
 			}
 			else
 			{
+				//get tile1
+				Element tile1 = (Element) tiles.item(0);
+				x1 = Integer.parseInt(tile1.getAttribute(XmlTag.X.toString()));
+				y1 = Integer.parseInt(tile1.getAttribute(XmlTag.Y.toString()));
+				dir1 = tile1.getAttribute(XmlTag.DIRECTION.toString());
+				
 				//get tile2
 				Element tile2 = (Element) tiles.item(1);
 				x2 = Integer.parseInt(tile2.getAttribute(XmlTag.X.toString()));
@@ -222,6 +221,28 @@ public class LevelCreator {
 				}
 				if(!level.addEdge(level.getTile(x1,y1),level.getTile(x2,y2),dir1, dir2, key, crossable)) return false;
 			}
+		}
+		return true;
+	}
+	/**
+	 * Parses boundaries of map from an exit element
+	 * @param exit Element to parse from
+	 * @return true if all edges successfully set
+	 */
+	private boolean parseBoundaries(Element exit)
+	{
+		NodeList tiles = exit.getElementsByTagName(XmlTag.TILE.toString());
+		int x1, y1;
+		String dir1;
+		for(int tile_num = 0; tile_num < tiles.getLength(); tile_num++)
+		{
+			//get tile1
+			Element tile1 = (Element) tiles.item(tile_num);
+			x1 = Integer.parseInt(tile1.getAttribute(XmlTag.X.toString()));
+			y1 = Integer.parseInt(tile1.getAttribute(XmlTag.Y.toString()));
+			dir1 = tile1.getAttribute(XmlTag.DIRECTION.toString());
+			
+			if(!level.addEdge(level.getTile(x1,y1),null,dir1, "", null, false)) return false;	
 		}
 		return true;
 	}

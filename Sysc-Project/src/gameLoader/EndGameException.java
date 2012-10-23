@@ -2,14 +2,11 @@ package gameLoader;
 
 @SuppressWarnings("serial")
 public class EndGameException extends Exception{
-
-	String msg;
-	public EndGameException(String string) {
-		msg = string;
-	}
-	
-	public String getMessage()
+	public EndGameException()
 	{
-		return msg;
+		super();
+	}
+	public EndGameException(String string) {
+		super(string);
 	}
 }
