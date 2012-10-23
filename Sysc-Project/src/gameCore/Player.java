@@ -109,6 +109,7 @@ public class Player extends Character
 			//pick-up the single item 
 			Item itemToDrop = inventory.getItem(index);
 			this.inventory.removeItem(itemToDrop);
+			myPosition.addItem(itemToDrop);
 			itemDropped=true;
 		}
 		return itemDropped;
