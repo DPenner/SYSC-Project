@@ -92,7 +92,7 @@
 	<items>
 	    <item type="item" name="RedKey" weight="1" y="2" x="1"/>
 	    <item type="item" name="BlueKey" weight="1" y="1" x="0"/>
-	    <item type="weapon" name="RustySword" weight="1" y="0" x="2"/>
+	    <item type="weapon" name="RustySword" weight="1" attack="5" y="0" x="2"/>
 	</items>
 	<characters>
 	     <character type="monster" name="Slime" y="0" x="0">

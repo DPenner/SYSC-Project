@@ -246,11 +246,12 @@ public class LevelCreator {
 			
 			if(type.equalsIgnoreCase("weapon"))
 			{
-				
+				int attack = Integer.parseInt(item.getAttribute(XmlTag.ATTACK.toString()));
+				if(!level.addWeapon(name, weight, attack, x, y)) return false;
 			}
 			else
 			{
-				level.addItem(name, weight, x, y);
+				if(!level.addItem(name, weight, x, y)) return false;
 			}
 		}
 		return true;
