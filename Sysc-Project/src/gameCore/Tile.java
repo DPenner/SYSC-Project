@@ -30,10 +30,11 @@ public class Tile {
 	private Room containingRoom;
 	
 	//------------Constructors------------//
-    /**
-	 * Constructs a Tile from a point and room
-	 * @param Location of the Tile
-	 */
+   /**
+    * Constructs a Tile from a point and room
+    * @param location - location of the tile
+    * @param containingRoom - room contain the tile
+    */
 	public Tile(Point location, Room containingRoom)
 	{
 		if (location == null || containingRoom == null){
@@ -178,7 +179,7 @@ public class Tile {
 	
 	/**
 	 * removes an Item from the tile
-	 * @param the Item to be removed
+	 *@param item item to remove
 	 */
 	public void removeItem(Item item){
 		inventory.removeItem(item);

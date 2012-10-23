@@ -104,7 +104,7 @@ public class Player extends Character
 	 *  
 	 * 	Pick up the item and add it to the player's inventory if the itemName exists
 	 * 
-	 * @param 	name of the item the player wants to pick up
+	 * @param 	itemName is the string of the item.
 	 * @return	true if the item was picked up, false if the item does not exists.
 	 */
 	public boolean pickUpItem(String itemName){
@@ -125,7 +125,7 @@ public class Player extends Character
 	
 	/**
 	 * Drop method drops the item 
-	 * @param 	name of the item the player want to drop
+	 * @param	itemName String name of the item to drop
 	 * @return	true if the item was dropped successfully, false if the item does not exists.
 	 */
 	public boolean drop(String itemName){
