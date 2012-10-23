@@ -309,7 +309,7 @@ public class LevelCreator {
 					String itemname = item.getAttribute(XmlTag.NAME.toString());
 					int weight = Integer.parseInt(item.getAttribute(XmlTag.WEIGHT.toString()));
 					
-					c.addItemToInvetory(new Item(itemname, weight));
+					c.addItem(new Item(itemname, weight));
 				}
 			}
 		}

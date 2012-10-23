@@ -14,7 +14,7 @@ package gameCore;
  *
  * @version 1.0
  */
-public class Monster extends Character implements NPC {
+public class Monster extends Character{
 
 	//------------Constructors------------//
 	public Monster(String name, int health, int attack, Tile myPosition){

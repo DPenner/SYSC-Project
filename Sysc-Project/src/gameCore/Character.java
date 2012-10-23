@@ -123,8 +123,11 @@ public class Character  {
 	/**
 	 * A method to clean up the character from the tile
 	 */
-	public void die(){
+	protected void die(){
 		if(this.isDead()){
+			for(int i=0; i<this.inventory.size(); i++){
+				this.myPosition.addItem(this.inventory.getItem(i));
+			}
 			myPosition.removeCharacter();
 		}
 	}
@@ -167,20 +170,11 @@ public class Character  {
 	}
 	
 	/**
-	 * LoadInventory is a method used to load the non-player's inventory
+	 * addItem is a method used to load the non-player's inventory
 	 * 
 	 */
-	public void loadInventory(Item i){
+	public void addItem(Item i){
 		this.inventory.addItem(i);
-	}
-	/**
-	 * Method to handle killing of the monster.  
-	 * It should drop all of its inventory onto the tile
-	 */
-	protected void kill(){
-		for(int i=0; i<this.inventory.size(); i++){
-			this.myPosition.addItem(this.inventory.getItem(i));
-		}
 	}
 	
 	@Override
