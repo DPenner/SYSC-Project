@@ -29,6 +29,7 @@ public class Room
      * Creates a room from a set of tiles.
      * @param tiles The set of tiles comprising the room.
      */
+
     public Room()
     {
     	tiles = new HashSet<Tile>();
@@ -47,6 +48,7 @@ public class Room
     {
     	tiles.add(t);
     }
+
     /**
      * Checks if the room has been visited or not
      * @return True if the room has been visited, false otherwise

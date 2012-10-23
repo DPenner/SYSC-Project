@@ -29,7 +29,7 @@ public class Item {
 		this.name=name;
 		this.weight=weight;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj)
 	{
@@ -42,6 +42,7 @@ public class Item {
 		}
 		return false;
 	}
+
 	//------------Getters------------//
 	/**
 	 * Method to get the weight of the item.
