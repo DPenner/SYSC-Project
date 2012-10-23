@@ -74,7 +74,6 @@ public class Edge {
 		if (tile1 == tile2){
 			throw new IllegalArgumentException("tile1 and tile2 are the same reference");
 		}
-		
 		retval.tile1 = tile1;
 		retval.tile2 = tile2;
 		retval.crossable = crossable;
@@ -105,6 +104,7 @@ public class Edge {
 		} //other error checks done by getOtherTile method
 		
 		Tile destination = getOtherTile(currentTile);
+		currentTile.removeCharacter();
 		destination.addCharacter(crosser);
 		return destination;
 	}

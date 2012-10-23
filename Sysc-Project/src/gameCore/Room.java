@@ -1,5 +1,6 @@
 package gameCore;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -28,6 +29,11 @@ public class Room
      * Creates a room from a set of tiles.
      * @param tiles The set of tiles comprising the room.
      */
+
+    public Room()
+    {
+    	tiles = new HashSet<Tile>();
+    }
     public Room(Set<Tile> tiles) 
     {
     	if (tiles == null || tiles.isEmpty())
@@ -36,6 +42,11 @@ public class Room
     	}
         this.tiles = tiles;
         visited = false;
+    }
+
+    public void addTile(Tile t)
+    {
+    	tiles.add(t);
     }
 
     /**

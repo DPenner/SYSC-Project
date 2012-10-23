@@ -29,7 +29,20 @@ public class Item {
 		this.name=name;
 		this.weight=weight;
 	}
-	
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if(obj instanceof Item)
+		{
+			Item i = (Item) obj;
+			if(this.name.equals(i.name))
+				if(this.weight == i.weight)
+					return true;
+		}
+		return false;
+	}
+
 	//------------Getters------------//
 	/**
 	 * Method to get the weight of the item.

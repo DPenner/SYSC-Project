@@ -39,6 +39,8 @@ public class Character {
 		this.attack=attack;
 		inventory = new Inventory();
 		this.myPosition =myPosition;
+		//add myself to the tile 
+		myPosition.addCharacter(this); 
 	}
 	
 	/**

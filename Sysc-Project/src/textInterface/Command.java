@@ -1,4 +1,5 @@
-package gameCore;
+package textInterface;
+
 
 /**
  * This class is part of the "World of Zuul" application. 

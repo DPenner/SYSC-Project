@@ -1,6 +1,7 @@
-package gameCore;
+package textInterface;
 
 import java.util.Scanner;
+
 
 /**
  * This class is part of the "World of Zuul" application. 
