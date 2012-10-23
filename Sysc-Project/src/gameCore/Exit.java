@@ -80,8 +80,10 @@ public class Exit extends Edge {
 			throw new IllegalArgumentException("crosser can not be null");
 		} //other error checks done by getOtherTile method
 		
-		if (unlock(key))
-		{
+		if (!isLocked()){ //just cross, exit's already unlocked
+			return super.cross(currentTile, crosser);
+		}
+		else if (unlock(key)){ //unlock the exit and cross
 			return super.cross(currentTile, crosser);
 		}
 		else throw new IllegalArgumentException("crosser did not have key");
@@ -97,7 +99,7 @@ public class Exit extends Edge {
 			crossable = true;
 		}
 		
-		System.out.println("unlocking exit");
+		System.out.println("Unlocking exit");
 		return !isLocked();
 	}
 	
