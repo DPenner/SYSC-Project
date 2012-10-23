@@ -10,17 +10,21 @@ import textInterface.CommandWord;
 import textInterface.Parser;
 
 /**
+ * The Game loads the level from XML, initiates the game, and waits for commands from the player.
  * 
- *  To play this game, create an instance of this class and call the "play"
- *  method.
+ * Please see the manual instructions on how to play the game.
  * 
- *  This main class creates and initialises all the others: it load a level 
- *  from an xml file, creates the parser and starts the game.  It also evaluates and
- *  executes the commands that the parser returns.
+ * @author Group D
+ * @author Main author: Trang Pham
  * 
- * Original by Michael Kölling and David J. Barnes
- * @author  Trang Pham
- * @version 2012.09.13
+ * Group D Members
+ * ---------------
+ * Karen Madore
+ * Trang Pham
+ * Darrell Penner
+ * 
+ *
+ * @version 1.0
  */
 
 public class Game 
@@ -33,7 +37,7 @@ public class Game
     private boolean endGame;
         
     /**
-     * Create the game and initialize its internal map.
+     * Create the game and initialise its internal map a grid of 3x3 tiles.
      */
     public Game() 
     {
