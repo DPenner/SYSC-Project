@@ -130,6 +130,7 @@ public class Player extends Character
 		return retString;
 	}
 	
+
 	/**
 	 * ViewInventory method returns an string representation of the player's inventory
 	 * 
