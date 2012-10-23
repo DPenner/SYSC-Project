@@ -49,7 +49,6 @@ public class Player extends Character
 			{
 				Character defender= myPosition.getCharacter(direction);
 				if(attack(defender)){
-					//other character died
 					this.myPosition=myPosition.moveCharacter(direction);  //move character to the next tile
 					output.append("You attacked and killed " + defender +". You moved " + direction);
 					hasMoved = true;

@@ -57,13 +57,11 @@ public class Character  {
 		c.adjustHealth(0-this.attack);
 		
 		if(this.isDead()){
-			//remove the attacker 
-			Character attacker=myPosition.removeCharacter();
+			this.die();
 		}
 		
 		if(c.isDead()){
-			//remove the defender
-			Character defender=c.myPosition.removeCharacter();
+			c.die();
 			return true;
 		}
 		return false;
@@ -124,11 +122,11 @@ public class Character  {
 	 * A method to clean up the character from the tile
 	 */
 	protected void die(){
-		if(this.isDead()){
+		if(this.isDead()){ //drop the character's inventory
 			for(int i=0; i<this.inventory.size(); i++){
-				this.myPosition.addItem(this.inventory.getItem(i));
+				dropItem(this.inventory.getItem(i));
 			}
-			myPosition.removeCharacter();
+			myPosition.removeCharacter(); //remove character from tile
 		}
 	}
 	/**
@@ -176,7 +174,7 @@ public class Character  {
 	public void addItem(Item i){
 		this.inventory.addItem(i);
 	}
-	
+
 	@Override
 	public String toString(){
 		return name + "(hp: " + health + " atk:" + attack +")" ;
