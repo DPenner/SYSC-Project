@@ -82,7 +82,7 @@ public class Inventory {
 	public int getIndex(String s){
 		int index=0;
 		for (Item i: items){
-			if(i.getName()==s) return index;
+			if(i.getName().equals(s)) return index;
 			index++;
 		}
 		return -1;

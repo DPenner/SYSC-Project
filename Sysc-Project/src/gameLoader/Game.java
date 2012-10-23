@@ -247,6 +247,10 @@ public class Game
         	System.out.println(itemname + " is not on the ground. Can't pick up what's not there.");
         	return false;
         }
+        else
+        {
+        	System.out.println("Picked up " + itemname);
+        }
         return true;
     }
     
@@ -279,6 +283,10 @@ public class Game
         {
         	System.out.println("Item is not in your inventory. Can't drop what you don't have.");
         	return false;
+        }
+        else
+        {
+        	System.out.println("Dropped " + itemname);
         }
         return true;
     }
