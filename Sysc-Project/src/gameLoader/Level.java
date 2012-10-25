@@ -38,7 +38,7 @@ public class Level {
 	private List<Edge> edgeList;
 	private Room elevator;
 	private Player player;
-
+	
 	protected Level()
 	{
 		roomList = new ArrayList<Room>();
