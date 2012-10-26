@@ -289,6 +289,12 @@ public class Tile {
 		return ((Exit)getEdge(direction)).getKeyName();
 	}
 	
+	public void checkDirection(String direction){
+		if (!edges.containsKey(direction)){
+			throw new IllegalArgumentException("That direction does not exist!");
+		}
+	}
+	
 	/* REMOVED - Character class should handle these
 	public void attackCharacter(String direction) throws IllegalArgumentException{
 		if (!hasCharacter(direction)){
