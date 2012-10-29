@@ -15,6 +15,10 @@ public enum Direction {
         this.direction = direction;
     }
     
+    public static Direction getDirection(String direction){
+    	return Direction.valueOf(direction.toUpperCase());
+    }
+    
     /**
      * @return The command word as a string.
      */
