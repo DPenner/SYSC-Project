@@ -2,11 +2,9 @@ package gameLoader;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
 import gameCore.Direction;
 import gameCore.Player;
-import graphics2D.TextOutputPanel;
 import textInterface.Command;
 import textInterface.CommandWord;
 import textInterface.Parser;
@@ -25,7 +23,7 @@ import textInterface.Parser;
  * @version 2012.09.13
  */
 
-public class Game extends Observable
+public class Game 
 {
     private Parser parser;
     private Player player;
@@ -43,7 +41,6 @@ public class Game extends Observable
     	undo_index = 0;
         parser = new Parser();
         endGame = false;
-	this.addObserver(TextOutputPanel.getTextOutputPanel());
     }
 
     /**
@@ -53,7 +50,7 @@ public class Game extends Observable
     {   
         if(!loadLvl("lvl0.xml"))
         {
-        	notifyObservers("Unable to load the game.");
+        	System.out.println("Unable to load the game.");
         }
         else
         {
@@ -131,7 +128,7 @@ public class Game extends Observable
             	look(command);
             	break;
             	
-            case SEARCH:
+            case SEARCHITEM:
             	searchForItemOnGround(command);
             	break;
 
@@ -214,8 +211,6 @@ public class Game extends Observable
     		case PICKUP:
     		case DROP:
     			processCommand(new Command(oppositeCommandWord, c.getSecondWord()), true);
-    		default:
-    			break;
     		}
     		System.out.println("Successfully undone.");
     	}

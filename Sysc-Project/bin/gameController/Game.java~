@@ -62,8 +62,12 @@ private boolean endGame;
         	notifyObservers("Unable to load the game.");
         	return;
         }
-	printWelcome();
+        else
+        {
+	        printWelcome();
 	
+	        // Enter the main command loop.  Here we repeatedly read commands and
+	        // execute them until the game is over.
 		notifyObservers("Thank you for playing.  Good bye.");
         }
     }

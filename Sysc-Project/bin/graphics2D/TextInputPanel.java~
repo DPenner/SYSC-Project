@@ -1,0 +1,20 @@
+public class InputTextField extends JTextField implements KeyListener
+{
+	public InputTextField()
+	{
+		addKeyListener(this);
+		setAction(new CommandAction());	
+	}
+
+	@Override 
+	public void keyPressed(KeyEvent e)
+	{
+		if(e.getKeyCode() != KeyEvent.VK_ENTER) return;
+		//get the text in the text field
+		setActionCommand(this.getText());	
+		//command event happens
+		fireActionPerformed();	
+		//clear the text
+		this.setText("");
+	}
+}

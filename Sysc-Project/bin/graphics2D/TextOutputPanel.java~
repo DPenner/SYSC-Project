@@ -1,6 +1,5 @@
 package graphics2D;
 
-import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.util.Observable;
 import java.util.Observer;
@@ -13,7 +12,7 @@ public class TextOutputPanel extends JPanel implements Observer{
 
 	private static TextOutputPanel oneInstance;
 	private JTextArea output;
-	private InputTextField input;
+	private JTextField input;
 	private TextOutputPanel()
 	{
 		JPanel outputPanel = new JPanel(new FlowLayout());

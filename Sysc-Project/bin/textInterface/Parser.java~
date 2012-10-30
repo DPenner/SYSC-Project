@@ -18,11 +18,11 @@ import java.util.Scanner;
  * 
  * @author  Michael Kölling and David J. Barnes
  * @version 2011.08.10
- * Modified by Trang Pham
  */
 public class Parser 
 {
     private CommandWords commands;  // holds all valid command words
+    private Scanner reader;         // source of command input
 
     /**
      * Create a parser to read from the terminal window.
@@ -30,6 +30,7 @@ public class Parser
     public Parser() 
     {
         commands = new CommandWords();
+        reader = new Scanner(System.in);
     }
 
     /**
