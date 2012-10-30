@@ -35,7 +35,7 @@ public class LevelCreator {
 	private Level level;
 	private boolean loaded;
 	
-	protected LevelCreator()
+	public LevelCreator()
 	{
 		level = new Level();
 		loaded = false;
