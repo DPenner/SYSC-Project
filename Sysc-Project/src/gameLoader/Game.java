@@ -309,7 +309,7 @@ public class Game
             return false;
         }
 
-        String direction = command.getSecondWord();
+        Direction direction = Direction.getDirection(command.getSecondWord());
 
         try
         {
@@ -364,7 +364,7 @@ public class Game
     			try
     			{
     				StringBuffer output = new StringBuffer();
-    				player.look(d.toString(), output);
+    				player.look(d, output);
     				System.out.println(d.toString() +": " + output);
     			}
     			catch(Exception e)
@@ -378,7 +378,7 @@ public class Game
     		try
     		{
     			StringBuffer output = new StringBuffer();
-				player.look(command.getSecondWord(), output);
+				player.look(Direction.getDirection(command.getSecondWord()), output);
 				System.out.println(output);
     		}
     		catch(Exception e)

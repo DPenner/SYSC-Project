@@ -42,7 +42,7 @@ public class Player extends Character
 	 * @param direction - direction string ie north, south, etc.
 	 * @return	
 	 */
-	public boolean move(String direction, StringBuffer output) throws EndGameException{
+	public boolean move(Direction direction, StringBuffer output) throws EndGameException{
 		boolean hasMoved=false;
 		if(myPosition.isCrossable(direction)){
 			if (myPosition.hasCharacter(direction))
@@ -148,7 +148,7 @@ public class Player extends Character
 	 * @param 	direction to move
 	 * @return	string of characters it sees
 	 */
-	public boolean look(String direction, StringBuffer output){
+	public boolean look(Direction direction, StringBuffer output){
 		if(myPosition.isCrossable(direction))
 		{
 			if(myPosition.hasCharacter(direction)){//there is a character in the direction the player wishes to move
@@ -165,7 +165,7 @@ public class Player extends Character
 		}
 	}
 	
-	private String checkIfLockedExit(String direction)
+	private String checkIfLockedExit(Direction direction)
 	{
 		String retString;
 		//is this a locked exit or is it an uncrossable edge?

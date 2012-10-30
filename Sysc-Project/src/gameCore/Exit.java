@@ -42,7 +42,7 @@ public class Exit extends Edge {
 	 * @param direction1 The direction of the edge relative to tile1
 	 * @param direction2 The direction of the edge relative to tile2
 	 */
-	public Exit(Tile tile1, Tile tile2, boolean locked, String direction1, String direction2, Item key)
+	public Exit(Tile tile1, Tile tile2, boolean locked, Direction direction1, Direction direction2, Item key)
 	{
 		super(tile1, tile2, !locked, direction1, direction2);
 		this.key = key;
