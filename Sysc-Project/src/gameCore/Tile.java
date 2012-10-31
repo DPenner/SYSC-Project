@@ -20,11 +20,11 @@ import java.util.*;
  * @version 1.0
  */
 
-public class Tile {
+public class Tile extends Observable {
 	
 	//------------Fields------------//
 	private Point location;
-	private Map<Direction, Edge> edges; //CONSIDER: String (direction) can be enum?
+	private Map<Direction, Edge> edges;
 	private Inventory inventory;
 	private Character character;	
 	private Room containingRoom;
@@ -144,6 +144,7 @@ public class Tile {
 		}
 		
 		edges.put(direction, edge);
+		notifyObservers(edge);
 	}
 	
 	//------------Adding and Removing------------//
@@ -304,6 +305,7 @@ public class Tile {
 		return ((Exit)getEdge(direction)).getKeyName();
 	}
 	
+	//------------Direction handling------------//
 	/**
 	 * Validates the given direction for this Tile.
 	 * @param direction The direction to validate
@@ -332,38 +334,13 @@ public class Tile {
 		return edges.keySet();
 	}
 	
-	/* REMOVED - Character class should handle these
-	public void attackCharacter(Direction direction) throws IllegalArgumentException{
-		if (!hasCharacter(direction)){
-			throw new IllegalArgumentException("Cannot attack in that direction");
+	public Direction getEdgeDirection(Edge edge){		
+		for (Map.Entry<Direction, Edge> e : edges.entrySet()){
+			if (e.getValue() == edge){
+				return e.getKey();
+			}
 		}
 		
-		//This tile's character attacks the next tile's character
-		//character.attack(getNextTile(direction).getCharacter()); TEMP
-		//TEMP check for death
+		throw new IllegalArgumentException("Edge is not set on this Tile");
 	}
-	
-	//------------Item Handling------------//
-	public boolean takeItemFromCharacter(Item i){ //TEMP
-		return false;
-	}
-	public boolean giveItemToCharacter(Item i){ //TEMP
-		return false;
-	}
-	
-	//------------Looking------------//
-	//Note that all "lookFor*object*" methods return a copy so that the original
-	//cannot be modified
-	public Character lookForCharacter(Direction direction){
-		if (!hasCharacter(direction)){
-			return null;
-		}
-
-		return null; //TEMP deep copy of character
-	}
-	
-	public Inventory lookForItems(Direction direction){
-		return null; //TEMP deep copy of inventory
-	}*/
-	
 }
