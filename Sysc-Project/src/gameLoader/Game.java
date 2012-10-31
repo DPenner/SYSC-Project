@@ -64,8 +64,8 @@ public class Game extends Observable
 	                
 	        boolean finished = false;
 	        while (! finished && !endGame) {
-	            Command command = parser.getCommand();
-	            finished = processCommand(command, false);
+	           // Command command = parser.getCommand();
+	          //  finished = processCommand(command, false);
 	        }
 	        System.out.println("Thank you for playing.  Good bye.");
         }

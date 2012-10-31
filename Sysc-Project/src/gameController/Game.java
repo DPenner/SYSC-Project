@@ -62,10 +62,10 @@ private boolean endGame;
         	notifyObservers("Unable to load the game.");
         	return;
         }
-	printWelcome();
+        printWelcome();
 	
 		notifyObservers("Thank you for playing.  Good bye.");
-        }
+        
     }
     
 
@@ -74,10 +74,7 @@ private boolean endGame;
      */
     private String printWelcome()
     {
-        return "Welcome to the World of Kraft Dinner Table(KDT) Maze!\n
-        		KDT is the first version of an incredibly boring adventure game.\n
-        		Type '" + CommandWord.HELP + "' if you need help.\n
-        		If you find KD, you win! And the prize is an actual box of KD.";
+        return "Welcome to the World of Kraft Dinner Table(KDT) Maze!\n KDT is the first version of an incredibly boring adventure game.\nType '" + CommandWord.HELP + "' if you need help.\nIf you find KD, you win! And the prize is an actual box of KD.";
     }
     
     /** 
@@ -120,14 +117,12 @@ private boolean endGame;
      */
     private String printHelp() 
     {
-    	StringBuffer rv = new StringBuffer("You are lost. You are alone. 
-    			You wander\n around the maze searching for an exit.\n\n
-        		Your command words are:");
+    	StringBuffer rv = new StringBuffer("You are lost. You are alone. You wander\n around the maze searching for an exit.\n\nYour command words are:");
         for(CommandWord commandWord: CommandWord.values())
         {
         	rv.append(commandWord + " ");
         }
-    	return rv;
+    	return rv.toString();
     }
 
 }
