@@ -56,7 +56,7 @@ public class Edge {
 	 * @param direction1 The direction of the edge relative to tile1
 	 * @param direction2 The direction of the edge relative to tile2
 	 */
-	public Edge(Tile tile1, Tile tile2, boolean crossable, String direction1, String direction2)
+	public Edge(Tile tile1, Tile tile2, boolean crossable, Direction direction1, Direction direction2)
 	{
 		this(tile1, tile2, crossable);
 		if(tile1 != null) tile1.setEdge(direction1, this);

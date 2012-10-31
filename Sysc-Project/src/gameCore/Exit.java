@@ -39,11 +39,10 @@ public class Exit extends Edge {
 	 * edge is between a tile and the boundary of a level, the extra tile is to be null.
 	 * @param tile1 One side of the edge
 	 * @param tile2 The other side of the edge
-	 * @param crossable True if the two tiles can be directly moved between, false otherwise
 	 * @param direction1 The direction of the edge relative to tile1
 	 * @param direction2 The direction of the edge relative to tile2
 	 */
-	public Exit(Tile tile1, Tile tile2, boolean locked, String direction1, String direction2, Item key)
+	public Exit(Tile tile1, Tile tile2, boolean locked, Direction direction1, Direction direction2, Item key)
 	{
 		super(tile1, tile2, !locked, direction1, direction2);
 		this.key = key;
@@ -106,7 +105,7 @@ public class Exit extends Edge {
 	/**
 	 * Gets the name of the key required to unlock the exit.
 	 * Can't return the key itself, otherwise, that gives a way to easily unlock the exit!
-	 * @return
+	 * @return name of the key
 	 */
 	public String getKeyName(){
 		return key.toString();

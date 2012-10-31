@@ -24,23 +24,24 @@ public class Tile {
 	
 	//------------Fields------------//
 	private Point location;
-	private Map<String, Edge> edges; //CONSIDER: String (direction) can be enum?
+	private Map<Direction, Edge> edges; //CONSIDER: String (direction) can be enum?
 	private Inventory inventory;
 	private Character character;	
 	private Room containingRoom;
 	
 	//------------Constructors------------//
-    /**
-	 * Constructs a Tile from a point and room
-	 * @param Location of the Tile
-	 */
+   /**
+    * Constructs a Tile from a point and room
+    * @param location - location of the tile
+    * @param containingRoom - room contain the tile
+    */
 	public Tile(Point location, Room containingRoom)
 	{
 		if (location == null || containingRoom == null){
 			throw new IllegalArgumentException("A tile must have a location and a containing room");
 		}
 		
-		edges = new HashMap<String, Edge>();
+		edges = new HashMap<Direction, Edge>();
 		inventory = new Inventory(); //start empty, avoids null pointers
 		character = null; //no character
 		
@@ -65,7 +66,8 @@ public class Tile {
 	 * @param direction The direction to look in.
 	 * @return The inventory on the adjacent tile
 	 */
-	public Inventory getInventory(String direction){
+	public Inventory getInventory(Direction direction){
+		checkDirection(direction);
 		if (!isCrossable(direction)){
 			throw new IllegalArgumentException("Cannot cross that edge!");
 		}
@@ -86,8 +88,9 @@ public class Tile {
 	 * @param direction The direction to search for
 	 * @return the Character on the adjacent tile, null if none exists 
 	 */
-	public Character getCharacter(String direction)
+	public Character getCharacter(Direction direction)
 	{
+		checkDirection(direction);
 		if (!isCrossable(direction)){
 			throw new IllegalArgumentException("Cannot cross that edge!");
 		}
@@ -108,11 +111,8 @@ public class Tile {
 	 * @param direction The direction in which to get the edge
 	 * @return The edge in the given direction
 	 */
-	private Edge getEdge(String direction){
-		if (!edges.containsKey(direction))
-		{
-			throw new IllegalArgumentException("Edge does not exist in that direction");
-		}
+	private Edge getEdge(Direction direction){
+		checkDirection(direction);
 		return edges.get(direction);
 	}
 	
@@ -123,7 +123,8 @@ public class Tile {
 	 * @param direction The direction of the next tile
 	 * @return the Tile in the specified direction
 	 */
-	private Tile getNextTile(String direction){
+	private Tile getNextTile(Direction direction){
+		checkDirection(direction);
 		if (!isCrossable(direction))
 		{
 			throw new IllegalArgumentException("Tried get next tile, but edge between is not crossable");
@@ -137,8 +138,8 @@ public class Tile {
 	 * @param direction The direction in which to set the edge
 	 * @param edge The edge to be set
 	 */
-	public void setEdge(String direction, Edge edge){
-		if (edges.containsKey(direction)){
+	public void setEdge(Direction direction, Edge edge){
+		if (hasDirection(direction)){
 			throw new IllegalArgumentException("This edge has already been set");
 		}
 		
@@ -178,7 +179,7 @@ public class Tile {
 	
 	/**
 	 * removes an Item from the tile
-	 * @param the Item to be removed
+	 *@param item item to remove
 	 */
 	public void removeItem(Item item){
 		inventory.removeItem(item);
@@ -191,7 +192,10 @@ public class Tile {
 	 * @return True if the edge is crossable, false otherwise
 	 * @throws UnsupportedOperationException When this method is called when there is no character standing on the tile
 	 */
-	public boolean isCrossable(String direction) throws UnsupportedOperationException {
+	public boolean isCrossable(Direction direction) throws UnsupportedOperationException {
+		if (!hasDirection(direction)){
+			return false;
+		}
 		if (!hasCharacter()){
 			throw new UnsupportedOperationException("There is no character on this tile!");
 		}
@@ -204,7 +208,10 @@ public class Tile {
 	 * @param direction The direction of possible movement 
 	 * @return whether or not the character can move in that direction
 	 */
-	public boolean canMove(String direction){
+	public boolean canMove(Direction direction){
+		if (!hasDirection(direction)){
+			return false;
+		}
 		return isCrossable(direction) && !getNextTile(direction).hasCharacter();
 	}
 
@@ -214,7 +221,8 @@ public class Tile {
 	 * @throws IllegalArgumentException When the player cannot move in the given direction. Try calling canMove(direction) first.
 	 * @return The new tile of the character
 	 */
-	public Tile moveCharacter(String direction) throws IllegalArgumentException {
+	public Tile moveCharacter(Direction direction) throws IllegalArgumentException {
+		checkDirection(direction);
 		if (!canMove(direction)){
 			throw new IllegalArgumentException("Cannot move in that direction, something is blocking the way!");
 		}
@@ -236,8 +244,11 @@ public class Tile {
 	 * @param direction The direction in which to check for a character
 	 * @return True if the adjacent Tile has a Character, false otherwise
 	 */
-	public boolean hasCharacter(String direction)
+	public boolean hasCharacter(Direction direction)
 	{
+		if (!hasDirection(direction)){
+			return false;
+		}
 		return isCrossable(direction) && getNextTile(direction).hasCharacter();
 	}
 	
@@ -262,7 +273,8 @@ public class Tile {
 	 * @param direction The direction in which to check
 	 * @return True if the adjacent tile is empty, false otherwise
 	 */
-	public boolean isEmpty(String direction){
+	public boolean isEmpty(Direction direction){
+		checkDirection(direction);
 		return getNextTile(direction).isEmpty();
 	}
 	
@@ -271,7 +283,10 @@ public class Tile {
 	 * @param direction The direction in which to check
 	 * @return True if there is an Exit, false otherwise
 	 */
-	public boolean hasExit(String direction){
+	public boolean hasExit(Direction direction){
+		if (!hasDirection(direction)){
+			return false;
+		}
 		return getEdge(direction) instanceof Exit;
 	}
 	
@@ -280,7 +295,8 @@ public class Tile {
 	 * @param direction The direction in which to search
 	 * @return The string representation of the needed key
 	 */
-	public String getExitKey(String direction){
+	public String getExitKey(Direction direction){
+		checkDirection(direction);
 		if (!hasExit(direction))
 		{
 			throw new IllegalArgumentException("No exit in that direction!");
@@ -288,8 +304,36 @@ public class Tile {
 		return ((Exit)getEdge(direction)).getKeyName();
 	}
 	
+	/**
+	 * Validates the given direction for this Tile.
+	 * @param direction The direction to validate
+	 * @throws IllegalArgumentException when the direction does not exist for this Tile.
+	 */
+	private void checkDirection(Direction direction) throws IllegalArgumentException {
+		if (!hasDirection(direction)){
+			throw new IllegalArgumentException("That direction does not exist!");
+		}
+	}
+	
+	/**
+	 * Checks if a Tile has an Edge in the given direction
+	 * @param direction The direction in which to check
+	 * @return True if the direction exists, false otherwise
+	 */
+	public boolean hasDirection(Direction direction){
+		return edges.containsKey(direction);
+	}
+	
+	/**
+	 * Gets all the possible directions for the Tile
+	 * @return The set of all possible directions
+	 */
+	public Set<Direction> getAllDirections(){
+		return edges.keySet();
+	}
+	
 	/* REMOVED - Character class should handle these
-	public void attackCharacter(String direction) throws IllegalArgumentException{
+	public void attackCharacter(Direction direction) throws IllegalArgumentException{
 		if (!hasCharacter(direction)){
 			throw new IllegalArgumentException("Cannot attack in that direction");
 		}
@@ -310,7 +354,7 @@ public class Tile {
 	//------------Looking------------//
 	//Note that all "lookFor*object*" methods return a copy so that the original
 	//cannot be modified
-	public Character lookForCharacter(String direction){
+	public Character lookForCharacter(Direction direction){
 		if (!hasCharacter(direction)){
 			return null;
 		}
@@ -318,7 +362,7 @@ public class Tile {
 		return null; //TEMP deep copy of character
 	}
 	
-	public Inventory lookForItems(String direction){
+	public Inventory lookForItems(Direction direction){
 		return null; //TEMP deep copy of inventory
 	}*/
 	

@@ -120,16 +120,18 @@ public class Level {
 	{
 		Edge e;
 		Direction dir1 = Direction.valueOf(direction1.toUpperCase());
+		Direction dir2;
 		if(dir1 != null)
 		{
-			if(direction2.isEmpty()) direction2 = dir1.getOppositeDirection().toString();
+			if(direction2.isEmpty()) dir2 = dir1.getOppositeDirection();
+			else dir2 = Direction.valueOf(direction2.toUpperCase());
 			if(key != null)
 			{
-				e = new Exit(tile1, tile2, !crossable, direction1, direction2, key);
+				e = new Exit(tile1, tile2, !crossable, dir1, dir2, key);
 			}
 			else
 			{
-				e = new Edge(tile1, tile2, crossable, direction1, direction2);
+				e = new Edge(tile1, tile2, crossable, dir1, dir2);
 			}
 			edgeList.add(e);
 			return true;

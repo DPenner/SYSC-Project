@@ -27,7 +27,6 @@ public class Room
 
     /**
      * Creates a room from a set of tiles.
-     * @param tiles The set of tiles comprising the room.
      */
 
     public Room()
