@@ -98,6 +98,7 @@ public class Exit extends Edge {
 			crossable = true;
 		}
 		
+		setChanged();
 		notifyObservers("Unlocking Exit");
 		return !isLocked();
 	}

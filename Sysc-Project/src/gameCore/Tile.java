@@ -28,6 +28,7 @@ public class Tile extends Observable {
 	private Inventory inventory;
 	private Character character;	
 	private Room containingRoom;
+	private boolean visited; //A tile is visited if its room has been visited
 	
 	//------------Constructors------------//
    /**
@@ -144,6 +145,7 @@ public class Tile extends Observable {
 		}
 		
 		edges.put(direction, edge);
+		setChanged();
 		notifyObservers(edge);
 	}
 	
@@ -157,7 +159,12 @@ public class Tile extends Observable {
 			throw new UnsupportedOperationException("Can't add character to tile - there already is one");
 		}
 		
+		if (c instanceof Player){
+			setRoomAsVisited();
+		}
 		character = c;
+		setChanged();
+		notifyObservers();
 	}
 	
 	/**
@@ -167,6 +174,8 @@ public class Tile extends Observable {
 	public Character removeCharacter(){
 		Character removed = character;
 		character = null;
+		setChanged();
+		notifyObservers();
 		return removed;
 	}
 	
@@ -176,6 +185,8 @@ public class Tile extends Observable {
 	 */
 	public void addItem(Item item){
 		inventory.addItem(item);
+		setChanged();
+		notifyObservers();
 	}
 	
 	/**
@@ -184,6 +195,8 @@ public class Tile extends Observable {
 	 */
 	public void removeItem(Item item){
 		inventory.removeItem(item);
+		setChanged();
+		notifyObservers();
 	}
 	
 	//------------Character Movement------------//
@@ -343,4 +356,34 @@ public class Tile extends Observable {
 		
 		throw new IllegalArgumentException("Edge is not set on this Tile");
 	}
+	
+	public void setRoomAsVisited(){
+		containingRoom.setVisited();
+	}
+	public boolean isVisited(){
+		return visited;
+	}
+	public void setVisited(){
+		visited = true;
+		setChanged();
+		notifyObservers();
+	}
+	
+	/**
+	 * Finds shortest path between this tile and the destination for the character on this tile
+	 * @param destination The destination of the character
+	 * @return The list of Tiles in order. If this Tile is the destination, returns an empty list. If no path can be found, returns null.
+	 */
+	public List<Tile> getPath(Tile destination){
+		
+		
+		class ShortestPathData {
+			Tile tile;
+			Tile previousTile;
+			int minSteps;
+		}
+		return null;
+	}
+	
+	
 }

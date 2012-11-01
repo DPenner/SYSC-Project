@@ -140,4 +140,14 @@ public class Edge extends Observable {
 		if (tile2 == null) return null;
 		return tile2.getLocation();
 	}
+	
+	public final boolean isInVisitedRoom(){
+		if (tile1 == null){
+			return tile2.isVisited();
+		}
+		if (tile2 == null){
+			return tile1.isVisited();
+		}
+		return tile1.isVisited() || tile2.isVisited();
+	}
 }
