@@ -3,13 +3,10 @@ package graphics2D;
 import gameCore.*;
 
 import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-
-import java.util.*;
 
 import javax.swing.*;
 
@@ -32,34 +29,39 @@ import javax.swing.*;
 
 public class MapView extends JLayeredPane implements ComponentListener {
 	public static final int TILE_SIZE = 40;
-	public static final int EDGE_WIDTH = 4;
-	public static final int EDGE_LENGTH = TILE_SIZE + EDGE_WIDTH/2;
+	public static final int MINIMUM_SIZE = 5 * TILE_SIZE;
 	
+	private static final Integer TILE_LAYER_DEPTH = 0;
+	private static final Integer EDGE_LAYER_DEPTH = 10;
+	
+	protected static final Color BROWN = Color.decode("0x964B00");
 	private TilePanel tileLayer;
 	private EdgePanel edgeLayer;
 	
 	private int xOffset;
 	private int yOffset;
 	
-	public MapView (){
-		tileLayer = new TilePanel();
-		edgeLayer = new EdgePanel();
+	public MapView(){
 		
+		//sets up this component
 		this.setBounds(0, 0, 4000, 4000);
 		this.addComponentListener(this);
+		this.setMinimumSize(new Dimension(MINIMUM_SIZE, MINIMUM_SIZE));
         
-        this.add(tileLayer, new Integer(0));
-        this.add(edgeLayer, new Integer(1));
+		//add panels
+		tileLayer = new TilePanel(this);
+		edgeLayer = new EdgePanel(this);
+		this.add(tileLayer, TILE_LAYER_DEPTH);
+        this.add(edgeLayer, EDGE_LAYER_DEPTH);
         
+        //configure panels
         setPanelBounds();
         tileLayer.setOpaque(true);
         edgeLayer.setOpaque(false);
         
-        xOffset = 0;
-        yOffset = 0;
+        //set Offsets
+        setOffsets(0, 0);
 	}
-	
-	
 	
 	public void addTile(Tile t){
 		tileLayer.addTile(t);
@@ -68,18 +70,38 @@ public class MapView extends JLayeredPane implements ComponentListener {
 		edgeLayer.addEdge(edge);
 	}
 	
-	private int getOffsettedX(Point location){
-		return location.y * TILE_SIZE + xOffset;
+	//------------Scaling-----------//
+	protected int getOffsettedX(Point tileLocation){
+		return (tileLocation.x + xOffset) * TILE_SIZE;
 	}
-	private int getOffsettedY(Point location){
-		return location.x * TILE_SIZE + yOffset;
+	protected int getOffsettedY(Point tileLocation){
+		return (tileLocation.y + yOffset) * TILE_SIZE;
+	}
+	private Point getTileLocation(Point offsettedLocation){
+		return new Point(offsettedLocation.x/TILE_SIZE - xOffset, offsettedLocation.y/TILE_SIZE - yOffset);
+	}
+	protected Tile getTile(Point offsettedLocation){
+		return tileLayer.getTile(getTileLocation(offsettedLocation));
+	}
+	protected void highLight(Tile t){
+		tileLayer.highLight(t);
+	}
+	protected void unHighLight(Tile t){
+		tileLayer.unHighLight(t);
+	}
+	
+	protected void setOffsets(int xOffset, int yOffset){
+		this.xOffset = xOffset;
+		this.yOffset = yOffset;
+		repaint(); //everything needs to be shifted
 	}
 	
 	private void setPanelBounds(){
-		tileLayer.setBounds(getBounds());
-		edgeLayer.setBounds(getBounds());
+		tileLayer.setBounds(this.getBounds());
+		edgeLayer.setBounds(this.getBounds());
 	}
 	
+	//------------Component events-----------//
 	@Override
 	public void componentHidden(ComponentEvent arg0) {
 	}
@@ -97,115 +119,6 @@ public class MapView extends JLayeredPane implements ComponentListener {
 	@Override
 	public void componentShown(ComponentEvent arg0) {
 	}
-	
-	
-	
-	
-	
-	private class TilePanel extends JPanel implements Observer{
-		private Set<Tile> tiles;
-		
-		public TilePanel(){
-			tiles = new HashSet<Tile>();
-		}
-		
-		@Override
-		public void paintComponent(Graphics g){
-			super.paintComponent(g);
-			this.setBackground(Color.BLACK);
-			
-			for (Tile t : tiles){
-				drawTile(g, t);
-			}
-		}
-		
-		@Override
-		public void update(Observable arg0, Object arg1) {
-			Tile t = (Tile) arg0;
-			this.repaint(getTileRectangle(t)); //repaint only necessary area
-		}
-		
-		public void addTile(Tile t){
-			tiles.add(t);
-			t.addObserver(this);
-		}
-		
-		private void drawTile(Graphics g, Tile t){
-			g.setColor(Color.LIGHT_GRAY);
-			g.fillRect(getTileRectangle(t).x, getTileRectangle(t).y, getTileRectangle(t).width, getTileRectangle(t).height);
-		}
-		
-		private Rectangle getTileRectangle(Tile t){
-			return new Rectangle(getOffsettedX(t.getLocation()), getOffsettedY(t.getLocation()), TILE_SIZE, TILE_SIZE);
-		}
-	}
-	
-	private class EdgePanel extends JPanel implements Observer{
-		private Set<Edge> edges;
-		
-		public EdgePanel(){
-			edges = new HashSet<Edge>();
-		}
-		
-		@Override
-		public void paintComponent(Graphics g){
-			super.paintComponent(g);
-			
-			for (Edge edge : edges){
-				drawEdge(g, edge);
-			}
-		}
-		
-		@Override
-		public void update(Observable arg0, Object arg1) {
-			Edge e = (Edge) arg0;
-			repaint(getEdgeRectangle(e));
-		}
-		
-		private void addEdge(Edge edge){
-			edges.add(edge);
-			edge.addObserver(this);
-		}
-
-		private void drawEdge(Graphics g, Edge edge) {
-			
-			
-			if (!edge.canCrossByDefault()){ //only draw those that appear to be "walls"
-				if (edge instanceof Exit) g.setColor(Color.decode("0x964b00"));
-				else g.setColor(Color.BLACK);
-				
-				g.fillRect(getEdgeRectangle(edge).x, getEdgeRectangle(edge).y, getEdgeRectangle(edge).width, getEdgeRectangle(edge).height);
-			}
-		}
-		
-		private Rectangle getEdgeRectangle(Edge edge){
-			Direction edgeDirection;
-			Point referenceLocation;
-			
-			referenceLocation = edge.getLocation1();
-			if (referenceLocation == null){
-				referenceLocation = edge.getLocation2();
-				edgeDirection = edge.getDirection2();				
-			}
-			else{
-				edgeDirection = edge.getDirection1();	
-			}
-			
-			switch (edgeDirection)
-			{
-			case NORTH:
-				return new Rectangle(getOffsettedX(referenceLocation), getOffsettedY(referenceLocation) - EDGE_WIDTH/2, EDGE_LENGTH, EDGE_WIDTH);
-			case SOUTH:
-				return new Rectangle(getOffsettedX(referenceLocation), getOffsettedY(referenceLocation) + TILE_SIZE - EDGE_WIDTH/2, EDGE_LENGTH, EDGE_WIDTH);
-			case EAST:
-				return new Rectangle(getOffsettedX(referenceLocation) + TILE_SIZE - EDGE_WIDTH/2, getOffsettedY(referenceLocation), EDGE_WIDTH, EDGE_LENGTH);
-			case WEST:
-				return new Rectangle(getOffsettedX(referenceLocation) - EDGE_WIDTH/2, getOffsettedY(referenceLocation), EDGE_WIDTH, EDGE_LENGTH);
-			default:
-				throw new IllegalArgumentException("Unknown Direction");
-			}
-		}
-	}
 
 	
 	
@@ -213,7 +126,7 @@ public class MapView extends JLayeredPane implements ComponentListener {
 	
 	
 	//TEMP - testing purposes
-	public static void main(String[] args){
+	/*public static void main(String[] args){
 		Room r = new Room();
 		Tile one = (new Tile(new Point(0, 0), r));
         Tile two = (new Tile(new Point(0, 1), r));
@@ -277,6 +190,6 @@ public class MapView extends JLayeredPane implements ComponentListener {
         tp.addEdge(fourE);
         tp.addEdge(fourS);
         f.add(tp);
-	}
+	}*/
 
 }
