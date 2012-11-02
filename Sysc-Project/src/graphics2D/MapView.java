@@ -1,6 +1,7 @@
 package graphics2D;
 
 import gameCore.*;
+import gameLoader.Level;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -62,6 +63,10 @@ public class MapView extends JLayeredPane implements ComponentListener {
         
         //set Offsets
         setOffsets(0, 0);
+	}
+	
+	public MapView(Level l){
+		this();
 	}
 	
 	public void addTile(Tile t){
