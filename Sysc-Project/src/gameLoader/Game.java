@@ -101,6 +101,7 @@ public class Game
     		player = level.getPlayer();
     		
     		KDTView kdtView = new KDTView(player, level);
+
     		return true;
     	}
     	return false;

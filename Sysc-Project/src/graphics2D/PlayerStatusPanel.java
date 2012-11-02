@@ -1,5 +1,7 @@
 package graphics2D;
 
+import gameCore.Player;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -11,12 +13,13 @@ import javax.swing.JTextField;
 
 
 public class PlayerStatusPanel extends JPanel implements PlayerListener{
-	//km private Player p;
+	private Player player;
 	private static int BOX_SIZE=22;
 	private static int TEXT_OFFSET=50;
 	private static int BOX_OFFSET=-1;
 	
-	public PlayerStatusPanel(){
+	public PlayerStatusPanel(Player p){
+		player=p;
 		this.setBackground(Color.BLACK);
 		this.setPreferredSize(new Dimension(400,80));
 			
@@ -36,8 +39,8 @@ public class PlayerStatusPanel extends JPanel implements PlayerListener{
 		g.setColor(Color.WHITE);
 		g.drawString("Player Status", 10, 12);
 		
-		drawStatus(g, "Health:", 8, 20,25);
-		drawStatus(g, "Attack:", 10,20,50);
+		drawStatus(g, "Health:", player.getHealth(), 20,25);
+		drawStatus(g, "Attack:", player.getAttack(),20,50);
 		
 		//g.drawImage(new Image("redkey.png"), 200, 12, 40, 40, null);
 		

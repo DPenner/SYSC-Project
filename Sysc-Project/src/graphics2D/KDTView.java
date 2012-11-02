@@ -52,8 +52,9 @@ public class KDTView implements PlayerListener{
 	//------------Fields------------//
 	private Level level;
 	private Player player;
+
 	private Inventory inv;
-	private DefaultListModel lmodel;
+	
 	
 	private JFrame f;
 	
@@ -72,40 +73,45 @@ public class KDTView implements PlayerListener{
 		//Create the GUI
 		f= new JFrame("Kraft Dinner Table Maze");
 		
-		this.player = player;
+		this.player=player;
 		this.level=level;
+
 		addMenusToFrame();
 		f.setSize(600, 800);
 		
 		
 		cp=f.getContentPane();
 		//addComponentsToPaneUsingBAGLayout(cp);
-		addComponetsToPaneUsingBorderLayout(cp);
+		addComponentsToPaneUsingBorderLayout(cp);
 		
 		g=f.getGraphics();
 						
 		//f.pack();
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
-				
+		
+			
 	}
 	
 	/**
 	 * Add components to Content Pane using BorderLayout
 	 */
-	private void addComponetsToPaneUsingBorderLayout(Container pane){
+	private void addComponentsToPaneUsingBorderLayout(Container pane){
 		pane.setLayout(new BorderLayout());
 		
-		MapView pMap= new MapView(level);
+
+		//KDTMainPanel pMain= new KDTMainPanel();
+		MapView pMap = new MapView();
+
 		pane.add(pMap, BorderLayout.CENTER);
 		
-		//JPanel pPlayer = new PlayerStatusPanel(player);
-		//pane.add(pPlayer, BorderLayout.PAGE_START);
+		JPanel pPlayer = new PlayerStatusPanel(player);
+		pane.add(pPlayer, BorderLayout.PAGE_START);
 				
-		//JPanel pInventory = new InventoryPanel();
-		//pane.add(pInventory, BorderLayout.LINE_END);
-		createTestInventory();
-		addComponentsToInventoryPanel(pane);
+		JPanel pInventory = new InventoryPanel(player);
+		pane.add(pInventory, BorderLayout.LINE_END);
 		
+
 		//JPanel pInput = new InputPanel();
 		//pane.add(pInput, BorderLayout.PAGE_END);
 		
@@ -113,32 +119,8 @@ public class KDTView implements PlayerListener{
 	}
 	
 
-	private void addComponentsToInventoryPanel(Container pane) {
-		
-		
-		JList jl;
-		lmodel= new DefaultListModel();
-		
-		jl=new JList();
-		jl.setModel(lmodel);
-		jl.setName("InventoryList");
-		
-		pane.add(jl, BorderLayout.LINE_END);
-			
-		for(int i=0; i<inv.size(); i++){
-			lmodel.addElement(inv.getItem(i).toString());
-		}
-		
-		
-	}
+	
 
-	private void createTestInventory(){
-		inv = new Inventory();
-		Item item1=new Item("redKey",1);
-		Item item2=new Item("blueKey",1);
-		inv.addItem(item1);
-		inv.addItem(item2);
-	}
 	
 	/**
 	 * Create the Menus for the Frame
@@ -165,6 +147,7 @@ public class KDTView implements PlayerListener{
 		f.setJMenuBar(mainBar);
 	}
 	
+<<<<<<< HEAD
 	
 
 	/**
@@ -177,6 +160,9 @@ public class KDTView implements PlayerListener{
 		//KDTView v=new KDTView();
 	}
 
+=======
+		
+>>>>>>> refs/remotes/origin/Karen2
 	@Override
 	public void itemAdded(PlayerEvent e) {
 		// TODO Auto-generated method stub
