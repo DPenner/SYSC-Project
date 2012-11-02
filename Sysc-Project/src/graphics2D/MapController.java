@@ -17,7 +17,6 @@ public class MapController extends MouseAdapter {
 	
 	
 	//------------Mouse Adapter------------//
-	
 	@Override
 	public void mouseMoved(MouseEvent e){
 		Tile hoverTile = view.getTile(e.getPoint());

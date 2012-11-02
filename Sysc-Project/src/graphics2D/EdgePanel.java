@@ -16,8 +16,12 @@ import java.util.Set;
 import javax.swing.JPanel;
 
 class EdgePanel extends JPanel implements Observer{
-	public static final int EDGE_WIDTH = 4;
-	public static final int EDGE_LENGTH = MapView.TILE_SIZE;
+	//public static final int EDGE_LENGTH = MapView.TILE_SIZE;
+	public static final Color DEFAULT_EDGE_COLOR = Color.decode("0x606060");
+	
+	private int edgeLength;
+	private int edgeWidth;
+	private int tileSize;
 	
 	private MapView parentMap;
 	private Set<Edge> edges;
@@ -25,6 +29,10 @@ class EdgePanel extends JPanel implements Observer{
 	public EdgePanel(MapView mapView){
 		parentMap = mapView;
 		edges = new HashSet<Edge>();
+		
+		tileSize = parentMap.getTileSize();
+		edgeWidth = parentMap.getEdgeWidth();
+		edgeLength = tileSize;
 	}
 	
 	@Override
@@ -44,7 +52,7 @@ class EdgePanel extends JPanel implements Observer{
 		repaint(getEdgeRectangle(e));
 	}
 	
-	void addEdge(Edge edge){
+	protected void addEdge(Edge edge){
 		synchronized (edges){
 			edges.add(edge);
 		}
@@ -55,10 +63,10 @@ class EdgePanel extends JPanel implements Observer{
 	private void drawEdge(Graphics g, Edge edge) {
 					
 		if (!edge.canCrossByDefault() && edge.isInVisitedRoom()){ //only draw those that appear to be "walls" and have been visited
-			g.setColor(Color.BLACK);
+			g.setColor(DEFAULT_EDGE_COLOR);
 			
-			g.fillRect(getEdgeRectangle(edge, true).x, getEdgeRectangle(edge, true).y, 
-					   getEdgeRectangle(edge, true).width, getEdgeRectangle(edge, true).height);
+			g.fill3DRect(getEdgeRectangle(edge, true).x, getEdgeRectangle(edge, true).y, 
+					     getEdgeRectangle(edge, true).width, getEdgeRectangle(edge, true).height, true);
 			
 			if (edge instanceof Exit) {
 				g.setColor(MapView.BROWN);
@@ -78,8 +86,9 @@ class EdgePanel extends JPanel implements Observer{
 		Direction edgeDirection;
 		Point referenceLocation;
 		
-		int effectiveEdgeLength = isLarge ? EDGE_LENGTH + EDGE_WIDTH : EDGE_LENGTH - EDGE_WIDTH;
-		int lengthOffset = isLarge ? -EDGE_WIDTH/2 : EDGE_WIDTH/2;
+		int effectiveEdgeLength = isLarge ? edgeLength + edgeWidth : edgeLength - edgeWidth;
+		int lengthOffset = isLarge ? -edgeWidth/2 : edgeWidth/2;
+		int widthOffset = edgeWidth/2;
 		
 		referenceLocation = edge.getLocation1();
 		if (referenceLocation == null){
@@ -94,16 +103,16 @@ class EdgePanel extends JPanel implements Observer{
 		{
 		case NORTH:
 			return new Rectangle(parentMap.getOffsettedX(referenceLocation) + lengthOffset, 
-					parentMap.getOffsettedY(referenceLocation) - EDGE_WIDTH/2, effectiveEdgeLength, EDGE_WIDTH);
+					parentMap.getOffsettedY(referenceLocation) - widthOffset, effectiveEdgeLength, edgeWidth);
 		case SOUTH:
 			return new Rectangle(parentMap.getOffsettedX(referenceLocation) + lengthOffset, 
-					parentMap.getOffsettedY(referenceLocation) + MapView.TILE_SIZE - EDGE_WIDTH/2, effectiveEdgeLength, EDGE_WIDTH);
+					parentMap.getOffsettedY(referenceLocation) + tileSize - widthOffset, effectiveEdgeLength, edgeWidth);
 		case EAST:
-			return new Rectangle(parentMap.getOffsettedX(referenceLocation) + MapView.TILE_SIZE - EDGE_WIDTH/2, 
-					parentMap.getOffsettedY(referenceLocation)  + lengthOffset, EDGE_WIDTH, effectiveEdgeLength);
+			return new Rectangle(parentMap.getOffsettedX(referenceLocation) + tileSize - widthOffset, 
+					parentMap.getOffsettedY(referenceLocation)  + lengthOffset, edgeWidth, effectiveEdgeLength);
 		case WEST:
-			return new Rectangle(parentMap.getOffsettedX(referenceLocation) - EDGE_WIDTH/2, 
-					parentMap.getOffsettedY(referenceLocation)  + lengthOffset, EDGE_WIDTH, effectiveEdgeLength);
+			return new Rectangle(parentMap.getOffsettedX(referenceLocation) - widthOffset, 
+					parentMap.getOffsettedY(referenceLocation)  + lengthOffset, edgeWidth, effectiveEdgeLength);
 		default:
 			return new Rectangle(0, 0, 0, 0); //Essentially returns a blank - other unforeseen directions simply won't be drawn
 		}

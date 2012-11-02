@@ -21,6 +21,9 @@ class TilePanel extends JPanel implements Observer{
 	public static final Color BACKGROUND_COLOR = Color.BLACK;
 	public static final Color HIGHLIGHT_TILE_COLOR = Color.decode("0x2277AA");
 	
+	private int tileSize;
+	private int edgeWidth;
+	
 	private MapView parentMap;
 	private Map<Point, Tile> tiles; //indexing by point makes it easier to locate the tile
 	private Map<Point, Color> tileColors;
@@ -29,6 +32,10 @@ class TilePanel extends JPanel implements Observer{
 		parentMap = mapView;
 		tiles = new HashMap<Point, Tile>();
 		tileColors = new HashMap<Point, Color>();
+		
+		//saved internally for convenience
+		tileSize = mapView.getTileSize();
+		edgeWidth = mapView.getEdgeWidth();
 	}
 
 	@Override
@@ -36,17 +43,17 @@ class TilePanel extends JPanel implements Observer{
 		super.paintComponent(g);
 		this.setBackground(Color.BLACK);
 		
-		//synchronized (tiles){
+		synchronized (tiles){
 			for (Tile t : tiles.values()){
 				drawTile(g, t);
 			}
-		//}
+		}
 	}
 	
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		Tile t = (Tile) arg0;
-		this.repaint(getTileRectangle(t)); //repaint only necessary area
+		this.repaint(getTileAndEdgeRectangle(t)); //repaint only necessary area
 	}
 	
 	protected void addTile(Tile t){
@@ -54,8 +61,9 @@ class TilePanel extends JPanel implements Observer{
 		synchronized (tiles){
 			tiles.put(t.getLocation(), t);
 		}
+		
 		t.addObserver(this);
-		repaint(getTileRectangle(t));
+		repaint(getTileAndEdgeRectangle(t));
 	}
 	
 	private void drawTile(Graphics g, Tile t){
@@ -81,9 +89,9 @@ class TilePanel extends JPanel implements Observer{
 			
 			
 		}
-		else {
+		/*else {
 			drawTileBase(g, rect, HIDDEN_TILE_COLOR);
-		}
+		}*/
 		
 		
 	}
@@ -106,7 +114,12 @@ class TilePanel extends JPanel implements Observer{
 	
 	private Rectangle getTileRectangle(Tile t){
 		return new Rectangle(parentMap.getOffsettedX(t.getLocation()), 
-				             parentMap.getOffsettedY(t.getLocation()), MapView.TILE_SIZE, MapView.TILE_SIZE);
+				             parentMap.getOffsettedY(t.getLocation()), tileSize, tileSize);
+	}
+	
+	private Rectangle getTileAndEdgeRectangle(Tile t){
+		return new Rectangle(getTileRectangle(t).x - edgeWidth, getTileRectangle(t).y - edgeWidth,
+							 getTileRectangle(t).width + edgeWidth*2, getTileRectangle(t).height + edgeWidth*2);
 	}
 	
 	protected Tile getTile(Point tileLocation){

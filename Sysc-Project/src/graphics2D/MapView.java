@@ -28,8 +28,9 @@ import javax.swing.*;
  */
 
 public class MapView extends JLayeredPane implements ComponentListener {
-	public static final int TILE_SIZE = 40;
-	public static final int MINIMUM_SIZE = 5 * TILE_SIZE;
+	private static final int TILE_SIZE = 40;
+	private static final int EDGE_WIDTH = 4;
+	private static final int MINIMUM_SIZE = 5 * TILE_SIZE;
 	
 	private static final Integer TILE_LAYER_DEPTH = 0;
 	private static final Integer EDGE_LAYER_DEPTH = 10;
@@ -68,6 +69,13 @@ public class MapView extends JLayeredPane implements ComponentListener {
 	}
 	public void addEdge(Edge edge){
 		edgeLayer.addEdge(edge);
+	}
+	
+	protected int getTileSize(){
+		return TILE_SIZE;
+	}
+	protected int getEdgeWidth(){
+		return EDGE_WIDTH;
 	}
 	
 	//------------Scaling-----------//
