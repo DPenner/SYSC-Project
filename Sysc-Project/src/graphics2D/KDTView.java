@@ -98,8 +98,8 @@ public class KDTView implements PlayerListener{
 		MapView pMap= new MapView(level);
 		pane.add(pMap, BorderLayout.CENTER);
 		
-		JPanel pPlayer = new PlayerStatusPanel(player);
-		pane.add(pPlayer, BorderLayout.PAGE_START);
+		//JPanel pPlayer = new PlayerStatusPanel(player);
+		//pane.add(pPlayer, BorderLayout.PAGE_START);
 				
 		//JPanel pInventory = new InventoryPanel();
 		//pane.add(pInventory, BorderLayout.LINE_END);
@@ -174,7 +174,7 @@ public class KDTView implements PlayerListener{
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		KDTView v=new KDTView();
+		//KDTView v=new KDTView();
 	}
 
 	@Override
