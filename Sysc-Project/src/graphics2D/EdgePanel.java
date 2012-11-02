@@ -9,11 +9,14 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.HashSet;
+import java.util.Queue;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 class EdgePanel extends JPanel implements Observer{
 	//public static final int EDGE_LENGTH = MapView.TILE_SIZE;
@@ -25,10 +28,12 @@ class EdgePanel extends JPanel implements Observer{
 	
 	private MapView parentMap;
 	private Set<Edge> edges;
+	private Queue<Edge> edgesToAdd; //buffer queue
 	
 	public EdgePanel(MapView mapView){
 		parentMap = mapView;
 		edges = new HashSet<Edge>();
+		edgesToAdd = new ConcurrentLinkedQueue<Edge>();
 		
 		tileSize = parentMap.getTileSize();
 		edgeWidth = parentMap.getEdgeWidth();
@@ -38,11 +43,8 @@ class EdgePanel extends JPanel implements Observer{
 	@Override
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
-			
-		synchronized (edges){
-			for (Edge edge : edges){
-				drawEdge(g, edge);
-			}
+		for (Edge edge : edges){
+			drawEdge(g, edge);
 		}
 	}
 	
@@ -53,11 +55,19 @@ class EdgePanel extends JPanel implements Observer{
 	}
 	
 	protected void addEdge(Edge edge){
-		synchronized (edges){
-			edges.add(edge);
+		if (edge == null){
+			throw new IllegalArgumentException("Edge cannot be null");
 		}
+		edgesToAdd.add(edge);
 		edge.addObserver(this);
-		repaint(getEdgeRectangle(edge, true));
+		
+        SwingUtilities.invokeLater(new Runnable(){
+            public void run() {
+            	Edge newEdge = edgesToAdd.remove();
+            	edges.add(newEdge);		
+    			repaint(getEdgeRectangle(newEdge, true));
+            }
+        });
 	}
 
 	private void drawEdge(Graphics g, Edge edge) {

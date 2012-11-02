@@ -40,10 +40,15 @@ public class MapView extends JLayeredPane implements ComponentListener {
 	private TilePanel tileLayer;
 	private EdgePanel edgeLayer;
 	
+	//offsets are the x and y location of the tile at the top left corner
 	private int xOffset;
 	private int yOffset;
 	
 	public MapView(){
+		this(null);
+	}
+	
+	public MapView(Level l){
 		
 		//sets up this component
 		this.setBounds(0, 0, 4000, 4000);
@@ -63,10 +68,20 @@ public class MapView extends JLayeredPane implements ComponentListener {
         
         //set Offsets
         setOffsets(0, 0);
-	}
-	
-	public MapView(Level l){
-		this();
+        
+		if (l != null){
+			for (int i = 0; i < l.getTiles().length; i++){
+				for (int j = 0; j < l.getTiles()[i].length; j++){
+					addTile(l.getTiles()[i][j]);
+				}
+			}
+			
+			for (Edge edge : l.getEdges()){
+				addEdge(edge);
+			}
+		}
+		
+		
 	}
 	
 	public void addTile(Tile t){
