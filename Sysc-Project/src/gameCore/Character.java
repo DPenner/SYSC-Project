@@ -20,6 +20,7 @@ public class Character  {
 	//------------Fields------------//
 	protected Inventory inventory;
 	protected int health;
+	
 	private String name;
 	private int attack;
 	protected Tile myPosition;
@@ -166,6 +167,13 @@ public class Character  {
 	public String getInventoryString(){
 		return inventory.toString();
 	}
+	/**
+	 * Returns the inventory for use in the View
+	 * @return the inventory the player is carrying
+	 */
+	public Inventory getInventory(){
+		return inventory;
+	}
 	
 	/**
 	 * addItem is a method used to load the non-player's inventory
@@ -178,6 +186,22 @@ public class Character  {
 	@Override
 	public String toString(){
 		return name + "(hp: " + health + " atk:" + attack +")" ;
+	}
+	
+	public int getAttack() {
+		return attack;
+	}
+
+	public void setAttack(int attack) {
+		this.attack = attack;
+	}
+
+	public int getHealth() {
+		return health;
+	}
+
+	public void setHealth(int health) {
+		this.health = health;
 	}
 
 }
