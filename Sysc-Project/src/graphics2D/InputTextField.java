@@ -1,7 +1,5 @@
 package graphics2D;
 
-import gameController.CommandEvent;
-
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -17,7 +15,6 @@ public class InputTextField extends JTextField implements KeyListener
 	public InputTextField()
 	{
 		addKeyListener(this);
-		setAction(new CommandEvent());	
 	}
 
 	@Override 
