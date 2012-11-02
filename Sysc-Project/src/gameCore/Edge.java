@@ -1,5 +1,8 @@
 package gameCore;
 
+import java.awt.Point;
+import java.util.Observable;
+
 /**
  * An edge exists between 2 tiles, or a tile and the boundary of a level.
  * 
@@ -17,7 +20,7 @@ package gameCore;
  *
  */
 
-public class Edge {
+public class Edge extends Observable {
 	
 	protected Tile tile1;
 	protected Tile tile2;
@@ -77,6 +80,10 @@ public class Edge {
 		return crossable;
 	}
 	
+	public final boolean canCrossByDefault(){
+		return crossable;
+	}
+	
 	/**
 	 * Places a Character on the other side of the Edge from the given Tile
 	 * @param currentTile The current tile the Character resides on
@@ -112,5 +119,35 @@ public class Edge {
 		//return which ever tile isn't the one passed in
 		if (currentTile == tile1) return tile2;
 		return tile1;
+	}
+	
+	public Direction getDirection1(){
+		if (tile1 == null) return null;
+		
+		return tile1.getEdgeDirection(this);
+	}
+	public Direction getDirection2(){
+		if (tile2 == null) return null;
+		
+		return tile2.getEdgeDirection(this);
+	}
+	
+	public Point getLocation1(){
+		if (tile1 == null) return null;
+		return tile1.getLocation();
+	}
+	public Point getLocation2(){
+		if (tile2 == null) return null;
+		return tile2.getLocation();
+	}
+	
+	public final boolean isInVisitedRoom(){
+		if (tile1 == null){
+			return tile2.isVisited();
+		}
+		if (tile2 == null){
+			return tile1.isVisited();
+		}
+		return tile1.isVisited() || tile2.isVisited();
 	}
 }
