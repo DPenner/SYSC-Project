@@ -98,6 +98,8 @@ public class Game
     	{
     		level = lc.getLevel();
     		player = level.getPlayer();
+    		
+    		KDTView kdtView = new KDTView(player, level);
     		return true;
     	}
     	return false;

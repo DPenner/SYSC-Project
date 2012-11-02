@@ -207,4 +207,20 @@ public class Level {
 			player = new Player("Babak", 10, 2, 1, tileInElevator);
 		}
 	}
+	
+	/**
+	 * Getter to return Tiles for use in MapView
+	 *
+	 */
+	public Tile[][] getTiles(){
+		return tileGrid;
+	}
+	
+	/**
+	 * Getter to return list of Edges for use in MapView
+	 */
+	public List<Edge> getEdges(){
+		return edgeList;
+	}
+	
 }

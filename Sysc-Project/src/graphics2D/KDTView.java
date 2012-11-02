@@ -4,6 +4,7 @@ import gameCore.Inventory;
 import gameCore.Item;
 import gameCore.Player;
 import gameCore.Tile;
+import gameLoader.Level;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
@@ -49,6 +50,8 @@ import javax.swing.JMenuItem;
  */
 public class KDTView implements PlayerListener{
 	//------------Fields------------//
+	private Level level;
+	private Player player;
 	private Inventory inv;
 	private DefaultListModel lmodel;
 	
@@ -65,10 +68,12 @@ public class KDTView implements PlayerListener{
 	 * -creates the Frame, adds the components onto the frame, and registers the ActionListeners
 	 * @param game the reference back to the game
 	 */
-	public KDTView(){
+	public KDTView(Player player, Level level){
 		//Create the GUI
 		f= new JFrame("Kraft Dinner Table Maze");
 		
+		this.player = player;
+		this.level=level;
 		addMenusToFrame();
 		f.setSize(600, 800);
 		
@@ -90,10 +95,10 @@ public class KDTView implements PlayerListener{
 	private void addComponetsToPaneUsingBorderLayout(Container pane){
 		pane.setLayout(new BorderLayout());
 		
-		KDTMainPanel pMain= new KDTMainPanel();
-		pane.add(pMain, BorderLayout.CENTER);
+		MapView pMap= new MapView(level);
+		pane.add(pMap, BorderLayout.CENTER);
 		
-		JPanel pPlayer = new PlayerStatusPanel();
+		JPanel pPlayer = new PlayerStatusPanel(player);
 		pane.add(pPlayer, BorderLayout.PAGE_START);
 				
 		//JPanel pInventory = new InventoryPanel();
@@ -101,8 +106,8 @@ public class KDTView implements PlayerListener{
 		createTestInventory();
 		addComponentsToInventoryPanel(pane);
 		
-		JPanel pInput = new InputPanel();
-		pane.add(pInput, BorderLayout.PAGE_END);
+		//JPanel pInput = new InputPanel();
+		//pane.add(pInput, BorderLayout.PAGE_END);
 		
 		
 	}
