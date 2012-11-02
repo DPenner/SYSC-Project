@@ -5,6 +5,7 @@ import java.util.List;
 
 import gameCore.Direction;
 import gameCore.Player;
+import gameGUI.KDTView;
 import textInterface.Command;
 import textInterface.CommandWord;
 import textInterface.Parser;
@@ -98,6 +99,7 @@ public class Game
     	{
     		level = lc.getLevel();
     		player = level.getPlayer();
+    		KDTView view=new KDTView(this);
     		return true;
     	}
     	return false;

@@ -203,6 +203,7 @@ public class Level {
 		{
 			this.elevator = elevator;
 			player = new Player("Babak", 10, 2, 1, tileInElevator);
+			
 		}
 	}
 }
