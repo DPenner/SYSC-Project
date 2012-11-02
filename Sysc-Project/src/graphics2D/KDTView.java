@@ -48,13 +48,12 @@ import javax.swing.JMenuItem;
  *
  * @version 1.0
  */
-public class KDTView implements PlayerListener{
+public class KDTView{
 	//------------Fields------------//
 	private Level level;
 	private Player player;
 	
 	private Inventory inv;
-	
 	
 	private JFrame f;
 	
@@ -147,26 +146,6 @@ public class KDTView implements PlayerListener{
 	}
 	
 		
-	@Override
-	public void itemAdded(PlayerEvent e) {
-		// TODO Auto-generated method stub
-		lmodel.addElement(e.getItem());
-		
-	}
-
-	@Override
-	public void itemDropped(PlayerEvent e) {
-		// TODO Auto-generated method stub
-		lmodel.removeElement(e.getItem());
-	}
-
-	@Override
-	public void statsChanged(PlayerEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	
 	/**
 	 * Add the components to the Content Pane using GridBagLayout
 	 * ---- NOT USING this layout ---
