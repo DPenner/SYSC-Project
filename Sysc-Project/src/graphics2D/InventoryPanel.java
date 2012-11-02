@@ -43,13 +43,13 @@ public class InventoryPanel extends JPanel implements PlayerListener{
 	@Override
 	public void itemAdded(PlayerEvent e) {
 		// TODO Auto-generated method stub
-		
+		lmodel.addElement(e.getItem());
 	}
 
 	@Override
 	public void itemDropped(PlayerEvent e) {
 		// TODO Auto-generated method stub
-		
+		lmodel.removeElement(e.getItem());
 	}
 
 	@Override
