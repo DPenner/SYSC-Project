@@ -1,5 +1,6 @@
 package graphics2D;
 
+import gameCore.Edge;
 import gameCore.Tile;
 import gameCore.Player;
 
@@ -11,8 +12,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 class TilePanel extends JPanel implements Observer{
 	
@@ -27,11 +31,13 @@ class TilePanel extends JPanel implements Observer{
 	private MapView parentMap;
 	private Map<Point, Tile> tiles; //indexing by point makes it easier to locate the tile
 	private Map<Point, Color> tileColors;
+	private Queue<Tile> tilesToAdd;
 	
 	protected TilePanel(MapView mapView){
 		parentMap = mapView;
 		tiles = new HashMap<Point, Tile>();
 		tileColors = new HashMap<Point, Color>();
+		tilesToAdd = new ConcurrentLinkedQueue<Tile>();
 		
 		//saved internally for convenience
 		tileSize = mapView.getTileSize();
@@ -43,10 +49,8 @@ class TilePanel extends JPanel implements Observer{
 		super.paintComponent(g);
 		this.setBackground(Color.BLACK);
 		
-		synchronized (tiles){
-			for (Tile t : tiles.values()){
-				drawTile(g, t);
-			}
+		for (Tile t : tiles.values()){
+			drawTile(g, t);
 		}
 	}
 	
@@ -58,12 +62,19 @@ class TilePanel extends JPanel implements Observer{
 	
 	protected void addTile(Tile t){
 		setTileColor(t, DEFAULT_TILE_COLOR);
-		synchronized (tiles){
-			tiles.put(t.getLocation(), t);
+		if (t == null){
+			throw new IllegalArgumentException("Tile cannot be null");
 		}
-		
+		tilesToAdd.add(t);
 		t.addObserver(this);
-		repaint(getTileAndEdgeRectangle(t));
+		
+        SwingUtilities.invokeLater(new Runnable(){
+            public void run() {
+            	Tile newTile = tilesToAdd.remove();
+            	tiles.put(newTile.getLocation(), newTile);		
+    			repaint(getTileAndEdgeRectangle(newTile));
+            }
+        });
 	}
 	
 	private void drawTile(Graphics g, Tile t){
