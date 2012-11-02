@@ -52,7 +52,7 @@ public class KDTView{
 	//------------Fields------------//
 	private Level level;
 	private Player player;
-
+	
 	private Inventory inv;
 	
 	private JFrame f;
@@ -74,7 +74,7 @@ public class KDTView{
 		
 		this.player=player;
 		this.level=level;
-
+				
 		addMenusToFrame();
 		f.setSize(600, 800);
 		
@@ -98,10 +98,8 @@ public class KDTView{
 	private void addComponentsToPaneUsingBorderLayout(Container pane){
 		pane.setLayout(new BorderLayout());
 		
-
 		//KDTMainPanel pMain= new KDTMainPanel();
-		MapView pMap = new MapView();
-
+		MapView pMap = new MapView(level);
 		pane.add(pMap, BorderLayout.CENTER);
 		
 		JPanel pPlayer = new PlayerStatusPanel(player);
@@ -110,7 +108,8 @@ public class KDTView{
 		JPanel pInventory = new InventoryPanel(player);
 		pane.add(pInventory, BorderLayout.LINE_END);
 		
-
+		//addComponentsToInventoryPanel(pane);
+		
 		//JPanel pInput = new InputPanel();
 		//pane.add(pInput, BorderLayout.PAGE_END);
 		
@@ -146,7 +145,7 @@ public class KDTView{
 		f.setJMenuBar(mainBar);
 	}
 	
-
+		
 	/**
 	 * Add the components to the Content Pane using GridBagLayout
 	 * ---- NOT USING this layout ---
