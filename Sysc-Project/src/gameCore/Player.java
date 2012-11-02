@@ -5,6 +5,7 @@ import graphics2D.PlayerEvent;
 import graphics2D.PlayerListener;
 import gameLoader.EndGameException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 /**
@@ -39,6 +40,7 @@ public class Player extends Character
 	public Player(String name, int health, int attack, int stamina, Tile myPosition){
 		super(name,health,attack,myPosition);
 		this.stamina=stamina;
+		pListeners = new ArrayList<PlayerListener>();
 	}
 	
 	/*

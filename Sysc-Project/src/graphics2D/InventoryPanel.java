@@ -18,12 +18,12 @@ public class InventoryPanel extends JPanel implements PlayerListener{
 	public InventoryPanel(Player p){
 		player=p;
 		inv = player.getInventory();
-		
+		addComponentsToInventoryPanel();
+		player.addPlayerListener(this);
 	}
 		
-	private void addComponentsToInventoryPanel(Container pane) {
-		
-		
+	private void addComponentsToInventoryPanel() {
+				
 		JList jl;
 		lmodel= new DefaultListModel();
 		
@@ -31,7 +31,7 @@ public class InventoryPanel extends JPanel implements PlayerListener{
 		jl.setModel(lmodel);
 		jl.setName("InventoryList");
 		
-		pane.add(jl, BorderLayout.LINE_END);
+		add(jl, BorderLayout.LINE_END);
 		 	
 		for(int i=0; i<inv.size(); i++){
 			lmodel.addElement(inv.getItem(i).toString());

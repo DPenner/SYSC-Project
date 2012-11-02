@@ -22,13 +22,14 @@ public class PlayerStatusPanel extends JPanel implements PlayerListener{
 		player=p;
 		this.setBackground(Color.BLACK);
 		this.setPreferredSize(new Dimension(400,80));
+		player.addPlayerListener(this);
 			
 	}
 	
 	private void drawStatus(Graphics g, String sLabel, int value, int x, int y){
 		g.drawString(sLabel, x, y+10); //label for the string
 		
-		g.drawRect(x+TEXT_OFFSET, y+BOX_OFFSET, BOX_SIZE, BOX_SIZE );
+		//g.drawRect(x+TEXT_OFFSET, y+BOX_OFFSET, BOX_SIZE, BOX_SIZE );
 		g.drawString(value+"", x+TEXT_OFFSET+2, y+10);
 		
 	}

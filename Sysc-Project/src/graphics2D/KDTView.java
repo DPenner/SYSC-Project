@@ -16,6 +16,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
@@ -77,6 +78,7 @@ public class KDTView{
 				
 		addMenusToFrame();
 		f.setSize(600, 800);
+		f.setMinimumSize(new Dimension(600, 800));
 		
 		
 		cp=f.getContentPane();
@@ -100,6 +102,7 @@ public class KDTView{
 		
 		//KDTMainPanel pMain= new KDTMainPanel();
 		MapView pMap = new MapView(level);
+		MapController mController = new MapController(pMap);
 		pane.add(pMap, BorderLayout.CENTER);
 		
 		JPanel pPlayer = new PlayerStatusPanel(player);
