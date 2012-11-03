@@ -84,7 +84,7 @@ public class MapView extends JScrollPane implements ComponentListener {
 		//sets up this component
 		this.addComponentListener(this);
 		this.setMinimumSize(new Dimension(MINIMUM_WIDTH, MINIMUM_HEIGHT));
-		xOffset = 0;
+		xOffset = 0; //TEMP, currently offsets not properly calculated
 		yOffset = 0;
 	}
 	
