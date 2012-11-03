@@ -20,14 +20,15 @@ import java.util.*;
  * @version 1.0
  */
 
-public class Tile {
+public class Tile extends Observable {
 	
 	//------------Fields------------//
 	private Point location;
-	private Map<Direction, Edge> edges; //CONSIDER: String (direction) can be enum?
+	private Map<Direction, Edge> edges;
 	private Inventory inventory;
 	private Character character;	
 	private Room containingRoom;
+	private boolean visited; //A tile is visited if its room has been visited
 	
 	//------------Constructors------------//
    /**
@@ -144,6 +145,8 @@ public class Tile {
 		}
 		
 		edges.put(direction, edge);
+		setChanged();
+		notifyObservers(edge);
 	}
 	
 	//------------Adding and Removing------------//
@@ -156,7 +159,12 @@ public class Tile {
 			throw new UnsupportedOperationException("Can't add character to tile - there already is one");
 		}
 		
+		if (c instanceof Player){
+			setRoomAsVisited();
+		}
 		character = c;
+		setChanged();
+		notifyObservers();
 	}
 	
 	/**
@@ -166,6 +174,8 @@ public class Tile {
 	public Character removeCharacter(){
 		Character removed = character;
 		character = null;
+		setChanged();
+		notifyObservers();
 		return removed;
 	}
 	
@@ -175,6 +185,8 @@ public class Tile {
 	 */
 	public void addItem(Item item){
 		inventory.addItem(item);
+		setChanged();
+		notifyObservers();
 	}
 	
 	/**
@@ -183,6 +195,8 @@ public class Tile {
 	 */
 	public void removeItem(Item item){
 		inventory.removeItem(item);
+		setChanged();
+		notifyObservers();
 	}
 	
 	//------------Character Movement------------//
@@ -304,6 +318,7 @@ public class Tile {
 		return ((Exit)getEdge(direction)).getKeyName();
 	}
 	
+	//------------Direction handling------------//
 	/**
 	 * Validates the given direction for this Tile.
 	 * @param direction The direction to validate
@@ -332,38 +347,43 @@ public class Tile {
 		return edges.keySet();
 	}
 	
-	/* REMOVED - Character class should handle these
-	public void attackCharacter(Direction direction) throws IllegalArgumentException{
-		if (!hasCharacter(direction)){
-			throw new IllegalArgumentException("Cannot attack in that direction");
+	public Direction getEdgeDirection(Edge edge){		
+		for (Map.Entry<Direction, Edge> e : edges.entrySet()){
+			if (e.getValue() == edge){
+				return e.getKey();
+			}
 		}
 		
-		//This tile's character attacks the next tile's character
-		//character.attack(getNextTile(direction).getCharacter()); TEMP
-		//TEMP check for death
+		throw new IllegalArgumentException("Edge is not set on this Tile");
 	}
 	
-	//------------Item Handling------------//
-	public boolean takeItemFromCharacter(Item i){ //TEMP
-		return false;
+	public void setRoomAsVisited(){
+		containingRoom.setVisited();
 	}
-	public boolean giveItemToCharacter(Item i){ //TEMP
-		return false;
+	public boolean isVisited(){
+		return visited;
+	}
+	public void setVisited(){
+		visited = true;
+		setChanged();
+		notifyObservers();
 	}
 	
-	//------------Looking------------//
-	//Note that all "lookFor*object*" methods return a copy so that the original
-	//cannot be modified
-	public Character lookForCharacter(Direction direction){
-		if (!hasCharacter(direction)){
-			return null;
+	/**
+	 * Finds shortest path between this tile and the destination for the character on this tile
+	 * @param destination The destination of the character
+	 * @return The list of Tiles in order. If this Tile is the destination, returns an empty list. If no path can be found, returns null.
+	 */
+	public List<Tile> getPath(Tile destination){
+		
+		
+		class ShortestPathData {
+			Tile tile;
+			Tile previousTile;
+			int minSteps;
 		}
-
-		return null; //TEMP deep copy of character
+		return null;
 	}
 	
-	public Inventory lookForItems(Direction direction){
-		return null; //TEMP deep copy of inventory
-	}*/
 	
 }

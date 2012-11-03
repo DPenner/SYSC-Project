@@ -7,6 +7,8 @@ import java.util.Observable;
 import gameCore.Direction;
 import gameCore.Player;
 import graphics2D.TextOutputPanel;
+import graphics2D.KDTView;
+
 import textInterface.Command;
 import textInterface.CommandWord;
 import textInterface.Parser;
@@ -34,8 +36,9 @@ public class Game extends Observable
     private Parser parser;
     private Player player;
     private Level level;
-    private List<Command> undoList;
-    private int undo_index;
+    private static int undo_index;
+	private static List<Command> undoList;
+
     private boolean endGame;
         
     /**
@@ -47,7 +50,6 @@ public class Game extends Observable
     	undo_index = 0;
         parser = new Parser();
         endGame = false;
-	this.addObserver(TextOutputPanel.getTextOutputPanel());
     }
 
     /**
@@ -61,6 +63,7 @@ public class Game extends Observable
         }
         else
         {
+         	notifyObservers("able to load the game.");
 	        printWelcome();
 	
 	        // Enter the main command loop.  Here we repeatedly read commands and
@@ -101,6 +104,12 @@ public class Game extends Observable
     	{
     		level = lc.getLevel();
     		player = level.getPlayer();
+    		
+    		KDTView kdtView = new KDTView(player, level);
+            this.addObserver(TextOutputPanel.getTextOutputPanel());
+            this.setChanged();
+            notifyObservers("Testing text output");
+            this.clearChanged();
     		return true;
     	}
     	return false;
@@ -148,7 +157,7 @@ public class Game extends Observable
             	break;
             	
             case GO:
-                actionDone = go(command);
+                //actionDone = go(command);
                 break;
 
             case VIEW:
@@ -302,38 +311,7 @@ public class Game extends Observable
         return true;
     }
     
-    /** 
-     * Try to go in one direction. If there is an exit, enter the new
-     * room, otherwise print an error message.
-     */
-    private boolean go(Command command) 
-    {
-        if(!command.hasSecondWord()) {
-            // if there is no second word, we don't know where to go...
-            System.out.println("Go where?");
-            return false;
-        }
-
-        Direction direction = Direction.getDirection(command.getSecondWord());
-
-        try
-        {
-        	StringBuffer output = new StringBuffer();
-        	boolean hasMoved = player.move(direction, output);
-        	System.out.println(output.toString());
-        	return hasMoved;
-        }
-        catch(Exception e)
-        {
-        	if(e instanceof EndGameException)
-        	{
-        		endGame = true;
-        	}
-        	System.out.println(e.getMessage());
-        	return false;
-        }
-    }
-
+    
     private void view(Command command)
     {
     	if(!command.hasSecondWord())

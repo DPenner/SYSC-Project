@@ -1,10 +1,13 @@
 package graphics2D;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JPanel;
 
@@ -12,21 +15,17 @@ public class TextOutputPanel extends JPanel implements Observer{
 	private static final long serialVersionUID = 1L;
 
 	private static TextOutputPanel oneInstance;
-	private JTextArea output;
-	private InputTextField input;
-	private TextOutputPanel()
+	private JTextArea displayArea;
+
+	TextOutputPanel()
 	{
-		JPanel outputPanel = new JPanel(new FlowLayout());
-		JPanel inputPanel = new JPanel();
-		setLayout(new BorderLayout());
+		displayArea = new JTextArea("Starting Text");
+		displayArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(displayArea);
+        scrollPane.setPreferredSize(new Dimension(590, 125));
+        
+		this.add(scrollPane);
 
-		output = new JTextArea();
-		outputPanel.add(output);
-		input = new InputTextField();
-		inputPanel.add(input);
-
-		this.add(outputPanel, BorderLayout.CENTER);
-		this.add(inputPanel, BorderLayout.SOUTH);
 	}
 	
 	public static TextOutputPanel getTextOutputPanel() 
@@ -38,6 +37,10 @@ public class TextOutputPanel extends JPanel implements Observer{
 	@Override
 	public void update(Observable o, Object arg) 
 	{
-		if(arg instanceof String) output.append((String) arg);
+		if(arg instanceof String) 
+		{
+			displayArea.append("\n" + (String) arg);
+			displayArea.setCaretPosition(displayArea.getDocument().getLength());
+		}
 	}
 }

@@ -1,8 +1,12 @@
 
 package gameCore;
 
+import graphics2D.PlayerEvent;
+import graphics2D.PlayerListener;
 import gameLoader.EndGameException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 /**
  * A Character is a superclass for all of the animated creatures inside the game.
@@ -23,6 +27,7 @@ import java.util.Scanner;
 public class Player extends Character
 {	//------------Fields------------//
 	private int stamina;
+	private List<PlayerListener> pListeners;
 	
 	//------------Constructors------------//
     /*
@@ -35,6 +40,7 @@ public class Player extends Character
 	public Player(String name, int health, int attack, int stamina, Tile myPosition){
 		super(name,health,attack,myPosition);
 		this.stamina=stamina;
+		pListeners = new ArrayList<PlayerListener>();
 	}
 	
 	/*
@@ -119,6 +125,8 @@ public class Player extends Character
 			myPosition.removeItem(itemToPickup);
 			
 			itemPickedUp=true;
+			
+			notifyItemPickedUp(itemToPickup);
 		}
 		return itemPickedUp;
 	}
@@ -138,6 +146,8 @@ public class Player extends Character
 			this.inventory.removeItem(itemToDrop);
 			myPosition.addItem(itemToDrop);
 			itemDropped=true;
+			
+			notifyItemDropped(itemToDrop);
 		}
 		return itemDropped;
 	}
@@ -209,5 +219,57 @@ public class Player extends Character
 		}
 		return "The following items are on the ground: " + myPosition.getInventory().toString();
 	}
+	
+	private void notifyItemDropped(Item droppedItem){
+		PlayerEvent pe=new PlayerEvent(this);
+		pe.setItem(droppedItem);
+		
+		for(PlayerListener pl: pListeners){
+			pl.itemDropped(pe);
+		}
+	}
+	/**
+	 * Item has been added: notify subscribers
+	 * @param newItem - a new item that was added to player's inventory
+	 */
+	private void notifyItemPickedUp(Item newitem){
+		PlayerEvent pe=new PlayerEvent(this);
+		pe.setItem(newitem);
+		
+		for(PlayerListener pl: pListeners){
+			pl.itemAdded(pe);
+		}
+	}
+	
+	/**
+	 * Health or Attack has changed - notify subscribers
+	 */
+	private void notifyStatsChanged()
+	{	
+		PlayerEvent pe=new PlayerEvent(this);
+		pe.setPlayer(this);
+	
+		for(PlayerListener pl: pListeners){
+			pl.statsChanged(pe);
+		}
+			
+	}
+	/**
+	 * Allow external classes to subscribe to the PlayerEvents
+	 * @param pl an object of PlayerListener which wants to subscribe to player events
+	 */
+	public void addPlayerListener(PlayerListener pl)
+	{
+		pListeners.add(pl);
+	}
+	
+	/**
+	 * Remove the PlayerListener specified
+	 * @param pl the PlayerListener object to unsubscribe
+	 */
+	public void removePlayerListener(PlayerListener pl){
+		pListeners.remove(pl);
+	}
+	
 	
 }

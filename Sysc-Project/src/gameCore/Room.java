@@ -23,7 +23,7 @@ import java.util.Set;
 public class Room 
 {
     private Set<Tile> tiles;
-    private boolean visited;
+    //private boolean visited;
 
     /**
      * Creates a room from a set of tiles.
@@ -40,7 +40,7 @@ public class Room
     		throw new IllegalArgumentException("A room must contain at least one tile.");
     	}
         this.tiles = tiles;
-        visited = false;
+        //visited = false;
     }
 
     public void addTile(Tile t)
@@ -48,19 +48,21 @@ public class Room
     	tiles.add(t);
     }
 
-    /**
+    /*
      * Checks if the room has been visited or not
      * @return True if the room has been visited, false otherwise
-     */
+     *
 	public boolean isVisited() {
 		return visited;
-	}
+	}*/
 
 	/**
 	 * Makes the room visited (a room cannot be "un-visited")
 	 */
 	public void setVisited() {
-		this.visited = true;
+		for (Tile t : tiles){
+			t.setVisited();
+		}
 	}
 }
 
