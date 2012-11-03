@@ -83,73 +83,9 @@ public class Game extends TextOutputPanelObservable
     	}
     	return false;
     }
-
-
-    /**
-     * Try to pick up an item. If the item exists, pick it up, otherwise print
-     * an error message
-     */
-    
-    private boolean pickup(Command command)
-    {
-    	if(!command.hasSecondWord()) {
-            // if there is no second word, we don't know what to pick up...
-            System.out.println("Pick up what?");
-            return false;
-        }
-
-        String itemname = command.getSecondWord();
-
-        if(!player.pickUpItem(itemname))
-        {
-        	System.out.println(itemname + " is not on the ground. Can't pick up what's not there.");
-        	return false;
-        }
-        else
-        {
-        	System.out.println("Picked up " + itemname);
-        }
-        return true;
-    }
-    
-    private void searchForItemOnGround(Command command)
-    {
-    	if(command.hasSecondWord())
-    	{
-    		System.out.println("Cannot serach for " + command.getSecondWord());
-    		return;
-    	}
-    	System.out.println(player.searchForItemOnGround());
-    }
-    
-    /**
-     * Try to drop an item. If the item is in player's inventory then drop it, otherwise
-     * print error message
-     */
-    
-    private boolean drop(Command command)
-    {
-    	if(!command.hasSecondWord()) {
-            // if there is no second word, we don't know where to go...
-            System.out.println("Drop what?");
-            return false;
-        }
-
-        String itemname = command.getSecondWord();
-
-        if(!player.drop(itemname))
-        {
-        	System.out.println("Item is not in your inventory. Can't drop what you don't have.");
-        	return false;
-        }
-        else
-        {
-        	System.out.println("Dropped " + itemname);
-        }
-        return true;
-    }
-    
-    
+  
+    //outdated due to 2D view
+   /* 
     private void view(Command command)
     {
     	if(!command.hasSecondWord())
@@ -207,7 +143,7 @@ public class Game extends TextOutputPanelObservable
     			System.out.println(e.getMessage());
     		}
     	}
-    }
+    }*/
 
     /** 
      * "Quit" was entered. Check the rest of the command to see

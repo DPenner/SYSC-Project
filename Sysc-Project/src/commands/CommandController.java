@@ -38,6 +38,8 @@ public class CommandController extends TextOutputPanelObservable implements KeyE
     	keyToCommandMap.put(KeyEvent.VK_RIGHT, new GoCommand(Direction.EAST));
     	
     	keyToCommandMap.put(KeyEvent.VK_S, new SearchCommand());
+    	keyToCommandMap.put(KeyEvent.VK_P, new PickUpCommand());
+    	keyToCommandMap.put(KeyEvent.VK_D, new DropCommand());
     }
     
     /* 
