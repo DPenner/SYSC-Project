@@ -18,6 +18,23 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+/**
+ * TilePanel is a specialized panel that displays Tiles for its parent MapView. This includes displaying
+ * the Tiles' contents including Characters and Items
+ * 
+ * @author Group D
+ * @author Main Author: Darrell Penner
+ * 
+ * Group D Members
+ * ---------------
+ * Karen Madore
+ * Trang Pham
+ * Darrell Penner
+ * 
+ *
+ * @version 1.0
+ *
+ */
 class TilePanel extends JPanel implements Observer{
 	
 	public static final Color DEFAULT_TILE_COLOR = Color.LIGHT_GRAY;

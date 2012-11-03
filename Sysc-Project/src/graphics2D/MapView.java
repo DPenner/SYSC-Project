@@ -12,7 +12,7 @@ import java.awt.event.ComponentListener;
 import javax.swing.*;
 
 /**
- * MapView provides a view of the map, which consists of Edges, Tiles, and objects contained in the Tiles
+ * MapView provides a view of the map, which consists of Edges and Tiles
  * 
  * @author Group D
  * @author Main Author: Darrell Penner

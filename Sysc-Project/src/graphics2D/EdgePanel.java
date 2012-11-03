@@ -18,6 +18,22 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+/**
+ * EdgePanel is a specialized panel that displays Edges for its parent MapView
+ * 
+ * @author Group D
+ * @author Main Author: Darrell Penner
+ * 
+ * Group D Members
+ * ---------------
+ * Karen Madore
+ * Trang Pham
+ * Darrell Penner
+ * 
+ *
+ * @version 1.0
+ *
+ */
 class EdgePanel extends JPanel implements Observer{
 	//public static final int EDGE_LENGTH = MapView.TILE_SIZE;
 	public static final Color DEFAULT_EDGE_COLOR = Color.decode("0x606060");
