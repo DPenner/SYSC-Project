@@ -219,6 +219,17 @@ public class Player extends Character
 		}
 		return "The following items are on the ground: " + myPosition.getInventory().toString();
 	}
+
+	/**
+	 * Override the adjustHealth of the Character class to provide player with ability to notify PlayerStatusPlanel of updates 
+	 */
+	
+	public void adjustHealth(int value){
+		super.adjustHealth(value);
+		
+		notifyStatsChanged();
+	}
+
 	
 	private void notifyItemDropped(Item droppedItem){
 		PlayerEvent pe=new PlayerEvent(this);

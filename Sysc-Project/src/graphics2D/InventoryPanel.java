@@ -4,6 +4,7 @@ import gameCore.Inventory;
 import gameCore.Player;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 
 import javax.swing.DefaultListModel;
@@ -16,8 +17,11 @@ public class InventoryPanel extends JPanel implements PlayerListener{
 	private Inventory inv;
 	
 	public InventoryPanel(Player p){
+		this.setBackground(Color.BLACK);
+		
 		player=p;
 		inv = player.getInventory();
+		
 		addComponentsToInventoryPanel();
 		player.addPlayerListener(this);
 	}
@@ -31,6 +35,9 @@ public class InventoryPanel extends JPanel implements PlayerListener{
 		jl.setModel(lmodel);
 		jl.setName("InventoryList");
 		
+		jl.setBackground(this.getBackground());
+		
+				
 		add(jl, BorderLayout.LINE_END);
 		 	
 		for(int i=0; i<inv.size(); i++){
