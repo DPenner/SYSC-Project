@@ -2,16 +2,17 @@ package commands;
 
 import gameCore.Direction;
 import gameCore.Player;
+import gameLoader.TextOutputPanelObservable;
+import graphics2D.TextOutputPanel;
 
 import java.awt.KeyEventDispatcher;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CommandController implements KeyEventDispatcher{
+public class CommandController extends TextOutputPanelObservable implements KeyEventDispatcher{
 	private static List<Command> undoList;
 	private static Map<Integer, Command> keyToCommandMap;
     private static int undo_index;
@@ -35,16 +36,37 @@ public class CommandController implements KeyEventDispatcher{
     	keyToCommandMap.put(KeyEvent.VK_DOWN, new GoCommand(Direction.SOUTH));
     	keyToCommandMap.put(KeyEvent.VK_LEFT, new GoCommand(Direction.WEST));
     	keyToCommandMap.put(KeyEvent.VK_RIGHT, new GoCommand(Direction.EAST));
+    	
+    	keyToCommandMap.put(KeyEvent.VK_S, new SearchCommand());
     }
     
     /* 
      * Protected Getters
      */
-    
     protected static Player getPlayer() { return player;}
-    protected static void undoCommand() {
+    
+    /*
+     * For undo/redo commands
+     */
+    private void undoCommand() {
+    	if(undo_index == 0) printMessage("Nothing to undo.");
+    	else
+    	{	
+    		undo_index--;
+    		//undo
+    		Command c = undoList.get(undo_index);
+    		c.undo();
+    		printMessage("Successfully undone.");
+    	} 		
     }
-    protected static void redoCommand() {
+    private void redoCommand() {
+    	if(undo_index >= undoList.size()) printMessage("Nothing to redo.");
+    	else
+    	{
+    		undoList.get(undo_index).execute();
+    		printMessage("Successfully redone.");
+    		undo_index++;
+    	} 		
     }
     private void saveGameState(Command command)
     {
@@ -64,8 +86,19 @@ public class CommandController implements KeyEventDispatcher{
 
 	@Override
 	public boolean dispatchKeyEvent(KeyEvent arg0) {
-		Command c = keyToCommandMap.get((Integer)arg0.getKeyCode());
-		if(c.execute()) saveGameState(c);
+		//this method is called twice: once for key pressed and again for released, ignore release
+		//otherwise it will try to execute the command twice
+		
+		if(arg0.getID() != KeyEvent.KEY_PRESSED) return false;
+		
+		int keyPressed = arg0.getKeyCode();
+		if (keyPressed ==  KeyEvent.VK_U) undoCommand();
+		else if (keyPressed == KeyEvent.VK_R) redoCommand();
+		else
+		{
+			Command c = keyToCommandMap.get((Integer)keyPressed);
+			if(c != null) if(c.execute()) saveGameState(c);
+		}
 		return false;
 	}
 }

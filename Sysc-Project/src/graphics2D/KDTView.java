@@ -80,8 +80,8 @@ public class KDTView{
 		this.level=level;
 				
 		addMenusToFrame();
-		f.setSize(600, 800);
-		f.setMinimumSize(new Dimension(600, 800));
+		f.setSize(600, 700);
+		f.setMinimumSize(new Dimension(600, 700));
 		
 		cp=f.getContentPane();
 		//addComponentsToPaneUsingBAGLayout(cp);

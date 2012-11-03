@@ -1,15 +1,14 @@
 package graphics2D;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JPanel;
+import javax.swing.text.DefaultCaret;
 
 public class TextOutputPanel extends JPanel implements Observer{
 	private static final long serialVersionUID = 1L;
@@ -19,10 +18,11 @@ public class TextOutputPanel extends JPanel implements Observer{
 
 	TextOutputPanel()
 	{
-		displayArea = new JTextArea("Starting Text");
+		displayArea = new JTextArea();
 		displayArea.setEditable(false);
+		
         JScrollPane scrollPane = new JScrollPane(displayArea);
-        scrollPane.setPreferredSize(new Dimension(590, 125));
+        scrollPane.setPreferredSize(new Dimension(590, 150));
         
 		this.add(scrollPane);
 
@@ -39,7 +39,7 @@ public class TextOutputPanel extends JPanel implements Observer{
 	{
 		if(arg instanceof String) 
 		{
-			displayArea.append("\n" + (String) arg);
+			displayArea.append((String) arg + "\n");
 			displayArea.setCaretPosition(displayArea.getDocument().getLength());
 		}
 	}

@@ -31,26 +31,10 @@ import textInterface.Parser;
  * @version 1.0
  */
 
-public class Game extends Observable
+public class Game extends TextOutputPanelObservable
 {
-    private Parser parser;
     private Player player;
     private Level level;
-    private static int undo_index;
-	private static List<Command> undoList;
-
-    private boolean endGame;
-        
-    /**
-     * Create the game and initialise its internal map a grid of 3x3 tiles.
-     */
-    public Game() 
-    {
-    	undoList = new ArrayList<Command>();
-    	undo_index = 0;
-        parser = new Parser();
-        endGame = false;
-    }
 
     /**
      *  Main play routine.  Loops until end of play.
@@ -59,22 +43,12 @@ public class Game extends Observable
     {   
         if(!loadLvl("lvl0.xml"))
         {
-        	notifyObservers("Unable to load the game.");
+        	printMessage("Unable to load the game.");
         }
         else
         {
-         	notifyObservers("able to load the game.");
-	        printWelcome();
-	
-	        // Enter the main command loop.  Here we repeatedly read commands and
-	        // execute them until the game is over.
-	                
-	        boolean finished = false;
-	        while (! finished && !endGame) {
-	           // Command command = parser.getCommand();
-	          //  finished = processCommand(command, false);
-	        }
-	        System.out.println("Thank you for playing.  Good bye.");
+    		new KDTView(player, level);
+         	printWelcome(); 
         }
     }
 
@@ -83,12 +57,13 @@ public class Game extends Observable
      */
     private void printWelcome()
     {
-        System.out.println();
-        System.out.println("Welcome to the World of Kraft Dinner Table(KDT) Maze!");
-        System.out.println("KDT is the first version of an incredibly boring adventure game.");
-        System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
-        System.out.println("If you find KD, you win! And the prize is an actual box of KD.");
-        //System.out.println(currentRoom.getLongDescription());
+        printMessage("Welcome to the World of Kraft Dinner Table(KDT) Maze!");
+        printMessage("KDT is the first version of an incredibly boring adventure game.");
+        printMessage("If you find KD, you win! And the prize is an actual box of KD.\n");
+        
+        printMessage("You are lost. You are alone. You wander");
+        printMessage("around the maze searching for an exit.\n");
+        printMessage("Click the help menu option to view help manual.");
     }
     
     /** 
@@ -104,149 +79,12 @@ public class Game extends Observable
     	{
     		level = lc.getLevel();
     		player = level.getPlayer();
-    		
-    		KDTView kdtView = new KDTView(player, level);
-            this.addObserver(TextOutputPanel.getTextOutputPanel());
-            this.setChanged();
-            notifyObservers("Testing text output");
-            this.clearChanged();
     		return true;
     	}
     	return false;
     }
 
-    /**
-     * Given a command, process (that is: execute) the command.
-     * @param command The command to be processed.
-     * @return true If the command ends the game, false otherwise.
-     */
-    private boolean processCommand(Command command, boolean isRedoOrUndo) 
-    {
-        boolean wantToQuit = false;
-        boolean actionDone = false;
 
-        CommandWord commandWord = command.getCommandWord();
-
-        switch (commandWord) {
-            case UNKNOWN:
-                System.out.println("I don't know what you mean...");
-                break;
-
-            case HELP:
-                printHelp();
-                break;
-                
-            case QUIT:
-                wantToQuit = quit(command);
-                break;
-                
-            case LOOK:
-            	look(command);
-            	break;
-            	
-            case SEARCH:
-            	searchForItemOnGround(command);
-            	break;
-
-            case PICKUP:
-            	actionDone = pickup(command);
-            	break;
-            	
-            case DROP:
-            	actionDone = drop(command);
-            	break;
-            	
-            case GO:
-                //actionDone = go(command);
-                break;
-
-            case VIEW:
-            	view(command);
-            	break;
-            	
-            case UNDO:
-            	undo();
-            	break;
-            case REDO:
-            	redo();
-            	break;
-            
-        }
-        if(actionDone && !isRedoOrUndo)
-        {
-        	saveGameState(command);
-        }
-        return wantToQuit;
-    }
-
-    private void saveGameState(Command command)
-    {
-    	if(undo_index != undoList.size())
-    	{
-    		//override the available redos
-    		for(int i = undoList.size(); i > undo_index; i--)
-    		{
-    			//remove the saved state 
-    			undoList.remove(i-1);
-    		}
-    	}
-    	
-    	undoList.add(command);
-    	undo_index++;
-    }
-    // implementations of user commands:
-
-    /**
-     * Print out some help information.
-     * Here we print some stupid, cryptic message and a list of the 
-     * command words.
-     */
-    private void printHelp() 
-    {
-        System.out.println("You are lost. You are alone. You wander");
-        System.out.println("around the maze searching for an exit.");
-        System.out.println();
-        System.out.println("Your command words are:");
-        parser.showCommands();
-    }
-
-    private void undo()
-    {
-    	if(undo_index != 0)
-    	{	
-    		undo_index--;
-    		//undo
-    		Command c = undoList.get(undo_index);
-    		CommandWord oppositeCommandWord = c.getCommandWord().getOppositeCommand();
-    		switch(oppositeCommandWord)
-    		{
-    		case GO:
-    			String oppositeDirection = Direction.valueOf(c.getSecondWord().toUpperCase()).getOppositeDirection().toString();
-    			processCommand(new Command(oppositeCommandWord, oppositeDirection), true);
-    			break;
-    		case PICKUP:
-    		case DROP:
-    			processCommand(new Command(oppositeCommandWord, c.getSecondWord()), true);
-    		default:
-    			break;
-    		}
-    		System.out.println("Successfully undone.");
-    	}
-    	else
-    		System.out.println("Nothing to undo.");
-    }
-    
-    private void redo()
-    {
-    	if(undo_index < undoList.size())
-    	{
-    		processCommand(undoList.get(undo_index), true);
-    		System.out.println("Successfully redone.");
-    		undo_index++;
-    	}
-    	else
-    		System.out.println("Nothing to redo.");
-    }
     /**
      * Try to pick up an item. If the item exists, pick it up, otherwise print
      * an error message
