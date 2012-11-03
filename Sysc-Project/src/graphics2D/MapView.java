@@ -12,7 +12,7 @@ import java.awt.event.ComponentListener;
 import javax.swing.*;
 
 /**
- * MapView provides a view of the map, which consists of Edges, Tiles, and contained in the Tiles
+ * MapView provides a view of the map, which consists of Edges, Tiles, and objects contained in the Tiles
  * 
  * @author Group D
  * @author Main Author: Darrell Penner
@@ -28,19 +28,23 @@ import javax.swing.*;
  *
  */
 
-public class MapView extends JLayeredPane implements ComponentListener {
+public class MapView extends JScrollPane implements ComponentListener {
 	private static final int TILE_SIZE = 40;
 	private static final int EDGE_WIDTH = 4;
-	private static final int MINIMUM_SIZE = 5 * TILE_SIZE;
+	
+	private static final int MINIMUM_WIDTH = 5 * TILE_SIZE;
+	private static final int MINIMUM_HEIGHT = MINIMUM_WIDTH;
+	private static final int DEFAULT_WIDTH = 1000;
+	private static final int DEFAULT_HEIGHT = DEFAULT_WIDTH;
 	
 	private static final Integer TILE_LAYER_DEPTH = 0;
 	private static final Integer EDGE_LAYER_DEPTH = 10;
 	
-	protected static final Color BROWN = Color.decode("0x964B00");
+	private JLayeredPane map;
 	private TilePanel tileLayer;
 	private EdgePanel edgeLayer;
 	
-	//offsets are the x and y location of the tile at the top left corner
+	//offset is the value of the Tile at the top left corner
 	private int xOffset;
 	private int yOffset;
 	
@@ -49,46 +53,68 @@ public class MapView extends JLayeredPane implements ComponentListener {
 	}
 	
 	public MapView(Level l){
+      
+		//set up the map pane
+		map = new JLayeredPane();
+		this.getViewport().add(map);
 		
-		//sets up this component
-		this.setBounds(0, 0, 4000, 4000);
-		this.addComponentListener(this);
-		this.setMinimumSize(new Dimension(MINIMUM_SIZE, MINIMUM_SIZE));
-        
 		//add panels
 		tileLayer = new TilePanel(this);
 		edgeLayer = new EdgePanel(this);
-		this.add(tileLayer, TILE_LAYER_DEPTH);
-        this.add(edgeLayer, EDGE_LAYER_DEPTH);
+		map.add(tileLayer, TILE_LAYER_DEPTH);
+        map.add(edgeLayer, EDGE_LAYER_DEPTH);
         
         //configure panels
-        setPanelBounds();
+        setPanelBounds(l);
         tileLayer.setOpaque(true);
         edgeLayer.setOpaque(false);
         
-        //set Offsets
-        setOffsets(0, 0);
-        
+        //Add the tiles and edges to the map
 		if (l != null){
 			for (int i = 0; i < l.getTiles().length; i++){
 				for (int j = 0; j < l.getTiles()[i].length; j++){
 					addTile(l.getTiles()[i][j]);
 				}
 			}
-			
 			for (Edge edge : l.getEdges()){
 				addEdge(edge);
 			}
 		}
 		
-		
+		//sets up this component
+		this.addComponentListener(this);
+		this.setMinimumSize(new Dimension(MINIMUM_WIDTH, MINIMUM_HEIGHT));
+		xOffset = 0;
+		yOffset = 0;
 	}
 	
+	//------------Set-up-----------//
 	public void addTile(Tile t){
 		tileLayer.addTile(t);
 	}
 	public void addEdge(Edge edge){
 		edgeLayer.addEdge(edge);
+	}
+	
+	//------------Scaling-----------//
+	protected int getOffsettedX(int tileX){
+		return (tileX + xOffset) * TILE_SIZE;
+	}
+	protected int getOffsettedX(Point tileLocation){
+		return getOffsettedX(tileLocation.x);
+	}
+	protected int getOffsettedY(int tileY){
+		return (tileY + yOffset) * TILE_SIZE;
+	}
+	protected int getOffsettedY(Point tileLocation){
+		return tileLocation.y * TILE_SIZE;
+	}
+	
+	private Point getTileLocation(Point offsettedLocation){
+		return new Point(offsettedLocation.x/TILE_SIZE - xOffset, offsettedLocation.y/TILE_SIZE - yOffset);
+	}
+	protected Tile getTile(Point offsettedLocation){
+		return tileLayer.getTile(getTileLocation(offsettedLocation));
 	}
 	
 	protected int getTileSize(){
@@ -98,19 +124,7 @@ public class MapView extends JLayeredPane implements ComponentListener {
 		return EDGE_WIDTH;
 	}
 	
-	//------------Scaling-----------//
-	protected int getOffsettedX(Point tileLocation){
-		return (tileLocation.x + xOffset) * TILE_SIZE;
-	}
-	protected int getOffsettedY(Point tileLocation){
-		return (tileLocation.y + yOffset) * TILE_SIZE;
-	}
-	private Point getTileLocation(Point offsettedLocation){
-		return new Point(offsettedLocation.x/TILE_SIZE - xOffset, offsettedLocation.y/TILE_SIZE - yOffset);
-	}
-	protected Tile getTile(Point offsettedLocation){
-		return tileLayer.getTile(getTileLocation(offsettedLocation));
-	}
+	//------------Miscellaneous------------//
 	protected void highLight(Tile t){
 		tileLayer.highLight(t);
 	}
@@ -118,15 +132,18 @@ public class MapView extends JLayeredPane implements ComponentListener {
 		tileLayer.unHighLight(t);
 	}
 	
-	protected void setOffsets(int xOffset, int yOffset){
-		this.xOffset = xOffset;
-		this.yOffset = yOffset;
-		repaint(); //everything needs to be shifted
-	}
-	
-	private void setPanelBounds(){
-		tileLayer.setBounds(this.getBounds());
-		edgeLayer.setBounds(this.getBounds());
+	//-----------Component Set up------------//
+	private void setPanelBounds(Level level){
+		this.setBounds(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		if (level == null){
+			map.setBounds(this.getBounds());
+		}
+		else {
+			map.setBounds(0, 0, getOffsettedX(level.getGridWidth()), getOffsettedY(level.getGridHeight()));
+		}
+		map.setBounds(this.getBounds());
+		tileLayer.setBounds(map.getBounds());
+		edgeLayer.setBounds(map.getBounds());
 	}
 	
 	//------------Component events-----------//
@@ -141,83 +158,9 @@ public class MapView extends JLayeredPane implements ComponentListener {
 	@Override
 	public void componentResized(ComponentEvent arg0) {
 		this.setBounds(0, 0, getSize().width, getSize().height);
-		setPanelBounds();
 	}
 	
 	@Override
 	public void componentShown(ComponentEvent arg0) {
 	}
-
-	
-	
-	
-	
-	
-	//TEMP - testing purposes
-	/*public static void main(String[] args){
-		Room r = new Room();
-		Tile one = (new Tile(new Point(0, 0), r));
-        Tile two = (new Tile(new Point(0, 1), r));
-        Tile three = (new Tile(new Point(1, 0), r));
-        Tile four = (new Tile(new Point(1, 1), r));
-        
-        Edge oneN, oneE, oneW, oneS, twoN, twoE, twoS, threeW, threeS, threeE, fourS, fourE;
-        Item key = new Item("key", 0);
-        
-        oneN = new Edge(null, one, false);
-        one.setEdge(Direction.NORTH, oneN);
-        oneW = new Edge(null, one, false);
-        one.setEdge(Direction.WEST, oneW);
-        oneE = new Exit(one, two, true, key);
-        one.setEdge(Direction.EAST, oneE);
-        two.setEdge(Direction.WEST, oneE);
-        oneS = new Edge(one, three, true);
-        one.setEdge(Direction.SOUTH, oneS);
-        three.setEdge(Direction.NORTH, oneS);
-        twoN = new Edge(null, two, false);
-        two.setEdge(Direction.NORTH, twoN);
-        twoE = new Edge(null, two, false);
-        two.setEdge(Direction.EAST, twoE);
-        twoS = new Edge(two, four, true);
-        two.setEdge(Direction.SOUTH, twoS);
-        four.setEdge(Direction.NORTH, twoS);
-        threeW = new Edge(null, three, false);
-        three.setEdge(Direction.WEST, threeW);
-        threeS = new Edge(three, null, false);
-        three.setEdge(Direction.SOUTH, threeS);
-        threeE = new Edge(three, four, true);
-        three.setEdge(Direction.EAST, threeE);
-        four.setEdge(Direction.WEST, threeE);
-        fourS = new Edge(four, null, false);
-        four.setEdge(Direction.SOUTH, fourS);
-        fourE = new Edge(four, null, false);
-        four.setEdge(Direction.EAST, fourE);
-        
-        Player p = new Player("bob", 10, 10, 10, one);
-        
-        JFrame f = new JFrame();
-        f.setSize(600, 400);
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.setVisible(true);
-        MapView tp = new MapView();
-        tp.addTile(one);
-        tp.addTile(two);
-        tp.addTile(three);
-        tp.addTile(four);
-        
-        tp.addEdge(oneS);
-        tp.addEdge(oneN);
-        tp.addEdge(oneE);
-        tp.addEdge(oneW);
-        tp.addEdge(twoN);
-        tp.addEdge(twoS);
-        tp.addEdge(twoE);
-        tp.addEdge(threeE);
-        tp.addEdge(threeS);
-        tp.addEdge(threeW);
-        tp.addEdge(fourE);
-        tp.addEdge(fourS);
-        f.add(tp);
-	}*/
-
 }

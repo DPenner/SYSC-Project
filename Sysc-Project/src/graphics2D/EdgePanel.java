@@ -21,6 +21,7 @@ import javax.swing.SwingUtilities;
 class EdgePanel extends JPanel implements Observer{
 	//public static final int EDGE_LENGTH = MapView.TILE_SIZE;
 	public static final Color DEFAULT_EDGE_COLOR = Color.decode("0x606060");
+	protected static final Color DEFAULT_EXIT_COLOR = Color.decode("0x964B00");
 	
 	private int edgeLength;
 	private int edgeWidth;
@@ -79,7 +80,7 @@ class EdgePanel extends JPanel implements Observer{
 					     getEdgeRectangle(edge, true).width, getEdgeRectangle(edge, true).height, true);
 			
 			if (edge instanceof Exit) {
-				g.setColor(MapView.BROWN);
+				g.setColor(DEFAULT_EXIT_COLOR);
 				g.fill3DRect(getEdgeRectangle(edge).x, getEdgeRectangle(edge).y, 
 						     getEdgeRectangle(edge).width, getEdgeRectangle(edge).height, true);
 			}
