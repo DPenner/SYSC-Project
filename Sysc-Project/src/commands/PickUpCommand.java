@@ -1,16 +1,22 @@
 package commands;
 
-import java.awt.KeyboardFocusManager;
-
 import javax.swing.JOptionPane;
 
 public class PickUpCommand extends Command{
 	private String itemName;
 	@Override
 	public boolean execute() {
+		String[] itemnames = CommandController.getPlayer().searchForItemOnGround().split(", ");
 		
-		itemName = JOptionPane.showInputDialog("Pick up item:\nPlease enter name of item");
-        
+		itemName =  (String)JOptionPane.showInputDialog(
+		           			null,
+		                    (Object)"Select item to pick up:\n",
+		                    "Pick Up Item",
+		                    JOptionPane.QUESTION_MESSAGE,
+		                    null,
+		                    itemnames,
+		                    itemnames[0]);
+
 		return pickUp(itemName);
 	}
 
@@ -31,6 +37,11 @@ public class PickUpCommand extends Command{
 	public void undo() {
 		DropCommand d = new DropCommand();
 		d.drop(itemName);
+	}
+
+	@Override
+	public void redo() {
+		pickUp(itemName);
 	}
 
 }

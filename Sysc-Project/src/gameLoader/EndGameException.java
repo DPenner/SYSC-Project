@@ -24,4 +24,8 @@ public class EndGameException extends Exception{
 	public EndGameException(String string) {
 		super(string);
 	}
+	public void handleExeception()
+	{
+		Game.KeyDispatcherController.removeKeyDispatchController();
+	}
 }

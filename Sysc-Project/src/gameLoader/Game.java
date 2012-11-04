@@ -1,8 +1,11 @@
 package gameLoader;
 
+import java.awt.KeyboardFocusManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
+
+import commands.CommandController;
 
 import gameCore.Direction;
 import gameCore.Player;
@@ -48,6 +51,8 @@ public class Game extends TextOutputPanelObservable
         else
         {
     		new KDTView(player, level);
+    		KeyDispatcherController.initializeKeyDispatchController(player);
+            
          	printWelcome(); 
         }
     }
@@ -84,80 +89,22 @@ public class Game extends TextOutputPanelObservable
     	return false;
     }
   
-    //outdated due to 2D view
-   /* 
-    private void view(Command command)
+    public static class KeyDispatcherController
     {
-    	if(!command.hasSecondWord())
-    	{
-    		System.out.println(player.toString());
-    		//System.out.println(player.viewHealth());
-    		System.out.println(player.viewInventory());
-    	}
-    	else
-    	{
-    		String secondWord = command.getSecondWord();
-    		if(secondWord.equalsIgnoreCase("inventory"))
-    		{
-    			System.out.println(player.viewInventory());
-    		}
-    		else if(secondWord.equalsIgnoreCase("health"))
-    		{
-    			System.out.println(player.viewHealth());
-    		}
-    		else
-    		{
-    			System.out.println("View what now?");
-    		}
-    	}
-    }
-    private void look(Command command)
-    {
-    	if(!command.hasSecondWord())
-    	{
-    		//look in all directions
-    		for(Direction d:Direction.values())
-    		{
-    			try
-    			{
-    				StringBuffer output = new StringBuffer();
-    				player.look(d, output);
-    				System.out.println(d.toString() +": " + output);
-    			}
-    			catch(Exception e)
-    			{
-    				System.out.println(d.toString() +": " + e.getMessage());
-    			}
-    		}
-    	}
-    	else
-    	{
-    		try
-    		{
-    			StringBuffer output = new StringBuffer();
-				player.look(Direction.getDirection(command.getSecondWord()), output);
-				System.out.println(output);
-    		}
-    		catch(Exception e)
-    		{
-    			System.out.println(e.getMessage());
-    		}
-    	}
-    }*/
-
-    /** 
-     * "Quit" was entered. Check the rest of the command to see
-     * whether we really quit the game.
-     * @return true, if this command quits the game, false otherwise.
-     */
-    private boolean quit(Command command) 
-    {
-        if(command.hasSecondWord()) {
-            System.out.println("Quit what?");
-            return false;
+        private static CommandController keyEventDispatcher;
+        
+        public static void initializeKeyDispatchController(Player player)
+        {
+	    	//Sets it so that all keyboard events go to the CommandController
+			KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+	        keyEventDispatcher = new CommandController(player);
+			manager.addKeyEventDispatcher(keyEventDispatcher);
         }
-        else {
-            return true;  // signal that we want to quit
+        
+        public static void removeKeyDispatchController()
+        {
+        	KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+			manager.removeKeyEventDispatcher(keyEventDispatcher);
         }
     }
     
@@ -167,4 +114,5 @@ public class Game extends TextOutputPanelObservable
     	Game g = new Game();
     	g.play();
     }
+    
 }

@@ -1,6 +1,8 @@
 package commands;
 
 import gameCore.Direction;
+import gameLoader.EndGameException;
+import gameLoader.Game;
 
 
 public class GoCommand extends Command{
@@ -36,12 +38,16 @@ public class GoCommand extends Command{
         }
         catch(Exception e)
         {
-        	/*if(e instanceof EndGameException)
+        	if(e instanceof EndGameException)
         	{
-        		endGame = true;
-        	}*/
+        		((EndGameException) e).handleExeception();
+        	}
         	printMessage(e.getMessage());
         	return false;
         }
+	}
+	@Override
+	public void redo() {
+		go(dir);
 	}
 }

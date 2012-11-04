@@ -92,10 +92,6 @@ public class KDTView{
 		//f.pack();
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
-		
-		//Sets it so that all keyboard events go to the CommandController
-		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-        manager.addKeyEventDispatcher(new CommandController(player));
 	}
 	
 	/**

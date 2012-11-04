@@ -203,7 +203,7 @@ public class Player extends Character
 		if(this.inventory.isEmpty()){
 			retString = "Nothing in your inventory.";
 		}else{
-			retString = "The following items are in your inventory: " + this.inventory.toString();
+			retString = this.inventory.toString();
 		}
 		return retString;
 	}
@@ -217,7 +217,7 @@ public class Player extends Character
 		{
 			return "Nothing on the ground";
 		}
-		return "The following items are on the ground: " + myPosition.getInventory().toString();
+		return myPosition.getInventory().toString();
 	}
 	
 	private void notifyItemDropped(Item droppedItem){

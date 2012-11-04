@@ -9,4 +9,6 @@ public class SearchCommand extends Command{
 		printMessage(CommandController.getPlayer().searchForItemOnGround());
 		return false;
 	}
+	@Override
+	public void redo() {}
 }

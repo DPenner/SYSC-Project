@@ -65,7 +65,7 @@ public class CommandController extends TextOutputPanelObservable implements KeyE
     	if(undo_index >= undoList.size()) printMessage("Nothing to redo.");
     	else
     	{
-    		undoList.get(undo_index).execute();
+    		undoList.get(undo_index).redo();
     		printMessage("Successfully redone.");
     		undo_index++;
     	} 		

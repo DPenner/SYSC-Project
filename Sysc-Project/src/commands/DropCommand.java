@@ -7,7 +7,16 @@ public class DropCommand extends Command{
 	
 	@Override
 	public boolean execute() {
-		itemName = JOptionPane.showInputDialog("Drop item:\nPlease enter name of item");
+		String[] itemnames = CommandController.getPlayer().viewInventory().split(", ");
+		
+		itemName =  (String)JOptionPane.showInputDialog(
+		           			null,
+		                    (Object)"Select item to pick up:\n",
+		                    "Pick Up Item",
+		                    JOptionPane.QUESTION_MESSAGE,
+		                    null,
+		                    itemnames,
+		                    itemnames[0]);
 		return drop(itemName);
 	}
 
@@ -29,6 +38,11 @@ public class DropCommand extends Command{
         	printMessage("Dropped " + itemname);
         }
         return true;
+	}
+
+	@Override
+	public void redo() {
+		drop(itemName);
 	}
 
 }

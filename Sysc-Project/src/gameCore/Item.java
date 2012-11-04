@@ -64,7 +64,7 @@ public class Item {
 	}
 	@Override
 	public String toString(){
-		return name + "(w:" + weight +")";
+		return name;
 	}
 
 }
