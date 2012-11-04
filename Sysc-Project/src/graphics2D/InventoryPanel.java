@@ -5,6 +5,7 @@ import gameCore.Player;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Dimension;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
@@ -31,7 +32,7 @@ public class InventoryPanel extends JPanel implements PlayerListener{
 		jl.setModel(lmodel);
 		jl.setName("InventoryList");
 		
-		add(jl, BorderLayout.LINE_END);
+		add(jl);
 		 	
 		for(int i=0; i<inv.size(); i++){
 			lmodel.addElement(inv.getItem(i).toString());

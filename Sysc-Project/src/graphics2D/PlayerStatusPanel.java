@@ -20,10 +20,9 @@ public class PlayerStatusPanel extends JPanel implements PlayerListener{
 	
 	public PlayerStatusPanel(Player p){
 		player=p;
-		this.setBackground(Color.BLACK);
-		this.setPreferredSize(new Dimension(400,80));
+		//this.setBackground(Color.BLACK);
+		this.setPreferredSize(new Dimension(100,80));
 		player.addPlayerListener(this);
-			
 	}
 	
 	private void drawStatus(Graphics g, String sLabel, int value, int x, int y){
@@ -37,7 +36,7 @@ public class PlayerStatusPanel extends JPanel implements PlayerListener{
 	public void paintComponent(Graphics g) {
 		
 		super.paintComponent(g);  //calling repaint later on, actually calls the paintComponent on anything that can be refreshed.
-		g.setColor(Color.WHITE);
+		//g.setColor(Color.WHITE);
 		g.drawString("Player Status", 10, 12);
 		
 		drawStatus(g, "Health:", player.getHealth(), 20,25);
@@ -68,7 +67,6 @@ public class PlayerStatusPanel extends JPanel implements PlayerListener{
 	public void statsChanged(PlayerEvent e) {
 		// TODO Auto-generated method stub
 		this.repaint();
-		
 	}
 
 }

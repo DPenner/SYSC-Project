@@ -98,26 +98,24 @@ public class KDTView{
 	 * Add components to Content Pane using BorderLayout
 	 */
 	private void addComponentsToPaneUsingBorderLayout(Container pane){
-		pane.setLayout(new BorderLayout());
-
-		//KDTMainPanel pMain= new KDTMainPanel();
+		pane.setLayout(new BorderLayout());			
+		
 		MapView pMap = new MapView(level);
 		MapController mController = new MapController(pMap);
 		pane.add(pMap, BorderLayout.CENTER);
 		
-		/*JPanel pPlayer = new PlayerStatusPanel(player);
-		pane.add(pPlayer, BorderLayout.PAGE_START);
-				
-		JPanel pInventory = new InventoryPanel(player);
-		pane.add(pInventory, BorderLayout.LINE_END);
-		*/
-		//addComponentsToInventoryPanel(pane);
-		
-		//JPanel pInput = new InputPanel();
-		//pane.add(pInput, BorderLayout.PAGE_END);
-		
 		JPanel pOutput = TextOutputPanel.getTextOutputPanel();
 		pane.add(pOutput, BorderLayout.PAGE_END);
+		
+		//side panel
+		JPanel pPlayer = new PlayerStatusPanel(player);
+		JPanel sidePanel = new JPanel();
+		sidePanel.setLayout(new BorderLayout());
+		sidePanel.add(pPlayer, BorderLayout.PAGE_START);
+
+		JPanel pInventory = new InventoryPanel(player);
+		sidePanel.add(pInventory, BorderLayout.CENTER);
+		pane.add(sidePanel, BorderLayout.LINE_END);
 	}
 	
 

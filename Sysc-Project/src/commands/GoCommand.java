@@ -2,7 +2,6 @@ package commands;
 
 import gameCore.Direction;
 import gameLoader.EndGameException;
-import gameLoader.Game;
 
 
 public class GoCommand extends Command{
