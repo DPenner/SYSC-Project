@@ -90,10 +90,10 @@ public class MapView extends JScrollPane implements ComponentListener {
 	
 	//------------Set-up-----------//
 	public void addTile(Tile t){
-		tileLayer.addTile(t);
+		tileLayer.addLayoutObject(t);
 	}
 	public void addEdge(Edge edge){
-		edgeLayer.addEdge(edge);
+		edgeLayer.addLayoutObject(edge);
 	}
 	
 	//------------Scaling-----------//

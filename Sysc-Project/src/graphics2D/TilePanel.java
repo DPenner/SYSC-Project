@@ -18,10 +18,26 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-class TilePanel extends JPanel implements Observer{
+/**
+ * TilePanel is a specialized panel that displays Tiles for its parent MapView. This includes displaying
+ * the Tiles' contents
+ * 
+ * @author Group D
+ * @author Main Author: Darrell Penner
+ * 
+ * Group D Members
+ * ---------------
+ * Karen Madore
+ * Trang Pham
+ * Darrell Penner
+ * 
+ *
+ * @version 1.0
+ *
+ */
+class TilePanel extends LayoutPanel<Tile>{
 	
 	public static final Color DEFAULT_TILE_COLOR = Color.LIGHT_GRAY;
-	public static final Color HIDDEN_TILE_COLOR = Color.BLACK;
 	public static final Color BACKGROUND_COLOR = Color.BLACK;
 	public static final Color HIGHLIGHT_TILE_COLOR = Color.decode("0x2277AA");
 	public static final Color ITEM_COLOR = Color.decode("0x964B00");
@@ -29,16 +45,13 @@ class TilePanel extends JPanel implements Observer{
 	private int tileSize;
 	private int edgeWidth;
 	
-	private MapView parentMap;
-	private Map<Point, Tile> tiles; //indexing by point makes it easier to locate the tile
+	private Map<Point, Tile> tileLookup; //indexing by point makes it easier to locate the tile
 	private Map<Point, Color> tileColors;
-	private Queue<Tile> tilesToAdd;
 	
 	protected TilePanel(MapView mapView){
-		parentMap = mapView;
-		tiles = new HashMap<Point, Tile>();
+		super(mapView);
+		tileLookup = new HashMap<Point, Tile>();
 		tileColors = new HashMap<Point, Color>();
-		tilesToAdd = new ConcurrentLinkedQueue<Tile>();
 		
 		//saved internally for convenience
 		tileSize = mapView.getTileSize();
@@ -48,43 +61,23 @@ class TilePanel extends JPanel implements Observer{
 	@Override
 	protected void paintComponent(Graphics g){
 		super.paintComponent(g);
-		this.setBackground(Color.BLACK);
-		
-		for (Tile t : tiles.values()){
-			drawTile(g, t);
-		}
+		this.setBackground(BACKGROUND_COLOR);
 	}
 	
 	@Override
-	public void update(Observable arg0, Object arg1) {
-		Tile t = (Tile) arg0;
-		this.repaint(getTileAndEdgeRectangle(t)); //repaint only necessary area
+	protected void addLayoutObject(Tile t){
+		tileColors.put(t.getLocation(), DEFAULT_TILE_COLOR);
+		tileLookup.put(t.getLocation(), t);
+		super.addLayoutObject(t);
 	}
 	
-	protected void addTile(Tile t){
-		setTileColor(t, DEFAULT_TILE_COLOR);
-		if (t == null){
-			throw new IllegalArgumentException("Tile cannot be null");
-		}
-		tilesToAdd.add(t);
-		t.addObserver(this);
-		
-        SwingUtilities.invokeLater(new Runnable(){
-            public void run() {
-            	Tile newTile = tilesToAdd.remove();
-            	tiles.put(newTile.getLocation(), newTile);		
-    			repaint(getTileAndEdgeRectangle(newTile));
-            }
-        });
-	}
-	
-	private void drawTile(Graphics g, Tile t){
+	@Override
+	protected void drawLayoutObject(Graphics g, Tile t){
 		Rectangle rect = getTileRectangle(t);
 		
 		if (t.isVisited()){
 			drawTileBase(g, rect, getTileColor(t));
-			
-			//drawItems
+
 			if (t.hasItems()){
 				drawItems(g, rect);
 			}
@@ -98,14 +91,7 @@ class TilePanel extends JPanel implements Observer{
 					drawCharacter(g, rect, Color.RED);
 				}
 			}	
-			
-			
 		}
-		/*else {
-			drawTileBase(g, rect, HIDDEN_TILE_COLOR);
-		}*/
-		
-		
 	}
 	
 	private void drawTileBase(Graphics g, Rectangle tileRect, Color color){
@@ -135,7 +121,7 @@ class TilePanel extends JPanel implements Observer{
 	}
 	
 	protected Tile getTile(Point tileLocation){
-		return tiles.get(tileLocation);
+		return tileLookup.get(tileLocation);
 	}
 	protected void highLight(Tile t){
 		setTileColor(t, HIGHLIGHT_TILE_COLOR);
@@ -151,5 +137,10 @@ class TilePanel extends JPanel implements Observer{
 	}
 	private void setTileColor(Tile t, Color c){
 		tileColors.put(t.getLocation(), c);
+	}
+	
+	@Override
+	protected Rectangle getRepaintRectangle(Tile t){
+		return getTileAndEdgeRectangle(t);
 	}
 }
