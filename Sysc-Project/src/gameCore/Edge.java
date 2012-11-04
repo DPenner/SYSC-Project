@@ -20,7 +20,7 @@ import java.util.Observable;
  *
  */
 
-public class Edge extends Observable {
+public class Edge extends LayoutObject {
 	
 	protected Tile tile1;
 	protected Tile tile2;
@@ -80,7 +80,7 @@ public class Edge extends Observable {
 		return crossable;
 	}
 	
-	public final boolean canCrossByDefault(){
+	public final boolean isCrossableByDefault(){
 		return crossable;
 	}
 	
