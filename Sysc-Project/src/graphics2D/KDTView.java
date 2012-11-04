@@ -2,6 +2,7 @@ package graphics2D;
 
 import gameCore.Inventory;
 import gameCore.Item;
+import gameCore.Monster;
 import gameCore.Player;
 import gameCore.Tile;
 import gameLoader.Level;
@@ -78,7 +79,7 @@ public class KDTView{
 		
 		this.player=player;
 		this.level=level;
-				
+		
 		addMenusToFrame();
 		f.setSize(600, 700);
 		f.setMinimumSize(new Dimension(600, 700));
@@ -116,6 +117,7 @@ public class KDTView{
 		JPanel pInventory = new InventoryPanel(player);
 		sidePanel.add(pInventory, BorderLayout.CENTER);
 		pane.add(sidePanel, BorderLayout.LINE_END);
+
 	}
 	
 

@@ -17,6 +17,7 @@ public class PlayerStatusPanel extends JPanel implements PlayerListener{
 	private static int BOX_SIZE=22;
 	private static int TEXT_OFFSET=50;
 	private static int BOX_OFFSET=-1;
+	private static int PLAYER_DIED=0;
 	
 	public PlayerStatusPanel(Player p){
 		player=p;
@@ -39,8 +40,14 @@ public class PlayerStatusPanel extends JPanel implements PlayerListener{
 		//g.setColor(Color.WHITE);
 		g.drawString("Player Status", 10, 12);
 		
-		drawStatus(g, "Health:", player.getHealth(), 20,25);
+		int playerHealth=player.getHealth();
+		drawStatus(g, "Health:", playerHealth, 20,25);
 		drawStatus(g, "Attack:", player.getAttack(),20,50);
+		
+		if(player.isDead()){
+			g.setColor(Color.RED);
+			g.drawString("-->Player has died. GAME OVER!",50+TEXT_OFFSET, 12);
+		}
 		
 		//g.drawImage(new Image("redkey.png"), 200, 12, 40, 40, null);
 		

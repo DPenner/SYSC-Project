@@ -18,12 +18,30 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+/**
+ * TilePanel is a specialized panel that displays Tiles for its parent MapView. This includes displaying
+ * the Tiles' contents including Characters and Items
+ * 
+ * @author Group D
+ * @author Main Author: Darrell Penner
+ * 
+ * Group D Members
+ * ---------------
+ * Karen Madore
+ * Trang Pham
+ * Darrell Penner
+ * 
+ *
+ * @version 1.0
+ *
+ */
 class TilePanel extends JPanel implements Observer{
 	
 	public static final Color DEFAULT_TILE_COLOR = Color.LIGHT_GRAY;
 	public static final Color HIDDEN_TILE_COLOR = Color.BLACK;
 	public static final Color BACKGROUND_COLOR = Color.BLACK;
 	public static final Color HIGHLIGHT_TILE_COLOR = Color.decode("0x2277AA");
+	public static final Color ITEM_COLOR = Color.decode("0x964B00");
 	
 	private int tileSize;
 	private int edgeWidth;
@@ -116,7 +134,7 @@ class TilePanel extends JPanel implements Observer{
 		g.fillOval(tileRect.x + 10, tileRect.y + 10, tileRect.width - 20, tileRect.height - 20);
 	}
 	private void drawItems(Graphics g, Rectangle tileRect){ //TEMP magic numbers
-		g.setColor(MapView.BROWN);
+		g.setColor(ITEM_COLOR);
 		g.fill3DRect(tileRect.x + 8, tileRect.y + 12, tileRect.width - 16, tileRect.height - 24, true);
 		g.setColor(Color.GRAY);
 		g.fill3DRect(tileRect.x + 11, tileRect.y + 12, 3, tileRect.height - 24, true);

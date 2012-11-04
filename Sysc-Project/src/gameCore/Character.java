@@ -71,7 +71,7 @@ public class Character  {
 	/**
 	 * Use the item up - ie a weapon will increase your attack value
 	 * 
-	 * --- not used in v1 ---
+	 * --- not used in v2 ---
 	 * 
 	 * @param i - the item chosen from character's inventory
 	 */
