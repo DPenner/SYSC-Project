@@ -22,6 +22,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.KeyboardFocusManager;
 
@@ -53,7 +54,7 @@ import commands.CommandController;
  *
  * @version 1.0
  */
-public class KDTView{
+public class KDTView {
 	//------------Fields------------//
 	private Level level;
 	private Player player;
@@ -61,8 +62,7 @@ public class KDTView{
 	private Inventory inv;
 	
 	private JFrame f;
-	
-	
+		
 	private Container cp;
 	private Graphics g;	
 	
@@ -110,41 +110,40 @@ public class KDTView{
 		
 		//side panel
 		JPanel pPlayer = new PlayerStatusPanel(player);
-		JPanel sidePanel = new JPanel();
-		sidePanel.setLayout(new BorderLayout());
-		sidePanel.add(pPlayer, BorderLayout.PAGE_START);
-
 		JPanel pInventory = new InventoryPanel(player);
-		sidePanel.add(pInventory, BorderLayout.CENTER);
+		
+		JPanel sidePanel = new JPanel(new GridLayout(2,0));
+		
+		sidePanel.add(pPlayer);
+		sidePanel.add(pInventory);
+		
+		//sidePanel.setLayout(new BorderLayout());
+		//sidePanel.add(pPlayer, BorderLayout.PAGE_START);
+
+		//JPanel pInventory = new InventoryPanel(player);
+		//sidePanel.add(pInventory, BorderLayout.CENTER);
 		pane.add(sidePanel, BorderLayout.LINE_END);
 
 	}
 	
-
-	
-
 	
 	/**
 	 * Create the Menus for the Frame
 	 */
 	private void addMenusToFrame() {
+		
+		KDTMenuController kdtMC=new KDTMenuController(f);	
 		//--------- MENUS ---------
 		JMenu file=new JMenu("File");
+		
 		JMenuItem exit = new JMenuItem("Exit");
 		exit.setToolTipText("Exit Kraft Dinner Table Maze");
-		
-		JMenu player=new JMenu("Player");
-		JMenuItem drop = new JMenuItem("Drop");
-		
-		
-		//exit.addActionListener(new GameController()); //game controller 
+		exit.addActionListener(kdtMC);
+				
 		file.add(exit);
 				
 		JMenuBar mainBar=new JMenuBar();
 		mainBar.add(file);
-		
-		//extra menus for testing
-		
 		
 		f.setJMenuBar(mainBar);
 	}
