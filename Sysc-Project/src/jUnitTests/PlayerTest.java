@@ -15,6 +15,9 @@ import gameCore.Tile;
 import gameCore.Direction;
 import gameCore.Edge;
 import gameLoader.EndGameException;
+
+import graphics2D.PlayerListener;
+import graphics2D.PlayerStatusPanel;
 /**
  * A set of test for Player Class
  * 
@@ -104,39 +107,44 @@ public class PlayerTest {
 	@Test
 	public void testPickUpItem() {
 		myPosition.addItem(RedKey);
-		//testPlayer.P
+		testPlayer.pickUpItem(RedKey.getName());
+		assertTrue("Player should have RedKey now. ", testPlayer.hasItem(RedKey));
 		
-		fail("Not yet implemented");
 	}
 
+	/**
+	 * Test the dropping of items
+	 */
 	@Test
 	public void testDrop() {
-		fail("Not yet implemented");
+		myPosition.addItem(RedKey);
+		testPlayer.pickUpItem(RedKey.getName());
+		testPlayer.dropItem(RedKey);
+		assertFalse("Player should not have RedKey now. ", testPlayer.hasItem(RedKey));
+	
 	}
 
-	@Test
-	public void testLook() {
-		fail("Not yet implemented");
-	}
-
+	/**
+	 * ViewInventory should return a non-empty string
+	 */
 	@Test
 	public void testViewInventory() {
-		fail("Not yet implemented");
+		assertNotNull("A non-empty string should be returned.", testPlayer.viewInventory());
 	}
 
+	/**
+	 * ViewHealth should return a non-empty string
+	 */
 	@Test
 	public void testViewHealth() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testSearchForItemOnGround() {
-		fail("Not yet implemented");
+		assertNotNull("A non-empty string should be returned.", testPlayer.viewHealth());
 	}
 
 	@Test
 	public void testAddPlayerListener() {
-		fail("Not yet implemented");
+		PlayerListener pl = new PlayerStatusPanel(testPlayer);
+		testPlayer.addPlayerListener(pl);
+		assertEquals("PlayerListeners count should be 1.", 1, testPlayer.countPlayerListeners());
 	}
 
 	@Test
