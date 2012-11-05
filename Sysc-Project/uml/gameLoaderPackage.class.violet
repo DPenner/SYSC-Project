@@ -283,7 +283,7 @@ XmlTag</string>
     </void>
     <void property="methods">
      <void property="text">
-      <string>&lt;u&gt; + initializeKeyDispatchController()
+      <string>&lt;u&gt;+ initializeKeyDispatchController()
 + removeKeyDispatchController()</string>
      </void>
     </void>

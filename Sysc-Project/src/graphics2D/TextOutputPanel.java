@@ -1,5 +1,20 @@
 package graphics2D;
-
+/**
+* TextOutputPanel is a graphical output area for any messages to the user
+*
+* @author Group D
+* @author Main Author: Trang Pham
+*
+* Group D Members
+* ---------------
+* Karen Madore
+* Trang Pham
+* Darrell Penner
+*
+*
+* @version 2.0
+*
+*/
 import java.awt.Dimension;
 import java.util.Observable;
 import java.util.Observer;
@@ -25,7 +40,12 @@ public class TextOutputPanel extends JPanel implements Observer{
 		this.add(scrollPane);
 
 	}
-	
+	/**
+	 * TextOutputPanel uses the singleton pattern, this method
+	 * returns the one instance of TextOutputPanel or creates a 
+	 * new one if it's null and returns the new instance
+	 * @return the instance of TextOutputPanel
+	 */
 	public static TextOutputPanel getTextOutputPanel() 
 	{
 		if(oneInstance == null) oneInstance = new TextOutputPanel();

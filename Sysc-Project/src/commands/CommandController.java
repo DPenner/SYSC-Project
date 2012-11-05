@@ -1,5 +1,21 @@
 package commands;
-
+/**
+* CommandController handles the keyboard input for each command.
+* It also handles the logic for redoing and undoing commands.
+*
+* @author Group D
+* @author Main Author: Trang Pham
+*
+* Group D Members
+* ---------------
+* Karen Madore
+* Trang Pham
+* Darrell Penner
+*
+*
+* @version 2.0
+*
+*/
 import gameCore.Direction;
 import gameCore.Player;
 import graphics2D.TextOutputPanelObservable;

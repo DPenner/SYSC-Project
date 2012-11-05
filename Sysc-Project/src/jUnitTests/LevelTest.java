@@ -1,5 +1,20 @@
 package jUnitTests;
-
+/**
+* Tests the Level class
+*
+* @author Group D
+* @author Main Author: Trang Pham
+*
+* Group D Members
+* ---------------
+* Karen Madore
+* Trang Pham
+* Darrell Penner
+*
+*
+* @version 2.0
+*
+*/
 import static org.junit.Assert.*;
 
 import java.awt.Point;
