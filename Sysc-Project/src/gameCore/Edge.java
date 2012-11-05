@@ -104,6 +104,9 @@ public class Edge extends LayoutObject {
 		if (crosser == null || currentTile == null){
 			throw new IllegalArgumentException("currentTile and crosser cannot be null");
 		}
+		if (!crosser.equals(currentTile.getCharacter())){
+			throw new IllegalArgumentException("The given character must be on the given tile");
+		}
 		if (!canCross(crosser)){
 			throw new IllegalArgumentException("The given character is not capable of crossing this edge");
 		}
