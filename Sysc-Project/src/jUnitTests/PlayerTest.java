@@ -6,7 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.Point;
-import gameCore.Character;
 import gameCore.Inventory;
 import gameCore.Item;
 import gameCore.Player;

@@ -16,6 +16,7 @@ public class GoCommand extends Command{
      * Try to go in one direction. If there is an exit, enter the new
      * room, otherwise print an error message.
      */
+	@Override
 	public boolean execute()
 	{
 		return go(dir);

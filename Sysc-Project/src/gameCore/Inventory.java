@@ -101,6 +101,7 @@ public class Inventory {
 	 * Returns the string representation of the inventory
 	 * @return	names of all items in the inventory
 	 */
+	@Override
 	public String toString(){
 		String s="";
 		for(Item i: items){

@@ -96,7 +96,8 @@ abstract class LayoutPanel<T extends LayoutObject> extends JPanel implements Obs
 		//object is added in. Synchronization is needed since the paintComponent method iterates
 		//through the same set that this method is adding to (otherwise a ConcurrentModificationException may occur).
         SwingUtilities.invokeLater(new Runnable(){
-            public void run() {
+            @Override
+			public void run() {
             	T newLayoutObject = buffer.remove();
             	layoutObjects.add(newLayoutObject);		
     			repaint(getRepaintRectangle(newLayoutObject));

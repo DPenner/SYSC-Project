@@ -1,20 +1,12 @@
 package gameLoader;
 
 import java.awt.KeyboardFocusManager;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observable;
 
 import commands.CommandController;
 
-import gameCore.Direction;
 import gameCore.Player;
-import graphics2D.TextOutputPanel;
 import graphics2D.KDTView;
 
-import textInterface.Command;
-import textInterface.CommandWord;
-import textInterface.Parser;
 
 /**
  * The Game loads the level from XML, initiates the game, and waits for commands from the player.

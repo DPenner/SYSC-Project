@@ -32,7 +32,8 @@ public enum CommandWord
     /**
      * @return The command word as a string.
      */
-    public String toString()
+    @Override
+	public String toString()
     {
         return commandString;
     }

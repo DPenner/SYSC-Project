@@ -3,8 +3,6 @@ package commands;
 import gameCore.Direction;
 import gameCore.Player;
 import gameLoader.TextOutputPanelObservable;
-import graphics2D.TextOutputPanel;
-
 import java.awt.KeyEventDispatcher;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -98,7 +96,7 @@ public class CommandController extends TextOutputPanelObservable implements KeyE
 		else if (keyPressed == KeyEvent.VK_R) redoCommand();
 		else
 		{
-			Command c = keyToCommandMap.get((Integer)keyPressed);
+			Command c = keyToCommandMap.get(keyPressed);
 			if(c != null) if(c.execute()) saveGameState(c);
 		}
 		return false;

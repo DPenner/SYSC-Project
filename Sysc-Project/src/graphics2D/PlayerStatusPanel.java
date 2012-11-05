@@ -5,11 +5,7 @@ import gameCore.Player;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Image;
-
-import javax.swing.BoxLayout;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 
 public class PlayerStatusPanel extends JPanel implements PlayerListener{
@@ -36,6 +32,7 @@ public class PlayerStatusPanel extends JPanel implements PlayerListener{
 		
 	}
 	
+	@Override
 	public void paintComponent(Graphics g) {
 		
 		super.paintComponent(g);  //calling repaint later on, actually calls the paintComponent on anything that can be refreshed.

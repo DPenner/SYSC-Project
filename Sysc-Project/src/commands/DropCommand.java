@@ -11,7 +11,7 @@ public class DropCommand extends Command{
 		
 		itemName =  (String)JOptionPane.showInputDialog(
 		           			null,
-		                    (Object)"Select item to pick up:\n",
+		                    "Select item to pick up:\n",
 		                    "Pick Up Item",
 		                    JOptionPane.QUESTION_MESSAGE,
 		                    null,

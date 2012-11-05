@@ -53,7 +53,8 @@ public enum XmlTag {
     /**
      * @return The xml keyword as a string.
      */
-    public String toString()
+    @Override
+	public String toString()
     {
         return tag;
     }

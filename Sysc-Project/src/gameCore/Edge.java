@@ -1,7 +1,6 @@
 package gameCore;
 
 import java.awt.Point;
-import java.util.Observable;
 
 /**
  * An edge exists between 2 tiles, or a tile and the boundary of a level.

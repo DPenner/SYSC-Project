@@ -3,14 +3,9 @@ package graphics2D;
 import gameCore.Inventory;
 import gameCore.Player;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.Graphics;
 
 import javax.swing.DefaultListModel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 
 public class InventoryPanel extends JPanel implements PlayerListener{
@@ -38,6 +33,7 @@ public class InventoryPanel extends JPanel implements PlayerListener{
 		}
 	}
 
+	@Override
 	public void paintComponent(Graphics g) {
 		int top = 12;
 		int row = 1;
