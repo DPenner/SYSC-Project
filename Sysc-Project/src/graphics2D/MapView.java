@@ -3,7 +3,6 @@ package graphics2D;
 import gameCore.*;
 import gameLoader.Level;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ComponentEvent;
