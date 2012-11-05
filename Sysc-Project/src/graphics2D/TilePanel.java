@@ -1,6 +1,5 @@
 package graphics2D;
 
-import gameCore.Edge;
 import gameCore.Tile;
 import gameCore.Player;
 
@@ -10,13 +9,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 /**
  * TilePanel is a specialized panel that displays Tiles for its parent MapView. This includes displaying
@@ -38,10 +30,10 @@ import javax.swing.SwingUtilities;
 
 class TilePanel extends LayoutPanel<Tile>{
 	
-	public static final Color DEFAULT_TILE_COLOR = Color.LIGHT_GRAY;
-	public static final Color BACKGROUND_COLOR = Color.BLACK;
-	public static final Color HIGHLIGHT_TILE_COLOR = Color.decode("0x2277AA");
-	public static final Color ITEM_COLOR = Color.decode("0x964B00");
+	private static final Color DEFAULT_TILE_COLOR = Color.LIGHT_GRAY;
+	private static final Color BACKGROUND_COLOR = Color.BLACK;
+	private static final Color HIGHLIGHT_TILE_COLOR = Color.decode("0x2277AA");
+	private static final Color ITEM_COLOR = Color.decode("0x964B00");
 	
 	private int tileSize;
 	private int edgeWidth;

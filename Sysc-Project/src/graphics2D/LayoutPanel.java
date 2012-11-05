@@ -1,6 +1,5 @@
 package graphics2D;
 
-import gameCore.Edge;
 import gameCore.LayoutObject;
 
 import java.awt.Graphics;
@@ -15,14 +14,34 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+/**
+ * A LayoutPanel is a panel displaying a set of LayoutObjects of the given type
+ * 
+ * @author Group D
+ * @author Main Author: Darrell Penner
+ * 
+ * Group D Members
+ * ---------------
+ * Karen Madore
+ * Trang Pham
+ * Darrell Penner
+ * 
+ *
+ * @version 1.0
+ * @param <T> The type of LayoutObject that this panel is observing.
+ */
 abstract class LayoutPanel<T extends LayoutObject> extends JPanel implements Observer {
 	protected MapView parentMap;
 	protected Set<T> layoutObjects;
-	private Queue<T> buffer;
+	private Queue<T> buffer; //For synchronization purposes
 	
+	/**
+	 * Initialize the LayoutPanel with the given MapView
+	 * @param parentMap The MapView that this LayoutPanel belongs to
+	 */
 	protected LayoutPanel(MapView parentMap){
 		if (parentMap == null){
-			throw new IllegalArgumentException("parent map cannot be null");
+			throw new IllegalArgumentException("parentMap cannot be null");
 		}
 		this.parentMap = parentMap;
 		layoutObjects = new HashSet<T>();
@@ -41,9 +60,9 @@ abstract class LayoutPanel<T extends LayoutObject> extends JPanel implements Obs
 	}
 	
 	/**
-	 * Draws the 
-	 * @param g
-	 * @param layoutObject
+	 * Draws an individual layoutObject
+	 * @param g The component's graphics
+	 * @param layoutObject The object to draw
 	 */
 	protected abstract void drawLayoutObject(Graphics g, T layoutObject);
 
@@ -52,13 +71,13 @@ abstract class LayoutPanel<T extends LayoutObject> extends JPanel implements Obs
 	 */
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		T layoutObject;
-		try {
-			layoutObject = (T) arg0; //can't use instanceof with generic type, need try-catch block
+		if (!(arg0 instanceof LayoutObject)){
+			throw new UnsupportedOperationException("The LayoutPanel was observing something that was not a LayoutObject");
 		}
-		catch (ClassCastException e){
-			throw new IllegalArgumentException("The LayoutPanel was observing something that was not a LayoutObject");
-		}
+		
+		//Cast was giving warning, though it is known that arg0 is of type LayoutObject at this point
+		@SuppressWarnings("unchecked")
+		T layoutObject = (T) arg0;
 		repaint(getRepaintRectangle(layoutObject));
 	}
 	
@@ -70,9 +89,12 @@ abstract class LayoutPanel<T extends LayoutObject> extends JPanel implements Obs
 		if (layoutObject == null){
 			throw new IllegalArgumentException("layoutObject cannot be null");
 		}
-		buffer.add(layoutObject);
+		buffer.add(layoutObject); //place on buffer to be added to main set later
 		layoutObject.addObserver(this);
 		
+		//Queues an event that adds the layoutObject to the main set and repaints the area that the 
+		//object is added in. Synchronization is needed since the paintComponent method iterates
+		//through the same set that this method is adding to (otherwise a ConcurrentModificationException may occur).
         SwingUtilities.invokeLater(new Runnable(){
             public void run() {
             	T newLayoutObject = buffer.remove();

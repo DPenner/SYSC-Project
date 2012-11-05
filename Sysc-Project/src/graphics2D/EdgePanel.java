@@ -8,15 +8,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.HashSet;
-import java.util.Queue;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.Set;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 /**
  * EdgePanel is a specialized panel that displays Edges for its parent MapView
@@ -37,8 +28,8 @@ import javax.swing.SwingUtilities;
 
 class EdgePanel extends LayoutPanel<Edge>{
 
-	public static final Color DEFAULT_EDGE_COLOR = Color.decode("0x606060");
-	protected static final Color DEFAULT_EXIT_COLOR = Color.decode("0x964B00");
+	private static final Color DEFAULT_EDGE_COLOR = Color.decode("0x606060");
+	private static final Color DEFAULT_EXIT_COLOR = Color.decode("0x964B00");
 	
 	private int edgeLength;
 	private int edgeWidth;
