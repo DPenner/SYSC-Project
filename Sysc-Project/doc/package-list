@@ -1,3 +1,5 @@
+commands
 gameCore
 gameLoader
-textInterface
+graphics2D
+jUnitTests

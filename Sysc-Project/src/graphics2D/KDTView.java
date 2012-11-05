@@ -48,7 +48,8 @@ public class KDTView {
 	/**
 	 * Constructor for KDTView
 	 * -creates the Frame, adds the components onto the frame, and registers the ActionListeners
-	 * @param game the reference back to the game
+	 * @param player the player instance
+	 * @param level the current level
 	 */
 	public KDTView(Player player, Level level){
 		//Create the GUI
