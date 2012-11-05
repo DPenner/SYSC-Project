@@ -62,11 +62,20 @@ public class Edge extends LayoutObject {
 	public Edge(Tile tile1, Tile tile2, boolean crossable, Direction direction1, Direction direction2)
 	{
 		this(tile1, tile2, crossable);
+		connectTiles(tile1, direction1, tile2, direction2);
+	}
+
+	/**
+	 * Sets this edge as the edge for the the two tiles in their respective given directions
+	 * @param tile1 One side of the edge
+	 * @param tile2 The other side of the edge
+	 * @param direction1 The direction of the edge relative to tile1
+	 * @param direction2 The direction of the edge relative to tile2
+	 */
+	public void connectTiles(Tile tile1, Direction direction1, Tile tile2, Direction direction2){
 		if(tile1 != null) tile1.setEdge(direction1, this);
 		if(tile2 != null) tile2.setEdge(direction2, this);
 	}
-
-
 	
 	/**
 	 * Checks if the given character can cross the edge
@@ -91,9 +100,9 @@ public class Edge extends LayoutObject {
 	 * @return The new tile of the Character
 	 */
 	public Tile cross(Tile currentTile, Character crosser){
-		if (crosser == null){
-			throw new IllegalArgumentException("crosser can not be null");
-		} //other error checks done by getOtherTile method
+		if (crosser == null || currentTile == null){
+			throw new IllegalArgumentException("currentTile and crosser cannot be null");
+		}
 		
 		Tile destination = getOtherTile(currentTile);
 		currentTile.removeCharacter();
@@ -111,12 +120,7 @@ public class Edge extends LayoutObject {
 		if (currentTile == null){
 			throw new IllegalArgumentException("currentTile may not be null");
 		}
-		// REMOVED - crossing is character-dependent, the check should not be here.
-		//if (!crossable){
-		//	throw new UnsupportedOperationException("Cannot retrieve tile when edge is not crossable");
-		//}
-		
-		//return which ever tile isn't the one passed in
+
 		if (currentTile == tile1) return tile2;
 		return tile1;
 	}
@@ -141,7 +145,7 @@ public class Edge extends LayoutObject {
 		return tile2.getLocation();
 	}
 	
-	public final boolean isInVisitedRoom(){
+	public final boolean isVisited(){
 		if (tile1 == null){
 			return tile2.isVisited();
 		}
@@ -150,4 +154,5 @@ public class Edge extends LayoutObject {
 		}
 		return tile1.isVisited() || tile2.isVisited();
 	}
+	
 }

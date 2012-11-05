@@ -32,12 +32,13 @@ public class Tile extends LayoutObject {
 	
 	//------------Constructors------------//
    /**
-    * Constructs a Tile from a point and room
-    * @param location - location of the tile
-    * @param containingRoom - room contain the tile
+    * Constructs a Tile from a Point and Room.
+    * 
+    * @param location The location of the tile
+    * @param containingRoom The room containing the tile
+    * @throws IllegalArgumentException if either parameter is null.
     */
-	public Tile(Point location, Room containingRoom)
-	{
+	public Tile(Point location, Room containingRoom) throws IllegalArgumentException {
 		if (location == null || containingRoom == null){
 			throw new IllegalArgumentException("A tile must have a location and a containing room");
 		}
@@ -55,7 +56,7 @@ public class Tile extends LayoutObject {
 	//arbitrary access to other tiles in the room
 	
 	/**
-	 * Gets the items on the current tile 
+	 * Gets the items on the current tile.
 	 * @return The inventory on the tile
 	 */
 	public Inventory getInventory(){
@@ -66,10 +67,11 @@ public class Tile extends LayoutObject {
 	 * Gets the items on the adjacent tile in the given direction.
 	 * @param direction The direction to look in.
 	 * @return The inventory on the adjacent tile
+	 * @throws IllegalArgumentException if the character on this tile cannot move to the tile in the given direction
 	 */
-	public Inventory getInventory(Direction direction){
+	public Inventory getInventory(Direction direction) throws IllegalArgumentException{
 		checkDirection(direction);
-		if (!isCrossable(direction)){
+		if (!canMove(direction)){
 			throw new IllegalArgumentException("Cannot cross that edge!");
 		}
 		
@@ -77,7 +79,7 @@ public class Tile extends LayoutObject {
 	}
 	
 	/**
-	 * Gets the character on the current tile
+	 * Gets the character on the current tile.
 	 * @return The character if one exists, null otherwise
 	 */
 	public Character getCharacter(){
@@ -85,12 +87,12 @@ public class Tile extends LayoutObject {
 	}
 	
 	/**
-	 * Gets the character on the adjacent tile in the given direction
+	 * Gets the character on the adjacent tile in the given direction.
 	 * @param direction The direction to search for
 	 * @return the Character on the adjacent tile, null if none exists 
+	 * @throws IllegalArgumentException if the character on this tile cannot cross the edge in the given direction
 	 */
-	public Character getCharacter(Direction direction)
-	{
+	public Character getCharacter(Direction direction) throws IllegalArgumentException {
 		checkDirection(direction);
 		if (!isCrossable(direction)){
 			throw new IllegalArgumentException("Cannot cross that edge!");
@@ -100,7 +102,7 @@ public class Tile extends LayoutObject {
 	}
 	
 	/**
-	 * The location of the tile
+	 * Gets the location of the tile.
 	 * @return A deep copy of the location on the tile.
 	 */
 	public Point getLocation(){
@@ -108,11 +110,12 @@ public class Tile extends LayoutObject {
 	}
 
 	/**
-	 * Gets the edge in the given direction
-	 * @param direction The direction in which to get the edge
-	 * @return The edge in the given direction
+	 * Gets the edge in the given direction.
+	 * @param direction The direction in which to get the edge.
+	 * @return The edge in the given direction.
+	 * @throws if there is no Edge in that direction.
 	 */
-	private Edge getEdge(Direction direction){
+	private Edge getEdge(Direction direction) throws IllegalArgumentException {
 		checkDirection(direction);
 		return edges.get(direction);
 	}
@@ -120,34 +123,66 @@ public class Tile extends LayoutObject {
 	/**
 	 * Gets the next tile in the specified direction.
 	 * 
-	 * @param direction The direction of the next tile
-	 * @return the Tile in the specified direction
+	 * @param direction The direction of the next tile.
+	 * @return the Tile in the specified direction.
+	 * @throws if there is no Tile in the specified direction.
 	 */
-	private Tile getNextTile(Direction direction){
+	private Tile getNextTile(Direction direction) throws IllegalArgumentException {
 		checkDirection(direction);
 		return getEdge(direction).getOtherTile(this);
 	}
 	
+	/**
+	 * Gets the String representation of the key needed to get across the Exit.
+	 * @param direction The direction in which to search.
+	 * @return The string representation of the needed key.
+	 * @throws IllegalArgumentException if there is no Exit in the given direction.
+	 */
+	public String getExitKey(Direction direction) throws IllegalArgumentException {
+		checkDirection(direction);
+		if (!hasExit(direction))
+		{
+			throw new IllegalArgumentException("No exit in that direction!");
+		}
+		return ((Exit)getEdge(direction)).getKeyName();
+	}
+	
 	//------------Setters------------//
 	/**
-	 * Sets an edge of a tile
+	 * Sets an edge of a tile.
 	 * @param direction The direction in which to set the edge
 	 * @param edge The edge to be set
+	 * @throws IllegalArgumentException if the edge has already been set. This is to prevent an erroneous state.
 	 */
-	public void setEdge(Direction direction, Edge edge){
+	public void setEdge(Direction direction, Edge edge) throws IllegalArgumentException {
 		if (hasDirection(direction)){
 			throw new IllegalArgumentException("This edge has already been set");
 		}
 		
 		edges.put(direction, edge);
+	}
+	
+	/**
+	 * Sets the tile as visited.
+	 */
+	public void setVisited(){
+		visited = true;
 		setChanged();
-		notifyObservers(edge);
+		notifyObservers();
+	}
+	
+	/**
+	 * Sets the containing room as visited.
+	 */
+	private void setRoomAsVisited(){
+		containingRoom.setVisited();
 	}
 	
 	//------------Adding and Removing------------//
 	/**
-	 * Adds a character to the tile
+	 * Adds a character to the tile.
 	 * @param c the Character to be added
+	 * @throws UnsupportedOperationException if there is already a Character on this Tile
 	 */
 	public void addCharacter(Character c){
 		if (hasCharacter()){
@@ -163,7 +198,7 @@ public class Tile extends LayoutObject {
 	}
 	
 	/**
-	 * Removes the Character on the tile
+	 * Removes the Character on the tile.
 	 * @return the Character that was on the tile, null if none
 	 */
 	public Character removeCharacter(){
@@ -175,7 +210,7 @@ public class Tile extends LayoutObject {
 	}
 	
 	/**
-	 * Adds an item to the tile
+	 * Adds an item to the tile.
 	 * @param item the Item to be added
 	 */
 	public void addItem(Item item){
@@ -185,8 +220,8 @@ public class Tile extends LayoutObject {
 	}
 	
 	/**
-	 * removes an Item from the tile
-	 *@param item item to remove
+	 * Removes an Item from the tile.
+	 * @param item item to remove
 	 */
 	public void removeItem(Item item){
 		inventory.removeItem(item);
@@ -199,36 +234,58 @@ public class Tile extends LayoutObject {
 	 * Checks whether the edge in the given direction is crossable by the character in the tile
 	 * @param direction The direction of desired crossing
 	 * @return True if the edge is crossable, false otherwise
-	 * @throws UnsupportedOperationException When this method is called when there is no character standing on the tile
 	 */
-	public boolean isCrossable(Direction direction) throws UnsupportedOperationException {
-		if (!hasDirection(direction)){
-			return false;
-		}
-		if (!hasCharacter()){
-			throw new UnsupportedOperationException("There is no character on this tile!");
-		}
-		return getEdge(direction).canCross(character);
+	public boolean isCrossable(Direction direction) {
+		return isCrossable(character, direction);
 	}
 	
 	/**
-	 * Can only move if capable of crossing the edge, and another character is not
-	 * currently occupying the destination tile.
-	 * @param direction The direction of possible movement 
-	 * @return whether or not the character can move in that direction
+	 * Checks whether the edge is crossable in the given direction by the given Character
+	 * @param c The character to check
+	 * @param direction The direction to check
+	 * @return True if the character can cross the edge, false otherwise
 	 */
-	public boolean canMove(Direction direction){
+	private boolean isCrossable(Character c, Direction direction){
 		if (!hasDirection(direction)){
 			return false;
 		}
-		return isCrossable(direction) && !getNextTile(direction).hasCharacter();
+		return getEdge(direction).canCross(c);
 	}
-
-	public Direction getDirectionTowards(Tile destination)
+	
+	/**
+	 * Checks if the character on this tile can move in the given direction. Movement is possible if the
+	 * edge in between is crossable, and there is no character on the destination tile.
+	 * @param direction The direction of possible movement.
+	 * @return True if movement is possible in the given direction, false otherwise.
+	 */
+	public boolean canMove(Direction direction){
+		return canMove(character, direction);
+	}
+	
+	/**
+	 * Checks if the given character can move in the given direction. Movement is possible if the
+	 * edge in between is crossable, and there is no character on the destination tile.
+	 * @param c The character to check.
+	 * @param direction The direction to check.
+	 * @return True if movement is possible for the character, false otherwise.
+	 */
+	private boolean canMove(Character c, Direction direction){
+		if (!hasDirection(direction)){
+			return false;
+		}
+		return isCrossable(c, direction) && !getNextTile(direction).hasCharacter();
+	}
+	
+	/**
+	 * This method will be public in future iteration, it is currently still under construction.
+	 * @param destination
+	 * @return
+	 */
+	private Direction getDirectionTowards(Tile destination)
 	{	
 		List<ShortestPathNode> path = getPath(destination);
 		if (path == null || path.isEmpty()) {
-			throw new IllegalArgumentException("Cannot move there!"); //can't move that way
+			return null; //no path exists
 		}
 		
 		return path.get(0).direction;
@@ -291,16 +348,17 @@ public class Tile extends LayoutObject {
 	 * Checks if the adjacent tile is empty. A tile is considered empty if it has no Items and no Character
 	 * @param direction The direction in which to check
 	 * @return True if the adjacent tile is empty, false otherwise
+	 * @throws if there is no Tile in that direction
 	 */
 	public boolean isEmpty(Direction direction){
-		checkDirection(direction);
+		checkDirection(direction); //doesn't make sense to ask if a tile is empty in a direction when no tile exists
 		return getNextTile(direction).isEmpty();
 	}
 	
 	/**
-	 * Checks whether there is an Exit in a given the direction
-	 * @param direction The direction in which to check
-	 * @return True if there is an Exit, false otherwise
+	 * Checks whether there is an Exit in a given the direction.
+	 * @param direction The direction in which to check.
+	 * @return True if there is an Exit, false otherwise.
 	 */
 	public boolean hasExit(Direction direction){
 		if (!hasDirection(direction)){
@@ -310,24 +368,18 @@ public class Tile extends LayoutObject {
 	}
 	
 	/**
-	 * Returns the String representation of the key needed to get across the Exit
-	 * @param direction The direction in which to search
-	 * @return The string representation of the needed key
+	 * Gets whether or not a tile is visited.
+	 * @return True if the Tile is visited, false otherwise
 	 */
-	public String getExitKey(Direction direction){
-		checkDirection(direction);
-		if (!hasExit(direction))
-		{
-			throw new IllegalArgumentException("No exit in that direction!");
-		}
-		return ((Exit)getEdge(direction)).getKeyName();
+	public boolean isVisited(){
+		return visited;
 	}
 	
 	//------------Direction handling------------//
 	/**
 	 * Validates the given direction for this Tile.
 	 * @param direction The direction to validate
-	 * @throws IllegalArgumentException when the direction does not exist for this Tile.
+	 * @throws IllegalArgumentException if the direction does not exist for this Tile.
 	 */
 	private void checkDirection(Direction direction) throws IllegalArgumentException {
 		if (!hasDirection(direction)){
@@ -336,23 +388,29 @@ public class Tile extends LayoutObject {
 	}
 	
 	/**
-	 * Checks if a Tile has an Edge in the given direction
-	 * @param direction The direction in which to check
-	 * @return True if the direction exists, false otherwise
+	 * Checks if a Tile has an Edge in the given direction.
+	 * @param direction The direction in which to check.
+	 * @return True if the direction exists, false otherwise.
 	 */
 	public boolean hasDirection(Direction direction){
 		return edges.containsKey(direction);
 	}
 	
 	/**
-	 * Gets all the possible directions for the Tile
-	 * @return The set of all possible directions
+	 * Gets all the possible directions for the Tile.
+	 * @return The set of all possible directions.
 	 */
 	public Set<Direction> getAllDirections(){
 		return edges.keySet();
 	}
 	
-	public Direction getEdgeDirection(Edge edge){		
+	/**
+	 * Gets the direction of a particular Edge.
+	 * @param edge The edge in which to retrieve the direction.
+	 * @return The direction of the given edge.
+	 * @throws IllegalArgumentException if the edge is not on this tile.
+	 */
+	public Direction getEdgeDirection(Edge edge) throws IllegalArgumentException{		
 		for (Map.Entry<Direction, Edge> e : edges.entrySet()){
 			if (e.getValue() == edge){
 				return e.getKey();
@@ -362,19 +420,10 @@ public class Tile extends LayoutObject {
 		throw new IllegalArgumentException("Edge is not set on this Tile");
 	}
 	
-	public void setRoomAsVisited(){
-		containingRoom.setVisited();
-	}
-	public boolean isVisited(){
-		return visited;
-	}
-	public void setVisited(){
-		visited = true;
-		setChanged();
-		notifyObservers();
-	}
-	
 	//-----------Path Finding-----------//
+	/**
+	 * A private class used to aid in path finding.
+	 */
 	private class ShortestPathNode {
 		Tile tile;
 		ShortestPathNode previousNode;
@@ -388,14 +437,16 @@ public class Tile extends LayoutObject {
 			this.direction = dir;
 		}
 		
-		@Override public boolean equals(Object obj){
+		@Override 
+		public boolean equals(Object obj){
 			if (!(obj instanceof ShortestPathNode)) return false;
 			return tile == ((ShortestPathNode) obj).tile;
 		}
 	}
 	
 	/**
-	 * Finds shortest path between this tile and the destination for the character on this tile
+	 * Currently unused method (except by other private unused methods), still under construction
+	 * Finds shortest path between this tile and the destination for the character on this tile.
 	 * @param destination The destination of the character
 	 * @return The list of Tiles in order. If this Tile is the destination, returns an empty list. If no path can be found, returns null.
 	 */
@@ -418,13 +469,15 @@ public class Tile extends LayoutObject {
 		
 		while (currentNode.tile != destination && !unvisited.isEmpty())
 		{
+			
 			//Look at all nodes adjacent to the current node
 			for (Direction dir : directions){
 				int tentativeDistance = currentNode.minSteps + 1;
 				ShortestPathNode nextNode = new ShortestPathNode(getNextTile(dir), currentNode, dir, tentativeDistance);
 			
 				//checks to see if the node is eligible to be added to the unvisited list
-				if (!visited.contains(nextNode) && (currentNode.tile.canMove(dir) || currentNode.tile.hasCharacter(dir))){
+				if (!visited.contains(nextNode) && (currentNode.tile.canMove(character, dir) 
+					|| (nextNode.tile.hasCharacter(dir) && nextNode.tile == destination))){
 					
 					//Node is new, add it.
 					if (!unvisited.contains(nextNode)){
@@ -437,7 +490,10 @@ public class Tile extends LayoutObject {
 							ShortestPathNode existingNode = unvisited.get(i);
 							if (existingNode.equals(nextNode)){
 								if (tentativeDistance < unvisited.get(i).minSteps){
-									existingNode.minSteps = tentativeDistance; //minimal, overwrite previous minimum
+									//minimal, overwrite the previous node
+									existingNode.minSteps = tentativeDistance; 
+									existingNode.direction = nextNode.direction;
+									existingNode.previousNode = nextNode.previousNode;
 								}
 								break;
 							}
@@ -472,9 +528,5 @@ public class Tile extends LayoutObject {
 		Collections.reverse(path);
 		
 		return path;
-	}
-	
-	public boolean pathExists(Tile destination){
-		return getPath(destination) != null;
 	}
 }
