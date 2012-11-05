@@ -36,9 +36,9 @@ public class Tile extends LayoutObject {
     * 
     * @param location The location of the tile
     * @param containingRoom The room containing the tile
-    * @throws IllegalArgumentException if either parameter is null.
+    * @exception IllegalArgumentException if either parameter is null.
     */
-	public Tile(Point location, Room containingRoom) throws IllegalArgumentException {
+	public Tile(Point location, Room containingRoom){
 		if (location == null || containingRoom == null){
 			throw new IllegalArgumentException("A tile must have a location and a containing room");
 		}
@@ -64,12 +64,14 @@ public class Tile extends LayoutObject {
 	}
 	
 	/**
-	 * Gets the items on the adjacent tile in the given direction.
+	 * Gets the items on the adjacent tile in the given direction. The character must be able
+	 * to move to the tile in that direction.
+	 * 
 	 * @param direction The direction to look in.
 	 * @return The inventory on the adjacent tile
-	 * @throws IllegalArgumentException if the character on this tile cannot move to the tile in the given direction
+	 * @exception IllegalArgumentException if the character on this tile cannot move to the tile in the given direction
 	 */
-	public Inventory getInventory(Direction direction) throws IllegalArgumentException{
+	public Inventory getInventory(Direction direction){
 		checkDirection(direction);
 		if (!canMove(direction)){
 			throw new IllegalArgumentException("Cannot cross that edge!");
@@ -79,7 +81,7 @@ public class Tile extends LayoutObject {
 	}
 	
 	/**
-	 * Gets the character on the current tile.
+	 * Gets the character on this tile.
 	 * @return The character if one exists, null otherwise
 	 */
 	public Character getCharacter(){
@@ -90,9 +92,9 @@ public class Tile extends LayoutObject {
 	 * Gets the character on the adjacent tile in the given direction.
 	 * @param direction The direction to search for
 	 * @return the Character on the adjacent tile, null if none exists 
-	 * @throws IllegalArgumentException if the character on this tile cannot cross the edge in the given direction
+	 * @exception IllegalArgumentException if the character on this tile cannot cross the edge in the given direction
 	 */
-	public Character getCharacter(Direction direction) throws IllegalArgumentException {
+	public Character getCharacter(Direction direction) {
 		checkDirection(direction);
 		if (!isCrossable(direction)){
 			throw new IllegalArgumentException("Cannot cross that edge!");
@@ -113,9 +115,9 @@ public class Tile extends LayoutObject {
 	 * Gets the edge in the given direction.
 	 * @param direction The direction in which to get the edge.
 	 * @return The edge in the given direction.
-	 * @throws if there is no Edge in that direction.
+	 * @exception if there is no Edge in that direction.
 	 */
-	private Edge getEdge(Direction direction) throws IllegalArgumentException {
+	private Edge getEdge(Direction direction) {
 		checkDirection(direction);
 		return edges.get(direction);
 	}
@@ -125,20 +127,24 @@ public class Tile extends LayoutObject {
 	 * 
 	 * @param direction The direction of the next tile.
 	 * @return the Tile in the specified direction.
-	 * @throws if there is no Tile in the specified direction.
+	 * @exception if there is no Tile in the specified direction.
 	 */
-	private Tile getNextTile(Direction direction) throws IllegalArgumentException {
+	private Tile getNextTile(Direction direction) {
 		checkDirection(direction);
-		return getEdge(direction).getOtherTile(this);
+		Tile nextTile = getEdge(direction).getOtherTile(this);
+		if (nextTile == null){
+			throw new IllegalArgumentException("No tile in that direction");
+		}
+		return nextTile;
 	}
 	
 	/**
 	 * Gets the String representation of the key needed to get across the Exit.
 	 * @param direction The direction in which to search.
 	 * @return The string representation of the needed key.
-	 * @throws IllegalArgumentException if there is no Exit in the given direction.
+	 * @exception IllegalArgumentException if there is no Exit in the given direction.
 	 */
-	public String getExitKey(Direction direction) throws IllegalArgumentException {
+	public String getExitKey(Direction direction) {
 		checkDirection(direction);
 		if (!hasExit(direction))
 		{
@@ -152,11 +158,14 @@ public class Tile extends LayoutObject {
 	 * Sets an edge of a tile.
 	 * @param direction The direction in which to set the edge
 	 * @param edge The edge to be set
-	 * @throws IllegalArgumentException if the edge has already been set. This is to prevent an erroneous state.
+	 * @exception IllegalArgumentException if the edge has already been set. This is to prevent an erroneous state.
 	 */
-	public void setEdge(Direction direction, Edge edge) throws IllegalArgumentException {
+	public void setEdge(Direction direction, Edge edge) {
 		if (hasDirection(direction)){
 			throw new IllegalArgumentException("This edge has already been set");
+		}
+		if (edge == null){
+			throw new IllegalArgumentException("The edge may not be null");
 		}
 		
 		edges.put(direction, edge);
@@ -182,7 +191,7 @@ public class Tile extends LayoutObject {
 	/**
 	 * Adds a character to the tile.
 	 * @param c the Character to be added
-	 * @throws UnsupportedOperationException if there is already a Character on this Tile
+	 * @exception UnsupportedOperationException if there is already a Character on this Tile
 	 */
 	public void addCharacter(Character c){
 		if (hasCharacter()){
@@ -294,10 +303,10 @@ public class Tile extends LayoutObject {
 	/**
 	 * Moves the character to the tile in the given direction.
 	 * @param direction The direction to move the player
-	 * @throws IllegalArgumentException When the player cannot move in the given direction. Try calling canMove(direction) first.
+	 * @exception IllegalArgumentException When the player cannot move in the given direction. Try calling canMove(direction) first.
 	 * @return The new tile of the character
 	 */
-	public Tile moveCharacter(Direction direction) throws IllegalArgumentException {
+	public Tile moveCharacter(Direction direction) {
 		checkDirection(direction);
 		if (!canMove(direction)){
 			throw new IllegalArgumentException("Cannot move in that direction, something is blocking the way!");
@@ -382,6 +391,7 @@ public class Tile extends LayoutObject {
 	 * @throws IllegalArgumentException if the direction does not exist for this Tile.
 	 */
 	private void checkDirection(Direction direction) throws IllegalArgumentException {
+		//Runtime exception is advertised, since throwing is the point of this method
 		if (!hasDirection(direction)){
 			throw new IllegalArgumentException("That direction does not exist!");
 		}
@@ -408,9 +418,9 @@ public class Tile extends LayoutObject {
 	 * Gets the direction of a particular Edge.
 	 * @param edge The edge in which to retrieve the direction.
 	 * @return The direction of the given edge.
-	 * @throws IllegalArgumentException if the edge is not on this tile.
+	 * @exception IllegalArgumentException if the edge is not on this tile.
 	 */
-	public Direction getEdgeDirection(Edge edge) throws IllegalArgumentException{		
+	public Direction getEdgeDirection(Edge edge) {		
 		for (Map.Entry<Direction, Edge> e : edges.entrySet()){
 			if (e.getValue() == edge){
 				return e.getKey();
