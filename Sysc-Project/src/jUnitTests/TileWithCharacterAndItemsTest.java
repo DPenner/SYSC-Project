@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 public class TileWithCharacterAndItemsTest extends TileDefaultTest{
 	
 	@Override 
-	public void setUp(){
+	public void setUp() throws Exception {
 		super.setUp();
 		createCharacterOnTestTile();
 		testTile.addItem(testItem);

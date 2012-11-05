@@ -22,7 +22,7 @@ public class TileTest {
 	protected Point testLocation;
 	
 	@Before
-	public void setUp(){
+	public void setUp() throws Exception {
 		testLocation = new Point(1, 2);
 		Room r = new Room();
 		testTile = new Tile(testLocation, r);
