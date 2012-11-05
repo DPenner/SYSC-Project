@@ -26,9 +26,13 @@ DELIVERABLES:
 Design Documentation.docx - Our documentation on the design of our game.
 
 KNOWN ISSUES:
+- MapView does not currently consider offsets: if 0 is not the minimum value for x and y,
+  it is not taken into consideration.
 
 CHANGES:
 - 2D GUI has been implemented
+- Bug fix: an exception is no longer thrown upon a request to check for a non-existing direction,
+           false is returned instead.
 
 ROADMAP:
 - Allow monsters to move.  
