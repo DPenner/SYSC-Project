@@ -47,7 +47,7 @@ public class Exit extends Edge {
 	 */
 	public Exit(Tile tile1, Tile tile2, boolean locked, Direction direction1, Direction direction2, Item key)
 	{
-		this(tile1, tile2, !locked, key);
+		this(tile1, tile2, locked, key);
 		connectTiles(tile1, direction1, tile2, direction2);
 	}
 	
