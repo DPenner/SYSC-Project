@@ -8,7 +8,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
-
+ 
 /**
  * EdgePanel is a specialized panel that displays Edges for its parent MapView
  * 
@@ -47,7 +47,7 @@ class EdgePanel extends LayoutPanel<Edge>{
 	protected void drawLayoutObject(Graphics g, Edge edge) {
 					
 		//only draw those that appear to be "walls" and have been visited
-		if (!edge.isCrossableByDefault() && edge.isInVisitedRoom()){ 
+		if (!edge.isCrossableByDefault() && edge.isVisited()){ 
 			g.setColor(DEFAULT_EDGE_COLOR);
 			
 			g.fill3DRect(getEdgeRectangle(edge, true).x, getEdgeRectangle(edge, true).y, 
