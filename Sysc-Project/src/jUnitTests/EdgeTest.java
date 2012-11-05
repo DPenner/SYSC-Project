@@ -17,14 +17,12 @@ import java.awt.Point;
  */
 public class EdgeTest {
 
-	private Tile testTile1;
+	protected Tile testTile1;
 	private Point testPoint1;
-	private Direction direction1;
-	private Tile testTile2;
+	protected Tile testTile2;
 	private Point testPoint2;
-	private Direction direction2;
-	private Character testCharacter;
-	protected Edge testEdge;
+	protected Character testCharacter;
+	protected Edge testEdgeCrossable;
 	protected Edge testEdgeUncrossable;
 	
 	/**
@@ -34,19 +32,31 @@ public class EdgeTest {
 	public void setUp() throws Exception {
 		testPoint1 = new Point(1,3);
 		testPoint2 = new Point(2,-1);
+		
+		initializeTestTiles();
+		initializeCharacter();
+		initializeTestEdges();
+	}
+	
+	protected void initializeTestTiles(){
 		testTile1 = new Tile(testPoint1, new Room());
-		testCharacter = new Character("Bob", 10, 10, testTile1);
 		testTile2 = new Tile(testPoint2, new Room());
-		testEdge = new Edge(testTile1, testTile2, true, Direction.NORTH, Direction.SOUTH);
+	}
+	
+	protected void initializeTestEdges(){
+		testEdgeCrossable = new Edge(testTile1, testTile2, true, Direction.NORTH, Direction.SOUTH);
 		testEdgeUncrossable = new Edge(testTile1, testTile2, false, Direction.EAST, Direction.WEST);
 	}
 
+	protected void initializeCharacter(){
+		testCharacter = new Character("Bob", 10, 10, testTile1);
+	}
 	/**
 	 * Test method for {@link gameCore.Edge#canCross(gameCore.Character)}.
 	 */
 	@Test
 	public void testCanCross() {
-		assertTrue(testEdge.canCross(testCharacter));
+		assertTrue(testEdgeCrossable.canCross(testCharacter));
 		assertFalse(testEdgeUncrossable.canCross(testCharacter));
 	}
 	
@@ -55,30 +65,42 @@ public class EdgeTest {
 	 */
 	@Test
 	public void testIsCrossableByDefault() {
-		assertTrue(testEdge.isCrossableByDefault());
+		assertTrue(testEdgeCrossable.isCrossableByDefault());
 		assertFalse(testEdgeUncrossable.isCrossableByDefault());
 	}
 
 	/**
 	 * Test method for {@link gameCore.Edge#cross(gameCore.Tile, gameCore.Character)}.
 	 */
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testCrossUncrossableEdge() {
-		testEdgeUncrossable.cross(testTile1, testCharacter);
+		try {
+			testEdgeUncrossable.cross(testTile1, testCharacter);
+			fail("IllegalArgumentException was expected");
+		}
+		catch (IllegalArgumentException e){
+			//exception was expection
+		}
+	}
+	
+	/**
+	 * Test method for {@link gameCore.Edge#cross(gameCore.Tile, gameCore.Character)}.
+	 */
+	@Test
+	public void testCrossCrossableEdge() {
+		//A successful cross
+		testEdgeCrossable.cross(testTile1, testCharacter);
+		assertEquals(testCharacter, testTile2.getCharacter());
+		assertFalse(testTile1.hasCharacter());
 	}
 	
 	/**
 	 * Test method for {@link gameCore.Edge#cross(gameCore.Tile, gameCore.Character)}.
 	 */
 	@Test(expected = IllegalArgumentException.class)
-	public void testCrossCrossableEdge() {
+	public void testCrossIllegal() {
 		//A successful cross
-		testEdgeUncrossable.cross(testTile1, testCharacter);
-		assertTrue(testTile2.getCharacter().equals(testCharacter));
-		assertFalse(testTile1.hasCharacter());
-		
-		//Trying to cross when there is no character on the tile
-		testEdgeUncrossable.cross(testTile1, testCharacter);
+		testEdgeCrossable.cross(testTile2, testCharacter);
 	}
 
 	/**
@@ -86,7 +108,7 @@ public class EdgeTest {
 	 */
 	@Test
 	public void testGetOtherTile() {
-		assertEquals(testTile2, testEdge.getOtherTile(testTile1));
+		assertEquals(testTile2, testEdgeCrossable.getOtherTile(testTile1));
 		assertEquals(testTile1, testEdgeUncrossable.getOtherTile(testTile2));
 	}
 
@@ -95,7 +117,7 @@ public class EdgeTest {
 	 */
 	@Test
 	public void testGetDirection1() {
-		assertEquals(Direction.NORTH, testEdge.getDirection1());
+		assertEquals(Direction.NORTH, testEdgeCrossable.getDirection1());
 	}
 
 	/**
@@ -103,7 +125,7 @@ public class EdgeTest {
 	 */
 	@Test
 	public void testGetDirection2() {
-		assertEquals(Direction.SOUTH, testEdge.getDirection2());
+		assertEquals(Direction.SOUTH, testEdgeCrossable.getDirection2());
 	}
 
 	/**
@@ -111,7 +133,7 @@ public class EdgeTest {
 	 */
 	@Test
 	public void testGetLocation1() {
-		assertEquals(testPoint1, testEdge.getLocation1());
+		assertEquals(testPoint1, testEdgeCrossable.getLocation1());
 		assertEquals(testPoint1, testEdgeUncrossable.getLocation1());
 	}
 
@@ -120,7 +142,7 @@ public class EdgeTest {
 	 */
 	@Test
 	public void testGetLocation2() {
-		assertEquals(testPoint2, testEdge.getLocation2());
+		assertEquals(testPoint2, testEdgeCrossable.getLocation2());
 		assertEquals(testPoint2, testEdgeUncrossable.getLocation2());
 	}
 
@@ -129,7 +151,7 @@ public class EdgeTest {
 	 */
 	@Test
 	public void testIsVisited() {
-		assertEquals(testTile1.isVisited() || testTile2.isVisited(), testEdge.isVisited());
+		assertEquals(testTile1.isVisited() || testTile2.isVisited(), testEdgeCrossable.isVisited());
 	}
 
 }
