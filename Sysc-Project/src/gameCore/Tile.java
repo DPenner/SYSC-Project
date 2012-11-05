@@ -20,7 +20,7 @@ import java.util.*;
  * @version 1.0
  */
 
-public class Tile extends Observable {
+public class Tile extends LayoutObject {
 	
 	//------------Fields------------//
 	private Point location;
@@ -118,18 +118,13 @@ public class Tile extends Observable {
 	}
 	
 	/**
-	 * Gets the next tile in the specified direction. Throws if the edge between the two
-	 * tiles cannot be crossed.
+	 * Gets the next tile in the specified direction.
 	 * 
 	 * @param direction The direction of the next tile
 	 * @return the Tile in the specified direction
 	 */
 	private Tile getNextTile(Direction direction){
 		checkDirection(direction);
-		if (!isCrossable(direction))
-		{
-			throw new IllegalArgumentException("Tried get next tile, but edge between is not crossable");
-		}
 		return getEdge(direction).getOtherTile(this);
 	}
 	
@@ -229,6 +224,16 @@ public class Tile extends Observable {
 		return isCrossable(direction) && !getNextTile(direction).hasCharacter();
 	}
 
+	public Direction getDirectionTowards(Tile destination)
+	{	
+		List<ShortestPathNode> path = getPath(destination);
+		if (path == null || path.isEmpty()) {
+			throw new IllegalArgumentException("Cannot move there!"); //can't move that way
+		}
+		
+		return path.get(0).direction;
+	}
+	
 	/**
 	 * Moves the character to the tile in the given direction.
 	 * @param direction The direction to move the player
@@ -369,21 +374,107 @@ public class Tile extends Observable {
 		notifyObservers();
 	}
 	
+	//-----------Path Finding-----------//
+	private class ShortestPathNode {
+		Tile tile;
+		ShortestPathNode previousNode;
+		Direction direction; //the direction from the previousTile to the current
+		int minSteps;
+		
+		ShortestPathNode(Tile tile, ShortestPathNode previousNode, Direction dir, int minSteps){
+			this.tile = tile;
+			this.previousNode = previousNode;
+			this.minSteps = minSteps;
+			this.direction = dir;
+		}
+		
+		@Override public boolean equals(Object obj){
+			if (!(obj instanceof ShortestPathNode)) return false;
+			return tile == ((ShortestPathNode) obj).tile;
+		}
+	}
+	
 	/**
 	 * Finds shortest path between this tile and the destination for the character on this tile
 	 * @param destination The destination of the character
 	 * @return The list of Tiles in order. If this Tile is the destination, returns an empty list. If no path can be found, returns null.
 	 */
-	public List<Tile> getPath(Tile destination){
-		
-		
-		class ShortestPathData {
-			Tile tile;
-			Tile previousTile;
-			int minSteps;
+	private List<ShortestPathNode> getPath(Tile destination){
+		if (!hasCharacter()){
+			throw new UnsupportedOperationException("A shortest path cannot be determined without a character on the tile");
 		}
-		return null;
+		//this method is an implementation of Dijkstra's algorithm
+		
+		//initializing visited and unvisited sets
+		Set<ShortestPathNode> visited = new HashSet<ShortestPathNode>();
+		List<ShortestPathNode> unvisited = new ArrayList<ShortestPathNode>(); //list is to keep order, for consistency
+		
+		//Getting directions, sorting directions simply makes sure if there are multiple shortest paths, a consistent one is chosen 
+		List<Direction> directions = new ArrayList<Direction>(getAllDirections());
+		Collections.sort(directions); 
+		
+		ShortestPathNode currentNode = new ShortestPathNode(this, null, null, 0);
+		unvisited.add(currentNode);
+		
+		while (currentNode.tile != destination && !unvisited.isEmpty())
+		{
+			//Look at all nodes adjacent to the current node
+			for (Direction dir : directions){
+				int tentativeDistance = currentNode.minSteps + 1;
+				ShortestPathNode nextNode = new ShortestPathNode(getNextTile(dir), currentNode, dir, tentativeDistance);
+			
+				//checks to see if the node is eligible to be added to the unvisited list
+				if (!visited.contains(nextNode) && (currentNode.tile.canMove(dir) || currentNode.tile.hasCharacter(dir))){
+					
+					//Node is new, add it.
+					if (!unvisited.contains(nextNode)){
+						unvisited.add(nextNode);		
+					}
+					
+					//Node has been seen before, figure out if this tentativeDistance is minimal or not
+					else {
+						for (int i = 0; i < unvisited.size(); i++){
+							ShortestPathNode existingNode = unvisited.get(i);
+							if (existingNode.equals(nextNode)){
+								if (tentativeDistance < unvisited.get(i).minSteps){
+									existingNode.minSteps = tentativeDistance; //minimal, overwrite previous minimum
+								}
+								break;
+							}
+						}
+					}
+				}
+			}
+			
+			//all adjacent nodes have been checked, update for next iteration
+			unvisited.remove(currentNode);
+			visited.add(currentNode);
+			
+			if (unvisited.isEmpty()) return null; //no path exists
+			
+			ShortestPathNode minimumNode = unvisited.get(0);
+			for (int i = 0; i < unvisited.size(); i++){
+				if (unvisited.get(i).minSteps < minimumNode.minSteps){
+					minimumNode = unvisited.get(i);
+				}
+			}
+			
+			currentNode = minimumNode;
+		}
+		
+		List<ShortestPathNode> path = new ArrayList<ShortestPathNode>();
+		
+		//retrace the path
+		while (currentNode.previousNode != null){
+			path.add(currentNode);
+			currentNode = currentNode.previousNode;
+		}
+		Collections.reverse(path);
+		
+		return path;
 	}
 	
-	
+	public boolean pathExists(Tile destination){
+		return getPath(destination) != null;
+	}
 }

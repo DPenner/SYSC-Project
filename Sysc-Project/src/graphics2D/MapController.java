@@ -1,5 +1,6 @@
 package graphics2D;
 
+import gameCore.Player;
 import gameCore.Tile;
 
 import java.awt.event.MouseAdapter;
@@ -7,14 +8,14 @@ import java.awt.event.MouseEvent;
 
 public class MapController extends MouseAdapter {
 	private MapView view;
-	private Tile currentTile;
+	private Tile currentTile; //The tile that the mouse is hovering over
+	private Player player;
 	
 	public MapController(MapView view){
 		this.view = view;
 		view.addMouseListener(this);
 		view.addMouseMotionListener(this);
 	}
-	
 	
 	//------------Mouse Adapter------------//
 	@Override
