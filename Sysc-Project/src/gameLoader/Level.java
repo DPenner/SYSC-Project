@@ -39,7 +39,7 @@ public class Level {
 	private Room elevator;
 	private Player player;
 	
-	protected Level()
+	public Level()
 	{
 		roomList = new ArrayList<Room>();
 		edgeList = new ArrayList<Edge>();
@@ -198,7 +198,7 @@ public class Level {
 		return elevator;
 	}
 	/**
-	 * @param elevator the elevator to set
+	 * @param elevator the room to set as elevator
 	 */
 	public void setElevator(Room elevator, Tile tileInElevator) {
 		if(elevator != null) 
