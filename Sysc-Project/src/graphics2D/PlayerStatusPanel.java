@@ -7,6 +7,22 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.JPanel;
 
+/**
+ * View for the KDT Maze
+ * 
+ * @author Group D
+ * @author Main author: Karen Madore
+ * 
+ * Group D Members
+ * ---------------
+ * Karen Madore
+ * Trang Pham
+ * Darrell Penner
+ * 
+ *
+ * @version 1.0
+ */
+
 
 public class PlayerStatusPanel extends JPanel implements PlayerListener{
 	private Player player;
@@ -20,19 +36,30 @@ public class PlayerStatusPanel extends JPanel implements PlayerListener{
 	public PlayerStatusPanel(Player p){
 		player=p;
 		//this.setBackground(Color.BLACK);
-		this.setPreferredSize(new Dimension(100,80));
+		this.setPreferredSize(new Dimension(120,80));
 		player.addPlayerListener(this);
 	}
-	
+	/**
+	 * Draw the status with the given Label and value at the given x,y position
+	 * @param g	-graphics
+	 * @param sLabel - String to display on label
+	 * @param value	- value of the status.
+	 * @param x		- x position to draw status
+	 * @param y		- y position to draw status
+	 */
 	private void drawStatus(Graphics g, String sLabel, int value, int x, int y){
 		g.drawString(sLabel, x, y+10); //label for the string
-		
-		//g.drawRect(x+TEXT_OFFSET, y+BOX_OFFSET, BOX_SIZE, BOX_SIZE );
 		g.drawString(value+"", x+TEXT_OFFSET+2, y+10);
 		
 	}
 	
+
 	@Override
+
+	/**
+	 * PaintCompenent Method - paints the graphics associated with the PlayerStatusPanel
+	 */
+
 	public void paintComponent(Graphics g) {
 		
 		super.paintComponent(g);  //calling repaint later on, actually calls the paintComponent on anything that can be refreshed.
@@ -45,16 +72,11 @@ public class PlayerStatusPanel extends JPanel implements PlayerListener{
 		
 		if(player.isDead()){
 			g.setColor(Color.RED);
-			g.drawString("Player has died. GAME OVER!",10, 12);
+			g.drawString("Player has died.",TEXT_TAB1, ROW_OFFSET*3);
+			g.drawString("GAME OVER!", TEXT_TAB1, ROW_OFFSET*4);
+					
 		}
 		
-		//g.drawImage(new Image("redkey.png"), 200, 12, 40, 40, null);
-		
-
-		//g.drawRect(0, 0, 400, 300);
-		//g.drawString("Test", 20, 20);
-		//g.drawLine(0, 0, 100, 100);
-		//g.drawOval(getX() + getWidth()/4, getY() + getHeight()/4, getWidth()/2, getHeight()/2);  //getWidth/getHeight are from JPanel
 	}
 
 	@Override

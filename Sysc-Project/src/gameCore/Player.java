@@ -281,6 +281,13 @@ public class Player extends Character
 	public void removePlayerListener(PlayerListener pl){
 		pListeners.remove(pl);
 	}
-	
+	/**
+	 * Count of PlayerListners
+	 * @return number of subscribers.
+	 */
+	public int countPlayerListeners()
+	{
+		return pListeners.size();
+	}
 	
 }
