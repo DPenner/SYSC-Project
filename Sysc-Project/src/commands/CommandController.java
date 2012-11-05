@@ -2,7 +2,8 @@ package commands;
 
 import gameCore.Direction;
 import gameCore.Player;
-import gameLoader.TextOutputPanelObservable;
+import graphics2D.TextOutputPanelObservable;
+
 import java.awt.KeyEventDispatcher;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;

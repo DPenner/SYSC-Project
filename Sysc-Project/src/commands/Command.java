@@ -1,6 +1,6 @@
 package commands;
 
-import gameLoader.TextOutputPanelObservable;
+import graphics2D.TextOutputPanelObservable;
 
 public abstract class Command extends TextOutputPanelObservable {
 	public abstract boolean execute();

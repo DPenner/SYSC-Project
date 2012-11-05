@@ -1,6 +1,5 @@
-package gameLoader;
+package graphics2D;
 
-import graphics2D.TextOutputPanel;
 
 import java.util.Observable;
 

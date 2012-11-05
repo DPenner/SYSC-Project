@@ -6,6 +6,7 @@ import commands.CommandController;
 
 import gameCore.Player;
 import graphics2D.KDTView;
+import graphics2D.TextOutputPanelObservable;
 
 
 /**
