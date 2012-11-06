@@ -71,7 +71,7 @@ public class Edge extends LayoutObject {
 	 * @param direction1 The direction of the edge relative to tile1
 	 * @param direction2 The direction of the edge relative to tile2
 	 */
-	public void connectTiles(Tile tile1, Direction direction1, Tile tile2, Direction direction2){
+	protected void connectTiles(Tile tile1, Direction direction1, Tile tile2, Direction direction2){
 		if(tile1 != null) tile1.setEdge(direction1, this);
 		if(tile2 != null) tile2.setEdge(direction2, this);
 	}
@@ -97,10 +97,18 @@ public class Edge extends LayoutObject {
 	 * @param currentTile The current tile the Character resides on
 	 * @param crosser The Character crossing the edge
 	 * @return The new tile of the Character
+	 * @exception IllegalArgumentException The currentTile or crosser is null, or the character is not capable
+	 * of crossing this Edge
 	 */
 	public Tile cross(Tile currentTile, Character crosser){
 		if (crosser == null || currentTile == null){
 			throw new IllegalArgumentException("currentTile and crosser cannot be null");
+		}
+		if (!crosser.equals(currentTile.getCharacter())){
+			throw new IllegalArgumentException("The given character must be on the given tile");
+		}
+		if (!canCross(crosser)){
+			throw new IllegalArgumentException("The given character is not capable of crossing this edge");
 		}
 		
 		Tile destination = getOtherTile(currentTile);

@@ -23,16 +23,17 @@ import java.util.Set;
 public class Room 
 {
     private Set<Tile> tiles;
-    //private boolean visited;
 
+    /**
+     * Creates a room with no tiles
+     */
+    public Room(){
+    	tiles = new HashSet<Tile>();
+    }
+    
     /**
      * Creates a room from a set of tiles.
      */
-
-    public Room()
-    {
-    	tiles = new HashSet<Tile>();
-    }
     public Room(Set<Tile> tiles) 
     {
     	if (tiles == null || tiles.isEmpty())
@@ -40,24 +41,23 @@ public class Room
     		throw new IllegalArgumentException("A room must contain at least one tile.");
     	}
         this.tiles = tiles;
-        //visited = false;
     }
 
-    public void addTile(Tile t)
-    {
+    /**
+     * Adds a tile to the room.
+     * @param t The tile to add.
+     * @exception IllegalArgumentException if t is null.
+     */
+    public void addTile(Tile t){
+    	if (t == null){
+    		throw new IllegalArgumentException("Tile cannot be null");
+    	}
     	tiles.add(t);
     }
 
-    /*
-     * Checks if the room has been visited or not
-     * @return True if the room has been visited, false otherwise
-     *
-	public boolean isVisited() {
-		return visited;
-	}*/
-
 	/**
-	 * Makes the room visited (a room cannot be "un-visited")
+	 * Makes the room visited (a room cannot be "unvisited") by setting
+	 * all of its tiles as visited.
 	 */
 	public void setVisited() {
 		for (Tile t : tiles){

@@ -140,13 +140,7 @@ public class TileDefaultTest extends TileTest {
 	@Test
 	public void testIsEmptyDirection() {
 		for (Direction dir : Direction.values()){
-			try {
-				testTile.isEmpty(dir);
-				fail("IllegalArgumentException was expected");
-			}
-			catch (IllegalArgumentException e){
-				//this exception was expected
-			}
+			assertFalse(testTile.isEmpty(dir));
 		}
 	}
 	
@@ -249,5 +243,23 @@ public class TileDefaultTest extends TileTest {
 	@Test
 	public void testIsEmpty() {
 		assertTrue(testTile.isEmpty());
+	}
+	
+	/**
+	 * Test method for {@link gameCore.Tile#getEdgeDirection(gameCore.Edge)}.
+	 */
+	@Test
+	public void testSetEdge() {
+		testTile.setEdge(Direction.NORTH, new Edge(testTile, null, false));
+		assertTrue(testTile.hasDirection(Direction.NORTH));
+		
+		//a second attempt should fail
+		try {
+			testTile.setEdge(Direction.NORTH, new Edge(testTile, null, false));
+			fail("IllegalArgumentException expected");
+		}
+		catch (IllegalArgumentException e){
+			//exception expected
+		}
 	}
 }

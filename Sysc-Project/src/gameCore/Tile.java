@@ -285,12 +285,12 @@ public class Tile extends LayoutObject {
 		return isCrossable(c, direction) && !getNextTile(direction).hasCharacter();
 	}
 	
-	/**
+	/*
 	 * This method will be public in future iteration, it is currently still under construction.
 	 * @param destination
 	 * @return
 	 */
-	private Direction getDirectionTowards(Tile destination)
+	/*private Direction getDirectionTowards(Tile destination)
 	{	
 		List<ShortestPathNode> path = getPath(destination);
 		if (path == null || path.isEmpty()) {
@@ -298,7 +298,7 @@ public class Tile extends LayoutObject {
 		}
 		
 		return path.get(0).direction;
-	}
+	}*/
 	
 	/**
 	 * Moves the character to the tile in the given direction.
@@ -357,11 +357,12 @@ public class Tile extends LayoutObject {
 	 * Checks if the adjacent tile is empty. A tile is considered empty if it has no Items and no Character
 	 * @param direction The direction in which to check
 	 * @return True if the adjacent tile is empty, false otherwise
-	 * @throws if there is no Tile in that direction
 	 */
 	public boolean isEmpty(Direction direction){
-		checkDirection(direction); //doesn't make sense to ask if a tile is empty in a direction when no tile exists
-		return getNextTile(direction).isEmpty();
+		if (!hasDirection(direction)){
+			return false;
+		}
+		return isCrossable(direction) && getNextTile(direction).isEmpty();
 	}
 	
 	/**
@@ -431,10 +432,10 @@ public class Tile extends LayoutObject {
 	}
 	
 	//-----------Path Finding-----------//
-	/**
+	/*
 	 * A private class used to aid in path finding.
 	 */
-	private class ShortestPathNode {
+	/*private class ShortestPathNode {
 		Tile tile;
 		ShortestPathNode previousNode;
 		Direction direction; //the direction from the previousTile to the current
@@ -452,15 +453,15 @@ public class Tile extends LayoutObject {
 			if (!(obj instanceof ShortestPathNode)) return false;
 			return tile == ((ShortestPathNode) obj).tile;
 		}
-	}
+	}*/
 	
-	/**
+	/*
 	 * Currently unused method (except by other private unused methods), still under construction
 	 * Finds shortest path between this tile and the destination for the character on this tile.
 	 * @param destination The destination of the character
 	 * @return The list of Tiles in order. If this Tile is the destination, returns an empty list. If no path can be found, returns null.
 	 */
-	private List<ShortestPathNode> getPath(Tile destination){
+	/*private List<ShortestPathNode> getPath(Tile destination){
 		if (!hasCharacter()){
 			throw new UnsupportedOperationException("A shortest path cannot be determined without a character on the tile");
 		}
@@ -538,5 +539,5 @@ public class Tile extends LayoutObject {
 		Collections.reverse(path);
 		
 		return path;
-	}
+	}*/
 }
