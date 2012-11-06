@@ -26,13 +26,10 @@ import javax.swing.JPanel;
 
 public class PlayerStatusPanel extends JPanel implements PlayerListener{
 	private Player player;
-	private static int BOX_SIZE=22;
 	private static int TEXT_OFFSET=50;
 	private static int TEXT_TAB1=20;
 	private static int ROW_OFFSET=25;
-	private static int BOX_OFFSET=-1;
-	private static int PLAYER_DIED=0;
-	
+		
 	public PlayerStatusPanel(Player p){
 		player=p;
 		//this.setBackground(Color.BLACK);
@@ -79,18 +76,27 @@ public class PlayerStatusPanel extends JPanel implements PlayerListener{
 		
 	}
 
+	/**
+	 * player status panel does not need this
+	 */
 	@Override
 	public void itemAdded(PlayerEvent e) {
-		// TODO Auto-generated method stub
+		// player status panel does not need this
 		
 	}
 
+	/**
+	 * player status panel does not need this
+	 */
 	@Override
 	public void itemDropped(PlayerEvent e) {
-		// TODO Auto-generated method stub
+		//player status panel does not need this
 		
 	}
 
+	/**
+	 * Update the Player's status on the panel
+	 */
 	@Override
 	public void statsChanged(PlayerEvent e) {
 		// TODO Auto-generated method stub

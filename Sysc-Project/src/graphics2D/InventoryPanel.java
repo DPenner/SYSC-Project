@@ -7,16 +7,33 @@ import java.awt.Graphics;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
+/**
+ * Panel for player inventory
+ * 
+ * @author Group D
+ * @author Main author: Karen Madore
+ * 
+ * Group D Members
+ * ---------------
+ * Karen Madore
+ * Trang Pham
+ * Darrell Penner
+ * 
+ *
+ * @version 1.0
+ */
 
 public class InventoryPanel extends JPanel implements PlayerListener{
 	private Player player;
-	private DefaultListModel lmodel;
 	private Inventory inventory;
 	
 	private static int TEXT_OFFSET = 10;
 	private static int TEXT_TAB1=20;
 	private static int ROW_OFFSET = 25;
-	
+	/**
+	 * Constructor for InventoryPanel
+	 * @param p - the player in the game
+	 */
 	public InventoryPanel(Player p){
 		
 		player=p;
@@ -25,7 +42,11 @@ public class InventoryPanel extends JPanel implements PlayerListener{
 		//addComponentsToInventoryPanel();
 		player.addPlayerListener(this);
 	}
-	
+	/**
+	 * Draws a specific inventory item from the inventory list on the panel
+	 * @param g - graphics layer to draw it on
+	 * @param y - drawing at y position on the panel
+	 */
 	private void drawInventory(Graphics g, int y){
 		for(int i=0; i<inventory.size(); i++)
 		{
@@ -33,6 +54,9 @@ public class InventoryPanel extends JPanel implements PlayerListener{
 		}
 	}
 
+	/**
+	 * Format and draw the Player's inventory list on the panel
+	 */
 	@Override
 	public void paintComponent(Graphics g) {
 		int top = 12;
@@ -43,22 +67,29 @@ public class InventoryPanel extends JPanel implements PlayerListener{
 		drawInventory(g, top + ROW_OFFSET);
 	}
 
+	/**
+	 * Repaint the panel if the player notifies of an itemAdded event
+	 */
 	@Override
 	public void itemAdded(PlayerEvent e) {
 		this.repaint();
 	}
 
+	/**
+	 * Repaint the panel if the player notifies of an itemDropped event
+	 */
 	@Override
 	public void itemDropped(PlayerEvent e) {
-		// TODO Auto-generated method stub
-		//lmodel.removeElement(e.getItem());
 		
 		this.repaint();
 	}
 
+	/**
+	 * Repaint the panel if the player notifies panel of stats changed.  Nothing to do for this panel.
+	 */
 	@Override
 	public void statsChanged(PlayerEvent e) {
-		// TODO Auto-generated method stub
+		//currently do not need to do anything on inventory panel
 		
 	}
 	

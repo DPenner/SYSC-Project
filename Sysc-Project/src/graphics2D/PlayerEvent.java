@@ -26,21 +26,42 @@ public class PlayerEvent extends EventObject {
 	private Item item;
 	private Player player;
 	
+	/**
+	 * Constructor for a PlayerEvent
+	 * @param source - source of the event
+	 */
 	public PlayerEvent(Object source){
 		super(source);
 	}
-	
+	/**
+	 * Get the Player for the listeners
+	 * @return
+	 */
 	public Player getPlayer() {
 		return player;
 	}
 
+	/**
+	 * Sets the Player for this event
+	 * 
+	 * @param player - the player
+	 */
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
 	
+	/**
+	 * Get the item from the event that was added 
+	 * @return - the item 
+	 */
 	public Item getItem(){
 		return item;
 	}
+	
+	/**
+	 * Set the item for the event
+	 * @param item - the item that was added or dropped
+	 */
 	public void setItem(Item item){
 		this.item=item;
 	}
