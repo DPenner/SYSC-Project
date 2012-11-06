@@ -1,11 +1,7 @@
 package graphics2D;
 
-<<<<<<< HEAD
-
 import java.util.Observable;
 
-public class TextOutputPanelObservable extends Observable {
-=======
 /**
 * TextOutputPanelObservable is added for 
 * convenience so that classes don't have
@@ -26,19 +22,15 @@ public class TextOutputPanelObservable extends Observable {
 * @version 1.0
 *
 */
-import java.util.Observable;
 
 public class TextOutputPanelObservable extends Observable {
 
->>>>>>> 416f7ddd1c67c8ad15541671ddc40c61796ff67c
+
 	public TextOutputPanelObservable()
 	{
 		this.addObserver(TextOutputPanel.getTextOutputPanel());
 	}
-<<<<<<< HEAD
-	public void printMessage(String s)
-	{
-=======
+
 	/**
 	 * Prints a message to the TextOutputPanel
 	 * @param s the string to print
@@ -49,7 +41,6 @@ public class TextOutputPanelObservable extends Observable {
 		 * duplication due to having set the instance as changed
 		 * for every single message
 		 */
->>>>>>> 416f7ddd1c67c8ad15541671ddc40c61796ff67c
 		this.setChanged();
 		notifyObservers(s);
 	}

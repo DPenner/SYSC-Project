@@ -117,7 +117,12 @@ public class KDTView {
 		JMenuItem exit = new JMenuItem("Exit");
 		exit.setToolTipText("Exit Kraft Dinner Table Maze");
 		exit.addActionListener(kdtMC);
-				
+		
+		JMenuItem help = new JMenuItem("Help");
+		help.setToolTipText("View help manual");
+		help.addActionListener(new HelpListener());
+			
+		file.add(help);
 		file.add(exit);
 				
 		JMenuBar mainBar=new JMenuBar();
