@@ -85,7 +85,8 @@ public class Exit extends Edge {
 		if (!isLocked()){ //just cross, exit's already unlocked
 			return super.cross(currentTile, crosser);
 		}
-		else if (unlock(key)){ //unlock the exit and cross
+		else if (crosser.hasItem(key)){ //check for key
+			unlock(key); //unlock the door, since crosser has the key
 			return super.cross(currentTile, crosser);
 		}
 		else throw new IllegalArgumentException("crosser did not have key");
@@ -99,10 +100,10 @@ public class Exit extends Edge {
 	public boolean unlock(Item key){
 		if (this.key.equals(key)){
 			crossable = true;
-		}
+			setChanged();
+			notifyObservers("Unlocking Exit");
+		}	
 		
-		setChanged();
-		notifyObservers("Unlocking Exit");
 		return !isLocked();
 	}
 	

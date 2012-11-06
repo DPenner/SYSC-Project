@@ -64,6 +64,35 @@ public class EdgeTest {
 	}
 
 	/**
+	 * Test method for {@link gameCore.Edge#Edge(gameCore.Tile, gameCore.Tile, boolean)}.
+	 */
+	@Test
+	public void testIllegalConstruction() {
+		Edge edge;
+		try {
+			edge = new Edge(null, testTile1, true);
+			fail("IllegalArgumentException was expected");
+		}
+		catch (IllegalArgumentException e){
+			//expected exception
+		}
+		try {
+			edge = new Edge(null, null, false);
+			fail("IllegalArgumentException was expected");
+		}
+		catch (IllegalArgumentException e){
+			//expected exception
+		}
+		try {
+			edge = new Edge(testTile1, testTile1, true);
+			fail("IllegalArgumentException was expected");
+		}
+		catch (IllegalArgumentException e){
+			//expected exception
+		}
+	}
+	
+	/**
 	 * Test method for {@link gameCore.Edge#canCross(gameCore.Character)}.
 	 */
 	@Test
