@@ -42,6 +42,8 @@ import commands.CommandController;
 /**
  * View for the KDT Maze
  * 
+ * Container for the MAPview, InventoryPanel, PlayerStatusPanel, and TextOutputPanel
+ * 
  * @author Group D
  * @author Main author: Karen Madore
  * 
