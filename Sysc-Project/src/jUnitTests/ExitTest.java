@@ -57,6 +57,34 @@ public class ExitTest extends EdgeTest {
 		assertTrue(testEdgeUncrossable.isCrossableByDefault()); //check that the exit was actually unlocked
 	}
 	
+	@Test
+	public void testCrossUncrossableEdgeInvalid(){
+		try {
+			testEdgeUncrossable.cross(testTile1, null);
+			fail("IllegalArgumentException Expected");
+		}
+		catch (IllegalArgumentException e){
+			//exception expected
+		}
+		try {
+			testEdgeUncrossable.cross(null, testCharacter);
+			fail("IllegalArgumentException Expected");
+		}
+		catch (IllegalArgumentException e){
+			//exception expected
+		}
+		
+		//Illegal now since key has been removed
+		testCharacter.dropItem(testKey);
+		try {
+			testEdgeUncrossable.cross(testTile1, testCharacter);
+			fail("IllegalArgumentException Expected");
+		}
+		catch (IllegalArgumentException e){
+			//exception expected
+		}
+	}
+	
 	/**
 	 * Test method for {@link gameCore.Exit#cross(gameCore.Tile, gameCore.Character)}.
 	 */

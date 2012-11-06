@@ -12,8 +12,19 @@ import gameCore.Character;
 import java.awt.Point;
 
 /**
- * @author DarrellPenner
+ * Tests an Edge.
+ * 
+ * @author Group D
+ * @author Main author: Darrell Penner
+ * 
+ * Group D Members
+ * ---------------
+ * Karen Madore
+ * Trang Pham
+ * Darrell Penner
+ * 
  *
+ * @version 1.0
  */
 public class EdgeTest {
 
@@ -51,6 +62,7 @@ public class EdgeTest {
 	protected void initializeCharacter(){
 		testCharacter = new Character("Bob", 10, 10, testTile1);
 	}
+
 	/**
 	 * Test method for {@link gameCore.Edge#canCross(gameCore.Character)}.
 	 */
