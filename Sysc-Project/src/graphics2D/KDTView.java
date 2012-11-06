@@ -19,6 +19,8 @@ import javax.swing.JMenuItem;
 /**
  * View for the KDT Maze
  * 
+ * Container for the MAPview, InventoryPanel, PlayerStatusPanel, and TextOutputPanel
+ * 
  * @author Group D
  * @author Main author: Karen Madore
  * 
@@ -117,7 +119,12 @@ public class KDTView {
 		JMenuItem exit = new JMenuItem("Exit");
 		exit.setToolTipText("Exit Kraft Dinner Table Maze");
 		exit.addActionListener(kdtMC);
-				
+		
+		JMenuItem help = new JMenuItem("Help");
+		help.setToolTipText("View help manual");
+		help.addActionListener(new HelpListener());
+			
+		file.add(help);
 		file.add(exit);
 				
 		JMenuBar mainBar=new JMenuBar();

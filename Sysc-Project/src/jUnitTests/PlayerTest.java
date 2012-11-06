@@ -58,6 +58,7 @@ public class PlayerTest {
 		cInventory= new Inventory();
 		testPlayer=new Player("TestPlayer", PLAYER_INITIAL_HEALTH, PLAYER_INITIAL_ATTACK,PLAYER_STAMINA, myPosition);
 		RedKey = new Item("RedKey", 1);
+		output= new StringBuffer();
 	}
 
 	@After
@@ -89,15 +90,17 @@ public class PlayerTest {
 	 * @throws EndGameException 
 	 */
 	@Test
-	public void testMove() throws EndGameException {
+	public void testMoveinDirectionofWall() throws EndGameException {
 		//no edge so will not be able to move
+		Edge e=new Edge(myPosition, null, false, Direction.NORTH, null); //wall
 		
 		assertFalse("Player should not be able to move NORTH", testPlayer.move(Direction.NORTH, output));
-		Edge e=new Edge(myPosition, northTile, true);
+	}
+	
+	@Test
+	public void testMoveNorth() throws EndGameException{
+		Edge e=new Edge(myPosition, northTile, true, Direction.NORTH, null); //wall
 		assertTrue("Player should be able to move NORTH",testPlayer.move(Direction.NORTH, output));
-				
-		
-		
 	}
 
 	/**
@@ -139,16 +142,5 @@ public class PlayerTest {
 		assertNotNull("A non-empty string should be returned.", testPlayer.viewHealth());
 	}
 
-	@Test
-	public void testAddPlayerListener() {
-		PlayerListener pl = new PlayerStatusPanel(testPlayer);
-		testPlayer.addPlayerListener(pl);
-		assertEquals("PlayerListeners count should be 1.", 1, testPlayer.countPlayerListeners());
-	}
-
-	@Test
-	public void testRemovePlayerListener() {
-		fail("Not yet implemented");
-	}
-
+	
 }

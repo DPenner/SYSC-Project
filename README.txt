@@ -7,8 +7,11 @@ Darrell Penner
 
 ROLES:
 Karen Madore:
-- Characters, Inventory, and Items
-   Classes: Charcter, Player, Monster, Inventory, Item, Weapon, and expanding list of characters and items in future.
+- gameCore 
+     Classes: Characters, Inventory, and Items, Player, Monster, Weapon, and expanding list of characters 
+              and items in future.
+- Game2D
+     Classes: KDTView, InventoryPanel, PlayerStatusPanel, PlayerListener, PlayerEvent
 
 Trang Pham:
 - I/O
@@ -28,17 +31,20 @@ Design Documentation.docx - Our documentation on the design of our game.
 KNOWN ISSUES:
 - MapView does not currently consider offsets: if 0 is not the minimum value for x and y,
   it is not taken into consideration.
+- Monster does not die when character attacks and dies with the same attack and health
 
 CHANGES:
 - 2D GUI has been implemented
+- direction is now implemented as an enum
 - Bug fix: an exception is no longer thrown upon a request to check for a non-existing direction,
            false is returned instead.
+- Implemented monster move.  Note: not tested yet and will implement in next milestone.  If a player
+  is on adjacent tile, the Monster will attack it, otherwise, it will move in random motion.
+- command interface has been removed and replaced by GUI interface
 
 ROADMAP:
-- Allow monsters to move.  
-      Ideas: 1. allow certain monsters to move only within a room
-             2. make some monsters move randomly
-             3. monsters have the co-ordinates of the player and attempt to go toward player trying to kill it.
-
-- Create friendly characters. 
-- Add Keys, a type of item.
+- use image files to enhance the look of the game.  For example, the characters and items will have 
+  more visual appeal.
+- create a more complex second level
+- create a 3D view of the application
+- enable use of weapons 

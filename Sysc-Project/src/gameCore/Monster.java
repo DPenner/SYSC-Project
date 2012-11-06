@@ -28,7 +28,7 @@ public class Monster extends Character{
 	
 	/**
 	 * Move the Monster and attack player is player is on adjacent tile, otherwise, do a random move
-	 *  --- not tested yet ---
+	 *  ---NOT IN USE FOR THIS VERSION ---
 	 * @param output - output to status panel on KDTView
 	 * @throws EndGameException 
 	 */

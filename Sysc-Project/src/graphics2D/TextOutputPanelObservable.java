@@ -1,5 +1,7 @@
 package graphics2D;
 
+import java.util.Observable;
+
 /**
 * TextOutputPanelObservable is added for 
 * convenience so that classes don't have
@@ -20,14 +22,15 @@ package graphics2D;
 * @version 1.0
 *
 */
-import java.util.Observable;
 
 public class TextOutputPanelObservable extends Observable {
+
 
 	public TextOutputPanelObservable()
 	{
 		this.addObserver(TextOutputPanel.getTextOutputPanel());
 	}
+
 	/**
 	 * Prints a message to the TextOutputPanel
 	 * @param s the string to print
