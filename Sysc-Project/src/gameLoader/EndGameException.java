@@ -12,7 +12,7 @@ package gameLoader;
 * Darrell Penner
 *
 *
-* @version 1.0
+* @version 2.0
 *
 */
 @SuppressWarnings("serial")
@@ -24,6 +24,9 @@ public class EndGameException extends Exception{
 	public EndGameException(String string) {
 		super(string);
 	}
+	/**
+	 * handles itself
+	 */
 	public void handleExeception()
 	{
 		Game.KeyDispatcherController.removeKeyDispatchController();

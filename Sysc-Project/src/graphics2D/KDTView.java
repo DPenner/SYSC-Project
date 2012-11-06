@@ -1,41 +1,19 @@
 package graphics2D;
 
 import gameCore.Inventory;
-import gameCore.Item;
-import gameCore.Monster;
 import gameCore.Player;
-import gameCore.Tile;
 import gameLoader.Level;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.Observable;
-
-import java.awt.event.ActionListener;
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.ComponentOrientation;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.KeyboardFocusManager;
-
-import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
+import java.awt.GridLayout;
 import javax.swing.JFrame;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-
-import commands.CommandController;
 
 
 /**
@@ -53,7 +31,7 @@ import commands.CommandController;
  *
  * @version 1.0
  */
-public class KDTView{
+public class KDTView {
 	//------------Fields------------//
 	private Level level;
 	private Player player;
@@ -61,8 +39,7 @@ public class KDTView{
 	private Inventory inv;
 	
 	private JFrame f;
-	
-	
+		
 	private Container cp;
 	private Graphics g;	
 	
@@ -71,7 +48,8 @@ public class KDTView{
 	/**
 	 * Constructor for KDTView
 	 * -creates the Frame, adds the components onto the frame, and registers the ActionListeners
-	 * @param game the reference back to the game
+	 * @param player the player instance
+	 * @param level the current level
 	 */
 	public KDTView(Player player, Level level){
 		//Create the GUI
@@ -110,41 +88,40 @@ public class KDTView{
 		
 		//side panel
 		JPanel pPlayer = new PlayerStatusPanel(player);
-		JPanel sidePanel = new JPanel();
-		sidePanel.setLayout(new BorderLayout());
-		sidePanel.add(pPlayer, BorderLayout.PAGE_START);
-
 		JPanel pInventory = new InventoryPanel(player);
-		sidePanel.add(pInventory, BorderLayout.CENTER);
+		
+		JPanel sidePanel = new JPanel(new GridLayout(2,0));
+		
+		sidePanel.add(pPlayer);
+		sidePanel.add(pInventory);
+		
+		//sidePanel.setLayout(new BorderLayout());
+		//sidePanel.add(pPlayer, BorderLayout.PAGE_START);
+
+		//JPanel pInventory = new InventoryPanel(player);
+		//sidePanel.add(pInventory, BorderLayout.CENTER);
 		pane.add(sidePanel, BorderLayout.LINE_END);
 
 	}
 	
-
-	
-
 	
 	/**
 	 * Create the Menus for the Frame
 	 */
 	private void addMenusToFrame() {
+		
+		KDTMenuController kdtMC=new KDTMenuController(f);	
 		//--------- MENUS ---------
 		JMenu file=new JMenu("File");
+		
 		JMenuItem exit = new JMenuItem("Exit");
 		exit.setToolTipText("Exit Kraft Dinner Table Maze");
-		
-		JMenu player=new JMenu("Player");
-		JMenuItem drop = new JMenuItem("Drop");
-		
-		
-		//exit.addActionListener(new GameController()); //game controller 
+		exit.addActionListener(kdtMC);
+				
 		file.add(exit);
 				
 		JMenuBar mainBar=new JMenuBar();
 		mainBar.add(file);
-		
-		//extra menus for testing
-		
 		
 		f.setJMenuBar(mainBar);
 	}

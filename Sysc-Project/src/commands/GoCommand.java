@@ -1,5 +1,20 @@
 package commands;
-
+/**
+* Go command handles the movement of the player
+*
+* @author Group D
+* @author Main Author: Trang Pham
+*
+* Group D Members
+* ---------------
+* Karen Madore
+* Trang Pham
+* Darrell Penner
+*
+*
+* @version 2.0
+*
+*/
 import gameCore.Direction;
 import gameLoader.EndGameException;
 
@@ -12,10 +27,8 @@ public class GoCommand extends Command{
 		super();
 		this.dir = dir;
 	}
-	/** 
-     * Try to go in one direction. If there is an exit, enter the new
-     * room, otherwise print an error message.
-     */
+	
+	@Override
 	public boolean execute()
 	{
 		return go(dir);
@@ -25,7 +38,13 @@ public class GoCommand extends Command{
 	public void undo() {
 		go(dir.getOppositeDirection());	
 	}
-	
+	/**
+     * Try to go in one direction. If there is an exit, enter the new
+     * room, otherwise print an error message.
+     *
+	 * @param dirToGo the direction to move the player 
+	 * @return true if the player successfully moved
+	 */
 	private boolean go(Direction dirToGo)
 	{
 		try

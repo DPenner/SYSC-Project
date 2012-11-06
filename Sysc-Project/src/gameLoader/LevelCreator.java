@@ -35,7 +35,7 @@ public class LevelCreator {
 	private Level level;
 	private boolean loaded;
 	
-	public LevelCreator()
+	protected LevelCreator()
 	{
 		level = new Level();
 		loaded = false;
@@ -139,7 +139,6 @@ public class LevelCreator {
 			Element room = (Element) rooms.item(room_num);
 			NodeList tiles = room.getElementsByTagName(XmlTag.TILE.toString());
 			Room r = new Room();
-			level.addRoom(r);
 			//is elevator room?
 			String roomType = room.getAttribute(XmlTag.TYPE.toString());
 			for(int tile_num = 0; tile_num < tiles.getLength(); tile_num++)

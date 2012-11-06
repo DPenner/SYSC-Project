@@ -1,20 +1,13 @@
 package gameLoader;
 
 import java.awt.KeyboardFocusManager;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observable;
 
 import commands.CommandController;
 
-import gameCore.Direction;
 import gameCore.Player;
-import graphics2D.TextOutputPanel;
 import graphics2D.KDTView;
+import graphics2D.TextOutputPanelObservable;
 
-import textInterface.Command;
-import textInterface.CommandWord;
-import textInterface.Parser;
 
 /**
  * The Game loads the level from XML, initiates the game, and waits for commands from the player.
@@ -89,10 +82,29 @@ public class Game extends TextOutputPanelObservable
     	return false;
     }
   
+    /**
+    * KeyDispatcherController initializes and removes the KeyEventDispatcher
+    *
+    * @author Group D
+    * @author Main Author: Trang Pham
+    *
+    * Group D Members
+    * ---------------
+    * Karen Madore
+    * Trang Pham
+    * Darrell Penner
+    *
+    *
+    * @version 1.0
+    *
+    */
     public static class KeyDispatcherController
     {
         private static CommandController keyEventDispatcher;
-        
+        /**
+         * initialize the KeyEventDispatcher
+         * @param player the current player
+         */
         public static void initializeKeyDispatchController(Player player)
         {
 	    	//Sets it so that all keyboard events go to the CommandController
@@ -101,6 +113,9 @@ public class Game extends TextOutputPanelObservable
 			manager.addKeyEventDispatcher(keyEventDispatcher);
         }
         
+        /**
+         * Remove the KeyEventDispatcher such that no more keyboard events are being dispatched
+         */
         public static void removeKeyDispatchController()
         {
         	KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();

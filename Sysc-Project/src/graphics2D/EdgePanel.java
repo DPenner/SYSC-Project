@@ -8,16 +8,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.HashSet;
-import java.util.Queue;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.Set;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-
+ 
 /**
  * EdgePanel is a specialized panel that displays Edges for its parent MapView
  * 
@@ -34,62 +25,29 @@ import javax.swing.SwingUtilities;
  * @version 1.0
  *
  */
-class EdgePanel extends JPanel implements Observer{
-	//public static final int EDGE_LENGTH = MapView.TILE_SIZE;
-	public static final Color DEFAULT_EDGE_COLOR = Color.decode("0x606060");
-	protected static final Color DEFAULT_EXIT_COLOR = Color.decode("0x964B00");
+
+class EdgePanel extends LayoutPanel<Edge>{
+
+	private static final Color DEFAULT_EDGE_COLOR = Color.decode("0x606060");
+	private static final Color DEFAULT_EXIT_COLOR = Color.decode("0x964B00");
 	
 	private int edgeLength;
 	private int edgeWidth;
 	private int tileSize;
 	
-	private MapView parentMap;
-	private Set<Edge> edges;
-	private Queue<Edge> edgesToAdd; //buffer queue
-	
 	public EdgePanel(MapView mapView){
-		parentMap = mapView;
-		edges = new HashSet<Edge>();
-		edgesToAdd = new ConcurrentLinkedQueue<Edge>();
+		super(mapView);
 		
 		tileSize = parentMap.getTileSize();
 		edgeWidth = parentMap.getEdgeWidth();
 		edgeLength = tileSize;
 	}
-	
-	@Override
-	public void paintComponent(Graphics g){
-		super.paintComponent(g);
-		for (Edge edge : edges){
-			drawEdge(g, edge);
-		}
-	}
-	
-	@Override
-	public void update(Observable arg0, Object arg1) {
-		Edge e = (Edge) arg0;
-		repaint(getEdgeRectangle(e));
-	}
-	
-	protected void addEdge(Edge edge){
-		if (edge == null){
-			throw new IllegalArgumentException("Edge cannot be null");
-		}
-		edgesToAdd.add(edge);
-		edge.addObserver(this);
-		
-        SwingUtilities.invokeLater(new Runnable(){
-            public void run() {
-            	Edge newEdge = edgesToAdd.remove();
-            	edges.add(newEdge);		
-    			repaint(getEdgeRectangle(newEdge, true));
-            }
-        });
-	}
 
-	private void drawEdge(Graphics g, Edge edge) {
+	@Override
+	protected void drawLayoutObject(Graphics g, Edge edge) {
 					
-		if (!edge.canCrossByDefault() && edge.isInVisitedRoom()){ //only draw those that appear to be "walls" and have been visited
+		//only draw those that appear to be "walls" and have been visited
+		if (!edge.isCrossableByDefault() && edge.isVisited()){ 
 			g.setColor(DEFAULT_EDGE_COLOR);
 			
 			g.fill3DRect(getEdgeRectangle(edge, true).x, getEdgeRectangle(edge, true).y, 
@@ -102,7 +60,6 @@ class EdgePanel extends JPanel implements Observer{
 			}
 		}
 	}
-	
 	
 	private Rectangle getEdgeRectangle(Edge edge){
 		return getEdgeRectangle(edge, false);
@@ -143,5 +100,10 @@ class EdgePanel extends JPanel implements Observer{
 		default:
 			return new Rectangle(0, 0, 0, 0); //Essentially returns a blank - other unforeseen directions simply won't be drawn
 		}
+	}
+	
+	@Override
+	protected Rectangle getRepaintRectangle(Edge edge){
+		return getEdgeRectangle(edge, true);
 	}
 }

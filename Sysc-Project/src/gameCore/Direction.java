@@ -22,7 +22,8 @@ public enum Direction {
     /**
      * @return The command word as a string.
      */
-    public String toString()
+    @Override
+	public String toString()
     {
         return direction;
     }

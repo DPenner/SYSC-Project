@@ -19,15 +19,20 @@ Trang Pham:
 Darrell Penner:
 - Game Layout
     Classes: Room, Tile, Edge, Exit
+- Map Display and controller
+    Classes: MapView, MapController, TilePanel, EdgePanel
 
 DELIVERABLES:
 Design Documentation.docx - Our documentation on the design of our game.
 
 KNOWN ISSUES:
-- An exception is thrown when the user attempts to go in a direction that does not exist.
-  A temporary fix is in place where the exception is caught and a message is displayed saying
-  that "Edge does not exist in that direction". This message can be treated as if there was a wall there.
-- Exit outputs "unlocking exit" even when exit is already unlocked.
+- MapView does not currently consider offsets: if 0 is not the minimum value for x and y,
+  it is not taken into consideration.
+
+CHANGES:
+- 2D GUI has been implemented
+- Bug fix: an exception is no longer thrown upon a request to check for a non-existing direction,
+           false is returned instead.
 
 ROADMAP:
 - Allow monsters to move.  
@@ -37,4 +42,3 @@ ROADMAP:
 
 - Create friendly characters. 
 - Add Keys, a type of item.
-- "direction" to be implemented as an enum

@@ -1,5 +1,20 @@
 package commands;
-
+/**
+* Drop command handles player trying to drop an item.
+*
+* @author Group D
+* @author Main Author: Trang Pham
+*
+* Group D Members
+* ---------------
+* Karen Madore
+* Trang Pham
+* Darrell Penner
+*
+*
+* @version 2.0
+*
+*/
 import javax.swing.JOptionPane;
 
 public class DropCommand extends Command{
@@ -11,7 +26,7 @@ public class DropCommand extends Command{
 		
 		itemName =  (String)JOptionPane.showInputDialog(
 		           			null,
-		                    (Object)"Select item to pick up:\n",
+		                    "Select item to pick up:\n",
 		                    "Pick Up Item",
 		                    JOptionPane.QUESTION_MESSAGE,
 		                    null,
@@ -27,6 +42,11 @@ public class DropCommand extends Command{
 		
 	}
 
+	/**
+	 * Drops item on the polayer's current position
+	 * @param itemname the name of the item to drop
+	 * @return true if the item was successfully dropped
+	 */
 	public boolean drop(String itemname) {
 		if(!CommandController.getPlayer().drop(itemname))
         {

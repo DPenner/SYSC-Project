@@ -3,7 +3,6 @@ package graphics2D;
 import gameCore.*;
 import gameLoader.Level;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ComponentEvent;
@@ -90,10 +89,10 @@ public class MapView extends JScrollPane implements ComponentListener {
 	
 	//------------Set-up-----------//
 	public void addTile(Tile t){
-		tileLayer.addTile(t);
+		tileLayer.addLayoutObject(t);
 	}
 	public void addEdge(Edge edge){
-		edgeLayer.addEdge(edge);
+		edgeLayer.addLayoutObject(edge);
 	}
 	
 	//------------Scaling-----------//

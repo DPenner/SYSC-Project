@@ -1,5 +1,20 @@
 package commands;
-
+/**
+* Pick up command handles the player trying to pick up an item from a tile
+*
+* @author Group D
+* @author Main Author: Trang Pham
+*
+* Group D Members
+* ---------------
+* Karen Madore
+* Trang Pham
+* Darrell Penner
+*
+*
+* @version 2.0
+*
+*/
 import javax.swing.JOptionPane;
 
 public class PickUpCommand extends Command{
@@ -10,7 +25,7 @@ public class PickUpCommand extends Command{
 		
 		itemName =  (String)JOptionPane.showInputDialog(
 		           			null,
-		                    (Object)"Select item to pick up:\n",
+		                    "Select item to pick up:\n",
 		                    "Pick Up Item",
 		                    JOptionPane.QUESTION_MESSAGE,
 		                    null,
@@ -20,6 +35,11 @@ public class PickUpCommand extends Command{
 		return pickUp(itemName);
 	}
 
+	/**
+	 * pick up an item and put it in the player inventory
+	 * @param itemName name of the item to pick up
+	 * @return true if the item was successfully picked up
+	 */
 	public boolean pickUp(String itemName)
 	{
 		if(!CommandController.getPlayer().pickUpItem(itemName))

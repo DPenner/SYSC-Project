@@ -1,9 +1,24 @@
 package commands;
-
+/**
+* CommandController handles the keyboard input for each command.
+* It also handles the logic for redoing and undoing commands.
+*
+* @author Group D
+* @author Main Author: Trang Pham
+*
+* Group D Members
+* ---------------
+* Karen Madore
+* Trang Pham
+* Darrell Penner
+*
+*
+* @version 2.0
+*
+*/
 import gameCore.Direction;
 import gameCore.Player;
-import gameLoader.TextOutputPanelObservable;
-import graphics2D.TextOutputPanel;
+import graphics2D.TextOutputPanelObservable;
 
 import java.awt.KeyEventDispatcher;
 import java.awt.event.KeyEvent;
@@ -98,7 +113,7 @@ public class CommandController extends TextOutputPanelObservable implements KeyE
 		else if (keyPressed == KeyEvent.VK_R) redoCommand();
 		else
 		{
-			Command c = keyToCommandMap.get((Integer)keyPressed);
+			Command c = keyToCommandMap.get(keyPressed);
 			if(c != null) if(c.execute()) saveGameState(c);
 		}
 		return false;

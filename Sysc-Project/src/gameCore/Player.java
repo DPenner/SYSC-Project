@@ -7,7 +7,6 @@ import gameLoader.EndGameException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 /**
  * A Character is a superclass for all of the animated creatures inside the game.
  * Player, and Monsters (subclass of NPC) are subclasses of character.
@@ -224,6 +223,7 @@ public class Player extends Character
 	 * Override the adjustHealth of the Character class to provide player with ability to notify PlayerStatusPlanel of updates 
 	 */
 	
+	@Override
 	public void adjustHealth(int value){
 		super.adjustHealth(value);
 		
@@ -281,6 +281,13 @@ public class Player extends Character
 	public void removePlayerListener(PlayerListener pl){
 		pListeners.remove(pl);
 	}
-	
+	/**
+	 * Count of PlayerListners
+	 * @return number of subscribers.
+	 */
+	public int countPlayerListeners()
+	{
+		return pListeners.size();
+	}
 	
 }

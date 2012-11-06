@@ -33,15 +33,13 @@ public class Level {
 	private int gridWidth;
 	private int gridHeight;
 	
-	private List<Room> roomList;
 	private Tile[][] tileGrid;
 	private List<Edge> edgeList;
 	private Room elevator;
 	private Player player;
 	
-	protected Level()
+	public Level()
 	{
-		roomList = new ArrayList<Room>();
 		edgeList = new ArrayList<Edge>();
 		timer = 0; 
 	}
@@ -52,16 +50,6 @@ public class Level {
 	public Player getPlayer()
 	{
 		return player;
-	}
-	
-	/**
-	 * Adds a room to the current level
-	 * 
-	 * @param r room to add
-	 */
-	public void addRoom(Room r)
-	{
-		roomList.add(r);
 	}
 	
 	/**
@@ -198,7 +186,7 @@ public class Level {
 		return elevator;
 	}
 	/**
-	 * @param elevator the elevator to set
+	 * @param elevator the room to set as elevator
 	 */
 	public void setElevator(Room elevator, Tile tileInElevator) {
 		if(elevator != null) 
