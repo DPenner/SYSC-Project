@@ -21,9 +21,9 @@ Trang Pham:
 
 Darrell Penner:
 - Game Layout
-    Classes: Room, Tile, Edge, Exit
+    Classes: Room, Tile, Edge, Exit, LayoutObject and related test classes
 - Map Display and controller
-    Classes: MapView, MapController, TilePanel, EdgePanel
+    Classes: MapView, MapController, TilePanel, EdgePanel, LayoutPanel
 
 DELIVERABLES:
 Design Documentation.docx - Our documentation on the design of our game.
@@ -35,16 +35,16 @@ KNOWN ISSUES:
 
 CHANGES:
 - 2D GUI has been implemented
-- direction is now implemented as an enum
 - Bug fix: an exception is no longer thrown upon a request to check for a non-existing direction,
            false is returned instead.
 - Implemented monster move.  Note: not tested yet and will implement in next milestone.  If a player
   is on adjacent tile, the Monster will attack it, otherwise, it will move in random motion.
-- command interface has been removed and replaced by GUI interface
+- Command interface has been removed and replaced by GUI interface
 
 ROADMAP:
 - use image files to enhance the look of the game.  For example, the characters and items will have 
   more visual appeal.
 - create a more complex second level
 - create a 3D view of the application
-- enable use of weapons 
+- enable use of weapons
+- Make it actually possible to win the game
