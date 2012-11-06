@@ -35,7 +35,11 @@ class EdgePanel extends LayoutPanel<Edge>{
 	private int edgeWidth;
 	private int tileSize;
 	
-	public EdgePanel(MapView mapView){
+	/**
+	 * Constructs an EdgePanel to display edges for the given mapView
+	 * @param mapView The mapView this edgePanel belongs to.
+	 */
+	protected EdgePanel(MapView mapView){
 		super(mapView);
 		
 		tileSize = parentMap.getTileSize();
@@ -43,7 +47,12 @@ class EdgePanel extends LayoutPanel<Edge>{
 		edgeLength = tileSize;
 	}
 
-	@Override
+	/**
+	 * Draws the given edge
+	 * @param g The graphics on which to draw
+	 * @param edge The edge to draw
+	 */
+	@Override 
 	protected void drawLayoutObject(Graphics g, Edge edge) {
 					
 		//only draw those that appear to be "walls" and have been visited
@@ -61,6 +70,7 @@ class EdgePanel extends LayoutPanel<Edge>{
 		}
 	}
 	
+	//Gets the rectangle for a "small" edge. A small edge doesn't spill into the corners
 	private Rectangle getEdgeRectangle(Edge edge){
 		return getEdgeRectangle(edge, false);
 	}
@@ -102,6 +112,10 @@ class EdgePanel extends LayoutPanel<Edge>{
 		}
 	}
 	
+	/**
+	 * Gets the repaint area for the given Edge
+	 * @param edge The edge to repaint
+	 */
 	@Override
 	protected Rectangle getRepaintRectangle(Edge edge){
 		return getEdgeRectangle(edge, true);

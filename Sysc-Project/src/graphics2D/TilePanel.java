@@ -42,6 +42,10 @@ class TilePanel extends LayoutPanel<Tile>{
 	private Map<Point, Tile> tileLookup; //indexing by point makes it easier to locate the tile
 	private Map<Point, Color> tileColors;
 	
+	/**
+	 * Constructs a TilePanel for the given mapView
+	 * @param mapView The view to display tiles for
+	 */
 	protected TilePanel(MapView mapView){
 		super(mapView);
 		tileLookup = new HashMap<Point, Tile>();
@@ -52,19 +56,23 @@ class TilePanel extends LayoutPanel<Tile>{
 		edgeWidth = mapView.getEdgeWidth();
 	}
 
+	//-------------Tile drawing------------//
+	//These methods draws parts of the tiles
+	/**
+	 * Paints this component
+	 * @param g The graphics on which to paint
+	 */
 	@Override
 	protected void paintComponent(Graphics g){
 		super.paintComponent(g);
 		this.setBackground(BACKGROUND_COLOR);
 	}
 	
-	@Override
-	protected void addLayoutObject(Tile t){
-		tileColors.put(t.getLocation(), DEFAULT_TILE_COLOR);
-		tileLookup.put(t.getLocation(), t);
-		super.addLayoutObject(t);
-	}
-	
+	/**
+	 * Draws a tile onto the panel
+	 * @param g The graphics on which to draw
+	 * @param t The tile to draw
+	 */
 	@Override
 	protected void drawLayoutObject(Graphics g, Tile t){
 		Rectangle rect = getTileRectangle(t);
@@ -112,19 +120,45 @@ class TilePanel extends LayoutPanel<Tile>{
 		g.fill3DRect(tileRect.x + DECORATION_OFFSET2, tileRect.y + ITEM_HEIGHT_OFFSET, DECORATION_WIDTH, tileRect.height - 2*ITEM_HEIGHT_OFFSET, true);
 	}
 	
+	/**
+	 * Gets an area encompassing the Tile
+	 * @param t
+	 * @return
+	 */
 	private Rectangle getTileRectangle(Tile t){
 		return new Rectangle(parentMap.getOffsettedX(t.getLocation()), 
 				             parentMap.getOffsettedY(t.getLocation()), tileSize, tileSize);
 	}
 	
+	/**
+	 * Gets an area encompassing the tile and its edges.
+	 * @param t
+	 * @return
+	 */
 	private Rectangle getTileAndEdgeRectangle(Tile t){
 		return new Rectangle(getTileRectangle(t).x - edgeWidth, getTileRectangle(t).y - edgeWidth,
 							 getTileRectangle(t).width + edgeWidth*2, getTileRectangle(t).height + edgeWidth*2);
 	}
 	
-	protected Tile getTile(Point tileLocation){
-		return tileLookup.get(tileLocation);
+	/**
+	 * Gets the area for repainting
+	 * @param t The tile to retrieve the area for
+	 */
+	@Override
+	protected Rectangle getRepaintRectangle(Tile t){
+		return getTileAndEdgeRectangle(t);
 	}
+	
+
+	//-----------Color control------------//
+	private Color getTileColor(Tile t){
+		return tileColors.get(t.getLocation());
+	}
+	private void setTileColor(Tile t, Color c){
+		tileColors.put(t.getLocation(), c);
+	}
+	
+	//------------Highlighting-------------//
 	protected void highLight(Tile t){
 		setTileColor(t, HIGHLIGHT_TILE_COLOR);
 		repaint(getTileRectangle(t));
@@ -134,15 +168,23 @@ class TilePanel extends LayoutPanel<Tile>{
 		repaint(getTileRectangle(t));
 	}
 	
-	private Color getTileColor(Tile t){
-		return tileColors.get(t.getLocation());
-	}
-	private void setTileColor(Tile t, Color c){
-		tileColors.put(t.getLocation(), c);
+	//------------Adding and getting------------//
+	/**
+	 * Retrieves the Tile at a particular
+	 * @param tileLocation
+	 * @return
+	 */
+	protected Tile getTile(Point tileLocation){
+		return tileLookup.get(tileLocation);
 	}
 	
+	/**
+	 * Adds a Tile to this panel
+	 */
 	@Override
-	protected Rectangle getRepaintRectangle(Tile t){
-		return getTileAndEdgeRectangle(t);
+	protected void addLayoutObject(Tile t){
+		tileColors.put(t.getLocation(), DEFAULT_TILE_COLOR);
+		tileLookup.put(t.getLocation(), t);
+		super.addLayoutObject(t);
 	}
 }
