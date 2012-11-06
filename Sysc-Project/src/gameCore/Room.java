@@ -23,7 +23,6 @@ import java.util.Set;
 public class Room 
 {
     private Set<Tile> tiles;
-    //private boolean visited;
 
     /**
      * Creates a room from a set of tiles.
@@ -48,16 +47,8 @@ public class Room
     	tiles.add(t);
     }
 
-    /*
-     * Checks if the room has been visited or not
-     * @return True if the room has been visited, false otherwise
-     *
-	public boolean isVisited() {
-		return visited;
-	}*/
-
 	/**
-	 * Makes the room visited (a room cannot be "un-visited")
+	 * Makes the room visited (a room cannot be "unvisited")
 	 */
 	public void setVisited() {
 		for (Tile t : tiles){
