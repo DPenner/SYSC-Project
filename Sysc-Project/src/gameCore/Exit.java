@@ -74,13 +74,13 @@ public class Exit extends Edge {
 	 * @param currentTile The current tile the Character resides on
 	 * @param crosser The Character crossing the edge
 	 * @return The Character's new tile
-	 * @throws IllegalArgumentException crosser was either null or did not have a key. Use canCross(Character) first.
+	 * @exception IllegalArgumentException if crosser was either null or did not have a key. Use canCross(Character) first.
 	 */ 
 	@Override
-	public Tile cross(Tile currentTile, Character crosser) throws IllegalArgumentException {
-		if (crosser == null){
+	public Tile cross(Tile currentTile, Character crosser) {
+		if (crosser == null || currentTile == null){
 			throw new IllegalArgumentException("crosser can not be null");
-		} //other error checks done by getOtherTile method
+		} 
 		
 		if (!isLocked()){ //just cross, exit's already unlocked
 			return super.cross(currentTile, crosser);
