@@ -48,3 +48,4 @@ ROADMAP:
 - create a 3D view of the application
 - enable use of weapons
 - Make it actually possible to win the game
+- Mouse control and pathfinding
