@@ -34,6 +34,7 @@ class TilePanel extends LayoutPanel<Tile>{
 	private static final Color BACKGROUND_COLOR = Color.BLACK;
 	private static final Color HIGHLIGHT_TILE_COLOR = Color.decode("0x2277AA");
 	private static final Color ITEM_COLOR = Color.decode("0x964B00");
+	private static final Color ITEM_DECORATION_COLOR = Color.GRAY;
 	
 	private int tileSize;
 	private int edgeWidth;
@@ -80,7 +81,7 @@ class TilePanel extends LayoutPanel<Tile>{
 				if (t.getCharacter() instanceof Player){ //TEMP to replace with polymorphism
 					drawCharacter(g, rect, Color.GREEN);
 				}
-				else{
+				else {
 					drawCharacter(g, rect, Color.RED);
 				}
 			}	
@@ -91,16 +92,24 @@ class TilePanel extends LayoutPanel<Tile>{
 		g.setColor(color);
 		g.fillRect(tileRect.x, tileRect.y, tileRect.width, tileRect.height);
 	}
-	private void drawCharacter(Graphics g, Rectangle tileRect, Color color){ //TEMP magic numbers
+	private void drawCharacter(Graphics g, Rectangle tileRect, Color color){
+		final int CHARACTER_OFFSET = 10;
 		g.setColor(color);
-		g.fillOval(tileRect.x + 10, tileRect.y + 10, tileRect.width - 20, tileRect.height - 20);
+		g.fillOval(tileRect.x + CHARACTER_OFFSET, tileRect.y + CHARACTER_OFFSET, tileRect.width - 2*CHARACTER_OFFSET, tileRect.height - 2*CHARACTER_OFFSET);
 	}
-	private void drawItems(Graphics g, Rectangle tileRect){ //TEMP magic numbers
+	private void drawItems(Graphics g, Rectangle tileRect){
+		final int ITEM_HEIGHT_OFFSET = 12;
+		final int ITEM_WIDTH_OFFSET = 8;
+		final int DECORATION_WIDTH = 3;
+		final int DECORATION_OFFSET1 = 11;
+		final int DECORATION_OFFSET2 = 27;
+		
 		g.setColor(ITEM_COLOR);
-		g.fill3DRect(tileRect.x + 8, tileRect.y + 12, tileRect.width - 16, tileRect.height - 24, true);
-		g.setColor(Color.GRAY);
-		g.fill3DRect(tileRect.x + 11, tileRect.y + 12, 3, tileRect.height - 24, true);
-		g.fill3DRect(tileRect.x + 27, tileRect.y + 12, 3, tileRect.height - 24, true);
+		g.fill3DRect(tileRect.x + ITEM_WIDTH_OFFSET, tileRect.y + ITEM_HEIGHT_OFFSET, 
+					 tileRect.width - 2*ITEM_WIDTH_OFFSET, tileRect.height - 2*ITEM_HEIGHT_OFFSET, true);
+		g.setColor(ITEM_DECORATION_COLOR);
+		g.fill3DRect(tileRect.x + DECORATION_OFFSET1, tileRect.y + ITEM_HEIGHT_OFFSET, DECORATION_WIDTH, tileRect.height - 2*ITEM_HEIGHT_OFFSET, true);
+		g.fill3DRect(tileRect.x + DECORATION_OFFSET2, tileRect.y + ITEM_HEIGHT_OFFSET, DECORATION_WIDTH, tileRect.height - 2*ITEM_HEIGHT_OFFSET, true);
 	}
 	
 	private Rectangle getTileRectangle(Tile t){
