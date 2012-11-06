@@ -5,13 +5,14 @@ import gameLoader.Level;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
 import javax.swing.*;
 
 /**
- * MapView provides a view of the map, which consists of Edges and Tiles
+ * MapView provides a view of the map, by displaying its Tiles and Edges in a 2D fashion
  * 
  * @author Group D
  * @author Main Author: Darrell Penner
@@ -27,7 +28,7 @@ import javax.swing.*;
  *
  */
 
-public class MapView extends JScrollPane implements ComponentListener {
+public class MapView extends JScrollPane {
 	private static final int TILE_SIZE = 40;
 	private static final int EDGE_WIDTH = 4;
 	
@@ -37,22 +38,43 @@ public class MapView extends JScrollPane implements ComponentListener {
 	private static final int DEFAULT_HEIGHT = DEFAULT_WIDTH;
 	
 	private static final Integer TILE_LAYER_DEPTH = 0;
-	private static final Integer EDGE_LAYER_DEPTH = 10;
+	private static final Integer EDGE_LAYER_DEPTH = 100;
 	
 	private JLayeredPane map;
 	private TilePanel tileLayer;
 	private EdgePanel edgeLayer;
 	
+	//Helps set up the panel's bounds
+	private int levelWidth;
+	private int levelHeight;
+	
 	//offset is the value of the Tile at the top left corner
 	private int xOffset;
 	private int yOffset;
 	
+	/**
+	 * Default constructor - a MapView with nothing on it
+	 */
 	public MapView(){
 		this(null);
 	}
 	
+	/**
+	 * Takes a level, and initializes the view to display all edges and tiles in the level.
+	 * @param l The level to initialize. If null, a blank view is created.
+	 */
 	public MapView(Level l){
-      
+        // TODO - Split off the different parts of this constructor into private/protected worker methods
+		//store level information
+		if (l != null){
+			levelWidth = getOffsettedX(l.getGridWidth());
+			levelHeight = getOffsettedX(l.getGridHeight());
+		}
+		else {
+			levelWidth = DEFAULT_WIDTH;
+			levelHeight = DEFAULT_HEIGHT;
+		}
+			
 		//set up the map pane
 		map = new JLayeredPane();
 		this.getViewport().add(map);
@@ -64,7 +86,6 @@ public class MapView extends JScrollPane implements ComponentListener {
         map.add(edgeLayer, EDGE_LAYER_DEPTH);
         
         //configure panels
-        setPanelBounds(l);
         tileLayer.setOpaque(true);
         edgeLayer.setOpaque(false);
         
@@ -81,21 +102,32 @@ public class MapView extends JScrollPane implements ComponentListener {
 		}
 		
 		//sets up this component
-		this.addComponentListener(this);
 		this.setMinimumSize(new Dimension(MINIMUM_WIDTH, MINIMUM_HEIGHT));
 		xOffset = 0; //TEMP, currently offsets not properly calculated
 		yOffset = 0;
+		
+		setPanelBounds();
 	}
 	
 	//------------Set-up-----------//
+	/**
+	 * Adds a tile to the MapView
+	 * @param t The Tile to be added. 
+	 */
 	public void addTile(Tile t){
 		tileLayer.addLayoutObject(t);
 	}
+	
+	/**
+	 * Adds an Edge to the MapView
+	 * @param edge The edge to be added.
+	 */
 	public void addEdge(Edge edge){
 		edgeLayer.addLayoutObject(edge);
 	}
 	
 	//------------Scaling-----------//
+	//These methods scale back and forth between a Tile's location and its location in this MapView
 	protected int getOffsettedX(int tileX){
 		return (tileX + xOffset) * TILE_SIZE;
 	}
@@ -124,6 +156,7 @@ public class MapView extends JScrollPane implements ComponentListener {
 	}
 	
 	//------------Miscellaneous------------//
+	//Controls Tile highlighting
 	protected void highLight(Tile t){
 		tileLayer.highLight(t);
 	}
@@ -132,34 +165,15 @@ public class MapView extends JScrollPane implements ComponentListener {
 	}
 	
 	//-----------Component Set up------------//
-	private void setPanelBounds(Level level){
-		this.setBounds(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-		if (level == null){
-			map.setBounds(this.getBounds());
-		}
-		else {
-			map.setBounds(0, 0, getOffsettedX(level.getGridWidth()), getOffsettedY(level.getGridHeight()));
-		}
+	/**
+	 * Sets the panel bounds to whichever is larger: the level, or the size of this component
+	 */
+	public void setPanelBounds(){
+		int width = Math.max(levelWidth, this.getSize().width);
+		int height = Math.max(levelHeight, this.getSize().height);
+		this.setBounds(0, 0, width, height);
 		map.setBounds(this.getBounds());
-		tileLayer.setBounds(map.getBounds());
-		edgeLayer.setBounds(map.getBounds());
-	}
-	
-	//------------Component events-----------//
-	@Override
-	public void componentHidden(ComponentEvent arg0) {
-	}
-
-	@Override
-	public void componentMoved(ComponentEvent arg0) {	
-	}
-
-	@Override
-	public void componentResized(ComponentEvent arg0) {
-		this.setBounds(0, 0, getSize().width, getSize().height);
-	}
-	
-	@Override
-	public void componentShown(ComponentEvent arg0) {
+		tileLayer.setBounds(this.getBounds());
+		edgeLayer.setBounds(this.getBounds());
 	}
 }

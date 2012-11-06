@@ -88,6 +88,10 @@ public class Edge extends LayoutObject {
 		return crossable;
 	}
 	
+	/**
+	 * Checks if the edge is crossable by default (character-independent)
+	 * @return True if the edge is crossable, false otherwise.
+	 */
 	public final boolean isCrossableByDefault(){
 		return crossable;
 	}
@@ -119,9 +123,9 @@ public class Edge extends LayoutObject {
 	
 	/**
 	 * Gets the tile on the other side of the edge, given one of the tiles
-	 * (the Edge can't predict which tile is known and which is wanted)
-	 * @param currentTile The originating tile
-	 * @return The Tile on the other side of this edge
+	 * (the Edge can't predict which tile is known and which is wanted).
+	 * @param currentTile The originating tile.
+	 * @return The Tile on the other side of this edge.
 	 */
 	public Tile getOtherTile(Tile currentTile){
 		if (currentTile == null){
@@ -132,26 +136,46 @@ public class Edge extends LayoutObject {
 		return tile1;
 	}
 	
+	/**
+	 * Gets the direction of this edge relative to its first tile.
+	 * @return The direction of this edge relative to the first tile.
+	 */
 	public Direction getDirection1(){
 		if (tile1 == null) return null;
 		
 		return tile1.getEdgeDirection(this);
 	}
+	/**
+	 * Gets the direction of this edge relative to its second tile.
+	 * @return The direction of this edge relative to the second tile.
+	 */
 	public Direction getDirection2(){
 		if (tile2 == null) return null;
 		
 		return tile2.getEdgeDirection(this);
 	}
 	
+	/**
+	 * Gets the location of this edge's first Tile.
+	 * @return The location of the first Tile.
+	 */
 	public Point getLocation1(){
 		if (tile1 == null) return null;
 		return tile1.getLocation();
 	}
+	/**
+	 * Gets the location of this edge's second Tile
+	 * @return The location of the second Tile
+	 */
 	public Point getLocation2(){
 		if (tile2 == null) return null;
 		return tile2.getLocation();
 	}
 	
+	/**
+	 * Checks if this edge is visited. It is considered visited if either of its Tiles are visited.
+	 * @return True if the edge is visited, false otherwise.
+	 */
 	public final boolean isVisited(){
 		if (tile1 == null){
 			return tile2.isVisited();
