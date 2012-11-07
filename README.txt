@@ -32,6 +32,7 @@ KNOWN ISSUES:
 - MapView does not currently consider offsets: if 0 is not the minimum value for x and y,
   it is not taken into consideration.
 - Monster does not die when character attacks and dies with the same attack and health
+- MapView scrolling? We currently do not have a level large enough to test its scrolling capabilities.
 
 CHANGES:
 - 2D GUI has been implemented
