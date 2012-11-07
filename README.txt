@@ -30,7 +30,10 @@ Darrell Penner:
     Classes: MapView, MapController, TilePanel, EdgePanel, LayoutPanel
 
 DELIVERABLES:
-Design Documentation.docx - Our documentation on the design of our game.
+Design Documentation iteration 2.docx - Our documentation on the design of our game.
+Sequence diagrams are in sequence diagrams folder
+UML diagrams are in UML diagrams folder
+javadoc located inside jar file in folder "doc"
 
 KNOWN ISSUES:
 - MapView does not currently consider offsets: if 0 is not the minimum value for x and y,
