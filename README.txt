@@ -14,10 +14,14 @@ Karen Madore:
      Classes: KDTView, InventoryPanel, PlayerStatusPanel, PlayerListener, PlayerEvent
 
 Trang Pham:
-- I/O
+- I/O (Text based)
    Command, CommandWord, Parser, CommandWords
 - gameLoader
    lvl0.xml, Level, LevelCreator, Game, EndGameException
+- commands
+   Command, CommandController, GoCommand, SreachCommand, DropCommand, PickUpCommand
+- in graphics2D
+   TextOutputPanel, HelpListener, TextOutputPanelObserver
 
 Darrell Penner:
 - Game Layout
@@ -40,7 +44,7 @@ CHANGES:
            false is returned instead.
 - Implemented monster move.  Note: not tested yet and will implement in next milestone.  If a player
   is on adjacent tile, the Monster will attack it, otherwise, it will move in random motion.
-- Command interface has been removed and replaced by GUI interface
+- Text Command interface has been removed and replaced by GUI interface
 
 ROADMAP:
 - use image files to enhance the look of the game.  For example, the characters and items will have 
