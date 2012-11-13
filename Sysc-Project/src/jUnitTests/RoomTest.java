@@ -56,10 +56,10 @@ public class RoomTest {
 	}
 
 	/**
-	 * Test method for {@link gameCore.Room#Room(java.util.Set<gameCore.Tile>)}.
+	 * Test method for roomSetConstructor
 	 */
 	@Test
-	public void testRoomSetConstructor(){
+	public void testRoomSetConstructor() {
 		s.add(tile1);
 		s.add(tile2);
 		Room r2 = new Room(s);
@@ -67,10 +67,10 @@ public class RoomTest {
 	}
 	
 	/**
-	 * Test method for {@link gameCore.Room#Room(java.util.Set<gameCore.Tile>)}.
+	 * Test method for RoomSetConstructorBadInput
 	 */
 	@Test
-	public void testRoomSetConstructorBadInput(){
+	public void testRoomSetConstructorBadInput() {
 		try {
 			Room r2 = new Room(null); //null test
 			fail("IllegalArgumentException was expected");

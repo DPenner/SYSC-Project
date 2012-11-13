@@ -35,7 +35,6 @@ public class PlayerEvent extends EventObject {
 	}
 	/**
 	 * Get the Player for the listeners
-	 * @return
 	 */
 	public Player getPlayer() {
 		return player;
