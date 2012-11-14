@@ -5,6 +5,7 @@ import java.util.EventObject;
 import gameCore.Player;
 import gameCore.Item;
 import gameCore.Inventory;
+import gameCore.Tile;
 
 /**
  * A Player Event used by Player to notify it's subscribers of events.
@@ -63,6 +64,15 @@ public class PlayerEvent extends EventObject {
 	 */
 	public void setItem(Item item){
 		this.item=item;
+	}
+	
+	/**
+	 * Get the player's location
+	 * @return tile - the tile the player is on
+	 */
+	public Tile getPosition()
+	{
+		return player.getPosition();
 	}
 	
 	
