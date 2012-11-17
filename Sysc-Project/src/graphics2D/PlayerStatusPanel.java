@@ -1,5 +1,6 @@
 package graphics2D;
 
+import gameCore.Direction;
 import gameCore.Player;
 
 import java.awt.Color;
@@ -101,6 +102,11 @@ public class PlayerStatusPanel extends JPanel implements PlayerListener{
 	public void statsChanged(PlayerEvent e) {
 		// TODO Auto-generated method stub
 		this.repaint();
+	}
+	@Override
+	public void positionChanged(PlayerEvent e, Direction backDir) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

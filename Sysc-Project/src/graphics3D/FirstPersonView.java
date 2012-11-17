@@ -1,6 +1,7 @@
 package graphics3D;
 
 import java.awt.Dimension;
+import java.awt.Point;
 
 import gameCore.Direction;
 import gameCore.Edge;
@@ -32,7 +33,7 @@ import javax.swing.JScrollPane;
 @SuppressWarnings("serial")
 public class FirstPersonView extends JScrollPane implements PlayerListener{
 	protected static final int OUTER_BOX = 300;
-	protected static final int INNER_BOX = 150;
+	protected static final int INNER_BOX = 180;
 	protected static final int BACKDIR_HEIGHT = 20;
 	
 	private static final Integer BACKGROUND_LAYER_DEPTH = 0;
@@ -68,7 +69,7 @@ public class FirstPersonView extends JScrollPane implements PlayerListener{
         Tile t = player.getPosition();
         //draw the tile the player is currently on
         backgroundLayer.draw(t, DEFAULT_BACKDIR);
-		foregroundLayer.draw(t);
+		foregroundLayer.draw(t, DEFAULT_BACKDIR);
         
         this.setMinimumSize(new Dimension(OUTER_BOX, OUTER_BOX + BACKDIR_HEIGHT));
 	}
@@ -77,9 +78,18 @@ public class FirstPersonView extends JScrollPane implements PlayerListener{
 	public void positionChanged(PlayerEvent e, Direction backDir) {
 		Tile newPosition = e.getPosition();
 		backgroundLayer.draw(newPosition, backDir);
-		foregroundLayer.draw(newPosition);
+		foregroundLayer.draw(newPosition, backDir);
 	}
 	
+	public boolean isItemContains(Point p)
+	{
+		return foregroundLayer.isItemContains(p);
+	}
+	
+	public Direction directionContaining(Point p)
+	{
+		return backgroundLayer.directionContaining(p);
+	}
 	/*
 	 * Unimplemented methods of player listener
 	 */

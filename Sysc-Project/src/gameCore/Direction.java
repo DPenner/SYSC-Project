@@ -44,4 +44,24 @@ public enum Direction {
     		return this;
     	}
     }
+
+	public Direction getRightDirection() {
+		switch(this)
+    	{
+    	case NORTH:
+    		return EAST;
+    	case SOUTH:
+    		return WEST;
+    	case WEST:
+    		return NORTH;
+    	case EAST:
+    		return SOUTH;
+    	default:
+    		return this;
+    	}
+	}
+	
+	public Direction getLeftDirection() {
+		return this.getRightDirection().getOppositeDirection();
+	}
 }

@@ -3,6 +3,7 @@ package graphics2D;
 import gameCore.Inventory;
 import gameCore.Player;
 import gameLoader.Level;
+import graphics3D.FirstPersonView;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -81,9 +82,9 @@ public class KDTView {
 	private void addComponentsToPaneUsingBorderLayout(Container pane){
 		pane.setLayout(new BorderLayout());			
 		
-		MapView pMap = new MapView(level);
+		/*MapView pMap = new MapView(level);
 		MapController mController = new MapController(pMap);
-		pane.add(pMap, BorderLayout.CENTER);
+		pane.add(pMap, BorderLayout.CENTER);*/
 		
 		JPanel pOutput = TextOutputPanel.getTextOutputPanel();
 		pane.add(pOutput, BorderLayout.PAGE_END);
@@ -96,13 +97,11 @@ public class KDTView {
 		
 		sidePanel.add(pPlayer);
 		sidePanel.add(pInventory);
-		
-		//sidePanel.setLayout(new BorderLayout());
-		//sidePanel.add(pPlayer, BorderLayout.PAGE_START);
 
-		//JPanel pInventory = new InventoryPanel(player);
-		//sidePanel.add(pInventory, BorderLayout.CENTER);
 		pane.add(sidePanel, BorderLayout.LINE_END);
+		
+		FirstPersonView fpView = new FirstPersonView(player);
+		pane.add(fpView, BorderLayout.CENTER);
 
 	}
 	
