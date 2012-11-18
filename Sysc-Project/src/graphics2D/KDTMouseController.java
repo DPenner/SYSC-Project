@@ -55,8 +55,11 @@ public class KDTMouseController implements MouseListener {
 			System.out.println("Double-clicked.");
 		}
 		
+		System.out.println("Clicked at (" + e.getX() + ", " + e.getY() + ")");
+		
 		// handle direction
-		Direction direction = directionContaining(e.getPoint());
+		
+		Direction direction = view.directionContaining(e.getPoint());
 		
 		//--- remove later ---
 		
@@ -92,7 +95,33 @@ public class KDTMouseController implements MouseListener {
 			
 			}
 		}
+		
 	
+		//test directions
+		/*
+		if (e.getX()<(middle.getX()-100) )
+		{  //west
+			System.out.println("Player should go west. (" + e.getX() +", " + e.getY()+ ")" );
+			kdtCC.execGo(Direction.WEST);
+					
+		}
+		else if (e.getX()> middle.getX()+100) 
+		{	//east
+			System.out.println("Player should go east. (" + e.getX() +", " + e.getY()+ ")" );
+			kdtCC.execGo(Direction.EAST);
+		}
+		else if (e.getY() < middle.getY()-100)
+		{	//north
+			System.out.println("Player should go north. (" + e.getX() +", " + e.getY()+ ")" );
+			kdtCC.execGo(Direction.NORTH);
+			
+		}
+		else if (e.getY() > middle.getY()+100)
+		{	//south
+			System.out.println("Player should go south. (" + e.getX() +", " + e.getY()+ ")" );
+			kdtCC.execGo(Direction.SOUTH);
+		}
+		*/
 	}
 	
 
@@ -113,7 +142,7 @@ public class KDTMouseController implements MouseListener {
 		// Right-mouse press to pick-up an item
 		if(e.getButton() != BUTTON1) {
 			
-			if(e.getButton()== BUTTON3 && isItemContains(e.getPoint())) {
+			if(e.getButton()== BUTTON3 && view.isItemContains(e.getPoint())) {
 			//if(e.getButton()== BUTTON3 && isItemContains(e.getPoint())) {
 				kdtCC.execPickup();
 				System.out.println("Button presses was " + e.getButton());
@@ -137,32 +166,12 @@ public class KDTMouseController implements MouseListener {
 			}// end if check for inventory panel
 		}
 	}
-	/**
-	 * 
-	 * @param point
-	 * @return
-	 */
-	private boolean isItemContains(Point point) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
+	
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 
 	}
 
-	//------ Methods for testing purposes ------
-	/**
-	 * Testing directioContaining panel
-	 * @param point
-	 * @return
-	 */
-	private Direction directionContaining(Point point) {
-		// TODO Auto-generated method stub
-		return Direction.SOUTH;
-		//return null;
-	}
 }
 
