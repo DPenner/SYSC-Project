@@ -92,13 +92,13 @@ public class KDTView {
 		pane.setLayout(new BorderLayout());			
 		
 
-		MapView pMap = new MapView(level);
+		MapView pMap = new MapView(level,10,2);
 		//km added for testing KDT MouseListener
 		//KDTMouseController kdtMouseController = new KDTMouseController(kdtCC, pMap);
 		//pMap.addMouseListener(kdtMouseController);
 		
 		//MapController mController = new MapController(pMap);
-		pane.add(pMap, BorderLayout.CENTER);
+		//pane.add(pMap, BorderLayout.CENTER);
 		
 		/*MapView pMap = new MapView(level);
 		MapController mController = new MapController(pMap);
@@ -112,13 +112,14 @@ public class KDTView {
 		JPanel pInventory = new InventoryPanel(player);
 		pInventory.addMouseListener(kdtMouseController);
 		
-		JPanel sidePanel = new JPanel(new GridLayout(2,0));
+		JPanel sidePanel = new JPanel(new GridLayout(3,0));
+		//sidePanel.setMinimumSize(new Dimension()
 		
 		sidePanel.add(pPlayer);
 		sidePanel.add(pInventory);
+		sidePanel.add(pMap);
 
 		pane.add(sidePanel, BorderLayout.LINE_END);
-		
 		
 		FirstPersonView fpView = new FirstPersonView(player);
 		

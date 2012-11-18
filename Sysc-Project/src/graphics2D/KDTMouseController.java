@@ -50,13 +50,48 @@ public class KDTMouseController implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		//test double-click
+		/*
 		if(e.getClickCount()==2)  //check that it is on an item
 		{
 			System.out.println("Double-clicked. \n");
 		}
 		
+	
 		System.out.println("Clicked at (" + e.getX() + ", " + e.getY() + ")\n");
 		
+		
+	
+		//test directions
+		/*
+		if (e.getX()<(middle.getX()-100) )
+		{  //west
+			System.out.println("Player should go west. (" + e.getX() +", " + e.getY()+ ")" );
+			kdtCC.execGo(Direction.WEST);
+					
+		}
+		else if (e.getX()> middle.getX()+100) 
+		{	//east
+			System.out.println("Player should go east. (" + e.getX() +", " + e.getY()+ ")" );
+			kdtCC.execGo(Direction.EAST);
+		}
+		else if (e.getY() < middle.getY()-100)
+		{	//north
+			System.out.println("Player should go north. (" + e.getX() +", " + e.getY()+ ")" );
+			kdtCC.execGo(Direction.NORTH);
+			
+		}
+		else if (e.getY() > middle.getY()+100)
+		{	//south
+			System.out.println("Player should go south. (" + e.getX() +", " + e.getY()+ ")" );
+			kdtCC.execGo(Direction.SOUTH);
+		}
+		*/
+	}
+
+	/**
+	 * @param e
+	 */
+	private void goDirection(MouseEvent e) {
 		// handle direction
 		
 		Direction direction = view.directionContaining(e.getPoint());
@@ -95,33 +130,6 @@ public class KDTMouseController implements MouseListener {
 			
 			}
 		}
-		
-	
-		//test directions
-		/*
-		if (e.getX()<(middle.getX()-100) )
-		{  //west
-			System.out.println("Player should go west. (" + e.getX() +", " + e.getY()+ ")" );
-			kdtCC.execGo(Direction.WEST);
-					
-		}
-		else if (e.getX()> middle.getX()+100) 
-		{	//east
-			System.out.println("Player should go east. (" + e.getX() +", " + e.getY()+ ")" );
-			kdtCC.execGo(Direction.EAST);
-		}
-		else if (e.getY() < middle.getY()-100)
-		{	//north
-			System.out.println("Player should go north. (" + e.getX() +", " + e.getY()+ ")" );
-			kdtCC.execGo(Direction.NORTH);
-			
-		}
-		else if (e.getY() > middle.getY()+100)
-		{	//south
-			System.out.println("Player should go south. (" + e.getX() +", " + e.getY()+ ")" );
-			kdtCC.execGo(Direction.SOUTH);
-		}
-		*/
 	}
 	
 
@@ -168,9 +176,11 @@ public class KDTMouseController implements MouseListener {
 	}
 	
 	@Override
-	public void mouseReleased(MouseEvent e) {
+	public void mouseReleased(MouseEvent e) 
+	{
 		// TODO Auto-generated method stub
-
+		boolean tileContainsItem = view.isItemContains(e.getPoint());
+		if ( !tileContainsItem) goDirection(e);
 	}
 
 }
