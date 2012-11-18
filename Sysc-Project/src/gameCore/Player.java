@@ -74,6 +74,9 @@ public class Player extends Character
 				
 				System.out.println("Player has moved "+ direction + ".");
 				hasMoved = true;
+				
+				//tell subscribers that the player moved in direction, and the backDir is the opposite direction
+				notifyPositionChanged(direction.getOppositeDirection());
 			}
 		}
 		else
@@ -268,6 +271,19 @@ public class Player extends Character
 			pl.statsChanged(pe);
 		}
 			
+	}
+	/**
+	 * Position has changed - notify subscribers
+	 * @param backDir - the direction the player came from
+	 */
+	private void notifyPositionChanged(Direction backDir)
+	{
+		PlayerEvent pe=new PlayerEvent(this);
+		pe.setPlayer(this);
+	
+		for(PlayerListener pl: pListeners){
+			pl.positionChanged(pe, backDir);
+		}
 	}
 	/**
 	 * Allow external classes to subscribe to the PlayerEvents

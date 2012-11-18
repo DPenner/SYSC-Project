@@ -1,6 +1,7 @@
 package graphics2D;
 
 import gameCore.Direction;
+import graphics3D.FirstPersonView;
 import commands.GoCommand;
 import commands.CommandController;
 import commands.GoCommand;
@@ -34,15 +35,15 @@ public class KDTMouseController implements MouseListener {
 	private static final int BUTTON3 = 3;
 	Point middle;
 	//MapView view;  // replace with KDTView
-	MapView view;
+	FirstPersonView view;
 	CommandController kdtCC;
 	
 	//--- modify the view in arg support NEW view 
-	public KDTMouseController(CommandController kdtCC, MapView view) {
+	public KDTMouseController(CommandController kdtCC, FirstPersonView view) {
 		this.view = view;
 		view.addMouseListener(this);
 		this.kdtCC = kdtCC;	
-		middle = new Point(200,200);
+		//middle = new Point(200,200);
 		
 	}
 	

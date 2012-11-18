@@ -1,5 +1,6 @@
 package graphics2D;
 
+import gameCore.Direction;
 import gameCore.Inventory;
 import gameCore.Player;
 
@@ -229,6 +230,11 @@ public class InventoryPanel extends JPanel implements PlayerListener{
 	@Override
 	public void statsChanged(PlayerEvent e) {
 		//currently do not need to do anything on inventory panel
+		
+	}
+	@Override
+	public void positionChanged(PlayerEvent e, Direction backDir) {
+		// TODO Auto-generated method stub
 		
 	}
 	
