@@ -34,7 +34,6 @@ import commands.GoCommand;
 public class KDTMouseController implements MouseListener {
 	private static final int BUTTON3 = 3;
 	private static final int BUTTON1 = 1;
-	private int numExecuted = 0;
 	FirstPersonView view;
 	CommandController kdtCC;
 	
@@ -46,43 +45,7 @@ public class KDTMouseController implements MouseListener {
 		
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		//test double-click
-		/*
-		if(e.getClickCount()==2)  //check that it is on an item
-		{
-			System.out.println("Double-clicked. \n");
-		}
-		
-	
-		System.out.println("Clicked at (" + e.getX() + ", " + e.getY() + ")\n");
-		
-		
-	
-		//test directions
-		/*
-		if (e.getX()<(middle.getX()-100) )
-		{  //west
-			System.out.println("Player should go west. (" + e.getX() +", " + e.getY()+ ")" );
-			kdtCC.execGo(Direction.WEST);
-					
-		}
-		else if (e.getX()> middle.getX()+100) 
-		{	//east
-			System.out.println("Player should go east. (" + e.getX() +", " + e.getY()+ ")" );
-			kdtCC.execGo(Direction.EAST);
-		}
-		else if (e.getY() < middle.getY()-100)
-		{	//north
-			System.out.println("Player should go north. (" + e.getX() +", " + e.getY()+ ")" );
-			kdtCC.execGo(Direction.NORTH);
-			
-		}
-		else if (e.getY() > middle.getY()+100)
-		{	//south
-			System.out.println("Player should go south. (" + e.getX() +", " + e.getY()+ ")" );
-			kdtCC.execGo(Direction.SOUTH);
-		}
-		*/
+
 	}
 
 	/**
@@ -146,7 +109,6 @@ public class KDTMouseController implements MouseListener {
 	public void mousePressed(MouseEvent e) {
 		// Right-mouse press to pick-up an item
 		if(e.getButton() != BUTTON1) {
-			if(numExecuted == 1) {
 				if(e.getButton()== BUTTON3 && view.isItemContains(e.getPoint())) {
 				//if(e.getButton()== BUTTON3 && isItemContains(e.getPoint())) {
 					
@@ -170,12 +132,7 @@ public class KDTMouseController implements MouseListener {
 						
 						
 					}  
-				}// end if check for inventory panel
-				numExecuted = 0;
-			}else {
-				numExecuted ++;
-			}
-			
+				}// end if check for inventory panel	
 		}
 	}
 	
@@ -184,7 +141,7 @@ public class KDTMouseController implements MouseListener {
 	{
 		// TODO Auto-generated method stub
 		boolean tileContainsItem = view.isItemContains(e.getPoint());
-		if ( !tileContainsItem) goDirection(e);
+		if (!tileContainsItem) goDirection(e);
 	}
 
 }
