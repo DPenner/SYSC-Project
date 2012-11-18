@@ -96,6 +96,7 @@ public class FirstPersonView extends JScrollPane implements PlayerListener{
 	@Override
 	public void itemAdded(PlayerEvent e) {
 		Tile newPosition = e.getPosition();
+		if(newPosition == null) System.out.println("TILE NULL");
 		backgroundLayer.draw(newPosition, DEFAULT_BACKDIR);
 		foregroundLayer.draw(newPosition, DEFAULT_BACKDIR);
 	}
