@@ -76,6 +76,8 @@ public class BackgroundPanel extends JPanel{
 		rightWall.addPoint(inner.x + inner.width, inner.y + inner.height); //inner bot right
 		
 		backWall = inner;
+		
+		backDirRect = new Rectangle((int)outer.getMinX(), (int)outer.getMaxY(), FirstPersonView.OUTER_BOX, FirstPersonView.BACKDIR_HEIGHT);
 	}
 	public void draw(Tile tile, Direction backDir) {
 		this.tile = tile;
@@ -146,7 +148,7 @@ public class BackgroundPanel extends JPanel{
 		g.fillPolygon(backDirTriangle);
 	}
 	
-	public Direction directionContaining(Point p) {
+	public Direction directionContaining(Point p){
 		if(backWall.contains(p)) return forwardDir;
 		if(backDirRect.contains(p)) return backDir;
 		if(rightWall.contains(p)) return forwardDir.getRightDirection();
