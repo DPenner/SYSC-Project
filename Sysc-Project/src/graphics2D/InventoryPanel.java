@@ -47,7 +47,7 @@ public class InventoryPanel extends JPanel implements PlayerListener{
 	
 	private static int TEXT_OFFSET = 10;
 	private static int TEXT_TAB1=20;
-	private static int ROW_OFFSET = 25;
+	private static int ROW_OFFSET = 30;
 	
 	/**
 	 * Constructor for InventoryPanel
@@ -61,7 +61,7 @@ public class InventoryPanel extends JPanel implements PlayerListener{
 		//addComponentsToInventoryPanel();
 		player.addPlayerListener(this);
 		
-		loadImage();
+		//loadImage();
 	}
 	
 	/**
@@ -131,8 +131,9 @@ public class InventoryPanel extends JPanel implements PlayerListener{
 		{
 			//g.drawString(inventory.getItem(i).toString(), TEXT_TAB1, y+ i*ROW_OFFSET);
 			String itemName = inventory.getItem(i).toString();
+			g.drawString(itemName,IMG_XOFFSET, ROW_OFFSET *(i+1));
 			
-			if(itemName.equals("RedKey")) 
+			/*if(itemName.equals("RedKey")) 
 			{	
 				drawKey(g, i, Color.RED);
 			}
@@ -143,6 +144,7 @@ public class InventoryPanel extends JPanel implements PlayerListener{
 			{
 				g.drawString(itemName,IMG_XOFFSET, IMG_YOFFSET *(i+1));
 			}
+			*/
 		}
 		//testing position
 		//drawKey(g, 0, Color.RED);
