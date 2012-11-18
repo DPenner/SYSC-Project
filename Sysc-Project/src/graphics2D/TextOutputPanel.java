@@ -35,7 +35,7 @@ public class TextOutputPanel extends JPanel implements Observer{
 		displayArea.setEditable(false);
 		
         JScrollPane scrollPane = new JScrollPane(displayArea);
-        scrollPane.setPreferredSize(new Dimension(590, 150));
+        scrollPane.setPreferredSize(new Dimension(530, 150));
         
 		this.add(scrollPane);
 

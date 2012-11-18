@@ -34,7 +34,6 @@ public class PlayerStatusPanel extends JPanel implements PlayerListener{
 	public PlayerStatusPanel(Player p){
 		player=p;
 		//this.setBackground(Color.BLACK);
-		this.setPreferredSize(new Dimension(120,80));
 		player.addPlayerListener(this);
 	}
 	/**
