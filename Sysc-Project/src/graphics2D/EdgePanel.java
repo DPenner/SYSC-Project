@@ -31,9 +31,8 @@ class EdgePanel extends LayoutPanel<Edge>{
 	private static final Color DEFAULT_EDGE_COLOR = Color.decode("0x606060");
 	private static final Color DEFAULT_EXIT_COLOR = Color.decode("0x964B00");
 	
-	private int edgeLength;
-	private int edgeWidth;
-	private int tileSize;
+	//private int edgeLength;
+	//private int tileSize;
 	
 	/**
 	 * Constructs an EdgePanel to display edges for the given mapView
@@ -42,9 +41,8 @@ class EdgePanel extends LayoutPanel<Edge>{
 	protected EdgePanel(MapView mapView){
 		super(mapView);
 		
-		tileSize = parentMap.getTileSize();
-		edgeWidth = parentMap.getEdgeWidth();
-		edgeLength = tileSize;
+		//tileSize = parentMap.getTileSize();
+		//edgeLength = tileSize;
 	}
 
 	/**
@@ -79,6 +77,9 @@ class EdgePanel extends LayoutPanel<Edge>{
 	private Rectangle getEdgeRectangle(Edge edge, boolean isLarge){
 		Direction edgeDirection;
 		Point referenceLocation;
+		int edgeWidth = parentMap.getEdgeWidth();
+		int tileSize = parentMap.getTileSize();
+		int edgeLength = tileSize;
 		
 		int effectiveEdgeLength = isLarge ? edgeLength + edgeWidth : edgeLength - edgeWidth;
 		int lengthOffset = isLarge ? -edgeWidth/2 : edgeWidth/2;
