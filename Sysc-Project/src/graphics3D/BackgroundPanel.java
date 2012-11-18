@@ -147,10 +147,10 @@ public class BackgroundPanel extends JPanel{
 	}
 	
 	public Direction directionContaining(Point p) {
-		if(backWall.contains(p)) return backDir.getOppositeDirection();
+		if(backWall.contains(p)) return forwardDir;
 		if(backDirRect.contains(p)) return backDir;
-		if(rightWall.contains(p)) return backDir.getRightDirection();
-		if(leftWall.contains(p)) return backDir.getLeftDirection();
+		if(rightWall.contains(p)) return forwardDir.getRightDirection();
+		if(leftWall.contains(p)) return forwardDir.getLeftDirection();
 		return null;
-	}	
+	}
 }

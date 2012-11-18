@@ -77,8 +77,8 @@ public class FirstPersonView extends JScrollPane implements PlayerListener{
 	@Override
 	public void positionChanged(PlayerEvent e, Direction backDir) {
 		Tile newPosition = e.getPosition();
-		backgroundLayer.draw(newPosition, backDir);
-		foregroundLayer.draw(newPosition, backDir);
+		backgroundLayer.draw(newPosition, DEFAULT_BACKDIR);
+		foregroundLayer.draw(newPosition, DEFAULT_BACKDIR);
 	}
 	
 	public boolean isItemContains(Point p)

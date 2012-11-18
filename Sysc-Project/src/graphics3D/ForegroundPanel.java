@@ -21,9 +21,9 @@ public class ForegroundPanel extends JPanel{
 	private static final Color MONSTER_COLOR = Color.RED;
 	private static final int MONSTER_SIZE = 20;
 	private static final Color DOORNOB_COLOR = Color.GRAY;
-	private static final int DOOR_WIDTH = 40;
+	private static final int DOOR_WIDTH = 50;
 	private static final int DOOR_HEIGHT = 100;
-	private static final int DOORNOB_SIZE = 10;
+	private static final int DOORNOB_SIZE = 8;
 	
 	//How much to offset x and y for this entire component
 	private static final int xOffSet = 0;
@@ -39,7 +39,6 @@ public class ForegroundPanel extends JPanel{
 	
 	public ForegroundPanel()
 	{
-
 		this.setSize(FirstPersonView.OUTER_BOX, FirstPersonView.OUTER_BOX + FirstPersonView.BACKDIR_HEIGHT);
 		
 		Rectangle outer = new Rectangle(xOffSet,yOffSet, FirstPersonView.OUTER_BOX, FirstPersonView.OUTER_BOX);
@@ -56,16 +55,18 @@ public class ForegroundPanel extends JPanel{
 		dpInner.setLocation((int)outer.getCenterX() - doorPositioningInner/2, (int)outer.getCenterY() - doorPositioningInner/2);
 		
 		leftDoor = new Polygon();
-		leftDoor.addPoint((int) dpOuter.getMaxX(), dpOuter.y); //bot left of outer box = box left of leftDoor
-		leftDoor.addPoint((int) dpOuter.getMaxX() - DOOR_HEIGHT, dpOuter.y); //top left of door
-		leftDoor.addPoint((int) dpInner.getMaxX(), dpInner.y); //bot left of inner box = bot right of leftDoor
-		leftDoor.addPoint((int) dpInner.getMaxX() - DOOR_HEIGHT, dpInner.y);
-		
+		//leftDoor
+		leftDoor.addPoint((int) dpOuter.getMinX(), (int) dpOuter.getMaxY());//bot left of outer
+		leftDoor.addPoint((int) dpInner.getMinX(), (int) dpInner.getMaxY());//bot left of outer//bot left of inner
+		leftDoor.addPoint((int) dpInner.getMinX(), (int) dpInner.getMaxY()-DOOR_HEIGHT);//bot left of inner - height
+		leftDoor.addPoint((int) dpOuter.getMinX(), (int) dpOuter.getMaxY()-DOOR_HEIGHT);//bot left of outer - height
+	
 		rightDoor = new Polygon();
-		rightDoor.addPoint((int) dpOuter.getMaxX(), (int)dpOuter.getMaxY()); //bot right of outer box = box right of rightDoor
-		rightDoor.addPoint((int) dpOuter.getMaxX() - DOOR_HEIGHT, (int)dpOuter.getMaxY()); //top left of door
-		rightDoor.addPoint((int) dpInner.getMaxX(), (int)dpInner.getMaxY()); //bot right of inner box = bot right og rightDoor
-		rightDoor.addPoint((int) dpInner.getMaxX() - DOOR_HEIGHT, (int)dpInner.getMaxY());
+		//rightDoor
+		rightDoor.addPoint((int) dpInner.getMaxX(), (int) dpInner.getMaxY());//inner bot right 
+		rightDoor.addPoint((int) dpOuter.getMaxX(), (int) dpOuter.getMaxY());//outer bot right
+		rightDoor.addPoint((int) dpOuter.getMaxX(), (int) dpOuter.getMaxY()-DOOR_HEIGHT);//out bot right - height
+		rightDoor.addPoint((int) dpInner.getMaxX(), (int) dpInner.getMaxY()-DOOR_HEIGHT);//in bot right - height
 		
 		backWall = inner;
 	}
@@ -83,16 +84,16 @@ public class ForegroundPanel extends JPanel{
 	@Override
 	protected void paintComponent(Graphics g){
 		super.paintComponent(g);
-		
-		if(tile.hasItems()) drawItemChest(g);
-		
+
 		drawLeft(g);
 		drawRight(g);
 		drawBack(g);
+		
+		if(tile.hasItems()) drawItemChest(g);
 	}
 	
-	private void drawLeft(Graphics g) {
-		Direction left = backDir.getLeftDirection();
+	private void drawRight(Graphics g) {
+		Direction left = backDir.getRightDirection();
 		Rectangle leftDoorBound = leftDoor.getBounds();
 		if(tile.hasExit(left))
 		{
@@ -100,7 +101,7 @@ public class ForegroundPanel extends JPanel{
 			g.fillPolygon(leftDoor);
 			
 			g.setColor(DOORNOB_COLOR);
-			g.fillOval((int)leftDoorBound.getMaxX() - DOORNOB_SIZE, (int)leftDoorBound.getMaxY() - DOOR_HEIGHT/2, DOORNOB_SIZE, DOORNOB_SIZE);
+			g.fillOval((int)leftDoorBound.getMinX() + DOORNOB_SIZE/2, (int)leftDoorBound.getMinY() + DOOR_HEIGHT/2 + DOORNOB_SIZE, DOORNOB_SIZE, DOORNOB_SIZE);
 		}
 		else if(tile.hasCharacter(left))
 		{
@@ -109,8 +110,8 @@ public class ForegroundPanel extends JPanel{
 		}
 	}
 
-	private void drawRight(Graphics g) {
-		Direction right = backDir.getRightDirection();
+	private void drawLeft(Graphics g) {
+		Direction right = backDir.getLeftDirection();
 		Rectangle rightDoorBound = rightDoor.getBounds();
 		if(tile.hasExit(right))
 		{
@@ -118,7 +119,7 @@ public class ForegroundPanel extends JPanel{
 			g.fillPolygon(rightDoor);
 			
 			g.setColor(DOORNOB_COLOR);
-			g.fillOval((int)rightDoorBound.getMaxX() - DOORNOB_SIZE, (int)rightDoorBound.getMaxY() - DOOR_HEIGHT/2, DOORNOB_SIZE, DOORNOB_SIZE);
+			g.fillOval((int)rightDoorBound.getMinX() + DOORNOB_SIZE/2, (int)rightDoorBound.getMinY() + DOOR_HEIGHT/2 + DOORNOB_SIZE, DOORNOB_SIZE, DOORNOB_SIZE);
 		}
 		else if(tile.hasCharacter(right))
 		{
