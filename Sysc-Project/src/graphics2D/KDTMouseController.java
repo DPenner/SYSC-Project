@@ -52,10 +52,10 @@ public class KDTMouseController implements MouseListener {
 		//test double-click
 		if(e.getClickCount()==2)  //check that it is on an item
 		{
-			System.out.println("Double-clicked.");
+			System.out.println("Double-clicked. \n");
 		}
 		
-		System.out.println("Clicked at (" + e.getX() + ", " + e.getY() + ")");
+		System.out.println("Clicked at (" + e.getX() + ", " + e.getY() + ")\n");
 		
 		// handle direction
 		
@@ -65,7 +65,7 @@ public class KDTMouseController implements MouseListener {
 		
 		if (direction != null)
 		{
-			System.out.printf("Direction clicked is : " + direction.toString());
+			System.out.printf("Direction clicked is : " + direction.toString() + "\n");
 		}
 		
 		if(direction != null) {
