@@ -51,6 +51,12 @@ public class PlayerStatusPanel extends JPanel implements PlayerListener{
 		
 	}
 	
+	//--- Draw a monster ---
+	
+	private void drawMonster(){
+		
+	}
+	
 
 	@Override
 

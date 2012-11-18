@@ -57,12 +57,21 @@ public class KDTMouseController implements MouseListener {
 		
 		// handle direction
 		Direction direction = directionContaining(e.getPoint());
+		
+		//--- remove later ---
+		
+		if (direction != null)
+		{
+			System.out.printf("Direction clicked is : " + direction.toString());
+		}
+		
 		if(direction != null) {
 			switch (direction) 
 			{	
 				case NORTH:
 				{
 					kdtCC.execGo(Direction.NORTH);
+					
 					break;
 				}
 				case SOUTH:
@@ -80,7 +89,7 @@ public class KDTMouseController implements MouseListener {
 					kdtCC.execGo(Direction.EAST);
 					break;
 				}
-				
+			
 			}
 		}
 	
