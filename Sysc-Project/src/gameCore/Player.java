@@ -74,14 +74,16 @@ public class Player extends Character
 				
 				System.out.println("Player has moved "+ direction + ".");
 				hasMoved = true;
-				
-				//tell subscribers that the player moved in direction, and the backDir is the opposite direction
-				notifyPositionChanged(direction.getOppositeDirection());
 			}
 		}
 		else
 		{
 			output.append(checkIfLockedExit(direction));
+		}
+		if(hasMoved)
+		{
+			//tell subscribers that the player moved in direction, and the backDir is the opposite direction
+			notifyPositionChanged(direction.getOppositeDirection());
 		}
 		return hasMoved;
 	}
