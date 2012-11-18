@@ -72,15 +72,17 @@ public class KDTView {
 		addMenusToFrame();
 		f.setSize(600, 700);
 		f.setMinimumSize(new Dimension(600, 700));
+		f.setResizable(false);
 		
 		cp=f.getContentPane();
+		g=f.getGraphics();
 		
-		//addComponentsToPaneUsingBAGLayout(cp);
 		addComponentsToPaneUsingBorderLayout(cp);
 		
-		g=f.getGraphics();
+		
 						
-		//f.pack();
+		f.pack();
+		f.setLocationRelativeTo(null);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
 	}
@@ -92,12 +94,10 @@ public class KDTView {
 		pane.setLayout(new BorderLayout());			
 		
 
-		MapView pMap = new MapView(level,10,2);
-		//km added for testing KDT MouseListener
-		//KDTMouseController kdtMouseController = new KDTMouseController(kdtCC, pMap);
-		//pMap.addMouseListener(kdtMouseController);
-		
-		//MapController mController = new MapController(pMap);
+		MapView pMap = new MapView(level,20,2);
+		pMap.setPreferredSize(new Dimension(250,250));
+				
+		MapController mController = new MapController(pMap);
 		//pane.add(pMap, BorderLayout.CENTER);
 		
 		/*MapView pMap = new MapView(level);
@@ -113,15 +113,18 @@ public class KDTView {
 		pInventory.addMouseListener(kdtMouseController);
 		
 		JPanel sidePanel = new JPanel(new GridLayout(3,0));
-		//sidePanel.setMinimumSize(new Dimension()
-		
-		sidePanel.add(pPlayer);
-		sidePanel.add(pInventory);
+		pPlayer.setPreferredSize(new Dimension(250, 150));
+		pInventory.setPreferredSize(new Dimension(250, 300));
+		sidePanel.setPreferredSize(new Dimension(250, 700));
+					
 		sidePanel.add(pMap);
+		sidePanel.add(pInventory);
+		sidePanel.add(pPlayer);
 
 		pane.add(sidePanel, BorderLayout.LINE_END);
 		
 		FirstPersonView fpView = new FirstPersonView(player);
+		fpView.setPreferredSize(new Dimension(300,480));
 		
 		kdtMouseController = new KDTMouseController(kdtCC, fpView);
 		fpView.addMouseListener(kdtMouseController);
