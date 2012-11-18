@@ -131,13 +131,21 @@ public class InventoryPanel extends JPanel implements PlayerListener{
 			//g.drawString(inventory.getItem(i).toString(), TEXT_TAB1, y+ i*ROW_OFFSET);
 			String itemName = inventory.getItem(i).toString();
 			
-			if(itemName.equals("RedKey")) drawKey(g, i, Color.RED);
-			
-			if(itemName.equals("BlueKey")) drawKey(g, i, Color.BLUE);
+			if(itemName.equals("RedKey")) 
+			{	
+				drawKey(g, i, Color.RED);
+			}
+			else if(itemName.equals("BlueKey")) 
+			{
+				drawKey(g, i, Color.BLUE);
+			}else
+			{
+				g.drawString(itemName,IMG_XOFFSET, IMG_YOFFSET *(i+1));
+			}
 		}
 		//testing position
-		drawKey(g, 0, Color.RED);
-		drawKey(g, 1, Color.BLUE);		
+		//drawKey(g, 0, Color.RED);
+		//drawKey(g, 1, Color.BLUE);		
 	}
 
 	public boolean hasItem(Point p)

@@ -33,7 +33,8 @@ import commands.CommandController;
  * Darrell Penner
  * 
  *
- * @version 1.0
+ * @version 2.0
+ *  
  */
 public class KDTView {
 	//------------Fields------------//
@@ -125,7 +126,7 @@ public class KDTView {
 	 */
 	private void addMenusToFrame() {
 		
-		KDTMenuController kdtMenuController=new KDTMenuController(f);	
+		KDTMenuController kdtMenuController=new KDTMenuController(f, kdtCC);	
 		//--------- MENUS ---------
 		JMenu file=new JMenu("File");
 		
@@ -133,93 +134,28 @@ public class KDTView {
 		exit.setToolTipText("Exit Kraft Dinner Table Maze");
 		exit.addActionListener(kdtMenuController);
 		
+		JMenu edit=new JMenu("Edit");
+		JMenuItem undo = new JMenuItem("Undo");
+		undo.addActionListener(kdtMenuController);
+		
+		JMenuItem redo = new JMenuItem("Redo");
+		undo.addActionListener(kdtMenuController);
+		
 		JMenuItem help = new JMenuItem("Help");
 		help.setToolTipText("View help manual");
 		help.addActionListener(new HelpListener());
 			
 		file.add(help);
 		file.add(exit);
+		
+		edit.add(undo);
+		edit.add(redo);
 				
 		JMenuBar mainBar=new JMenuBar();
 		mainBar.add(file);
+		mainBar.add(edit);
 		
 		f.setJMenuBar(mainBar);
 	}
-	
-		
-	/**
-	 * Add the components to the Content Pane using GridBagLayout
-	 * ---- NOT USING this layout ---
-	 */
-	/*
-	private void addComponentsToPaneUsingBAGLayout(Container pane) {
-		GridBagConstraints c;
-				
-	    pane.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-	   	    
-	    KDTMainPanel pMain= new KDTMainPanel();
-	    pMain.setLayout(new BoxLayout(pMain, BoxLayout.Y_AXIS));
-	        
-	    JButton button;
-		pane.setLayout(new GridBagLayout());
-		
-		
-		c = new GridBagConstraints();
-	
-		//------------Main Panel------------//
-		//c.ipady = 600;      //make this component tall
-		//c.ipadx = 400;
-		c.weightx = 1.0;
-		//JButton jb=new JButton("Test");
-		c.gridwidth = 2;
-		c.gridheight= 2;
-		//c.insets = new Insets(5,5,5,5);
-		c.gridx = 0;
-		c.gridy = 0;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.fill = GridBagConstraints.VERTICAL;
-		pane.add(pMain, c);
-		//pane.setSize(300, 200);
-		
-		//------------Player Status Panel------------//
-		JPanel pPlayer = new PlayerStatusPanel();
-		pPlayer.setLayout(new BoxLayout(pPlayer, BoxLayout.Y_AXIS));
-		c.ipadx=0;
-		c.ipady=0;
-		//c.ipadx=200;
-		//c.ipady = 300;
-		c.weightx = .25;
-		c.gridx = 2;
-		c.gridy = 0;
-		//c.insets = new Insets(5,5,5,5);
-		c.fill = GridBagConstraints.HORIZONTAL;
-		pane.add(pPlayer, c);
-		
-		JPanel pInventory = new InventoryPanel();
-		pInventory.setLayout(new BoxLayout(pInventory, BoxLayout.Y_AXIS));
-		c.ipadx=200;
-		c.ipady = 300;
-		c.weightx = 0.25;
-		c.gridx = 2;
-		c.gridy = 1;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		//pane.add(pInventory, c);
-
-		//------------Input and Status Panel------------//
-		JPanel pInput = new InputPanel();
-		
-		c.ipady = 0;       //reset to default
-		c.weighty = 1.5;   //request any extra vertical space
-		c.anchor = GridBagConstraints.PAGE_END; //bottom of space
-		c.insets = new Insets(10,0,0,0);  //top padding
-		c.gridx = 0;       //aligned with button 2
-		c.gridy = 2;       //third row
-		c.gridwidth = 3;   //2 columns wide
-		c.fill = GridBagConstraints.HORIZONTAL;
-		pane.add(pInput, c);
-	    
-
-	}
-	*/
-
+			
 }
