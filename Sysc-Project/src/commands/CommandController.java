@@ -140,18 +140,15 @@ public class CommandController extends TextOutputPanelObservable implements KeyE
 	
 	public boolean execPickup() {
 		 Command c = new PickUpCommand();
-		 if(c.execute()) {
-			 return true;
-		 }
+		 if(c.execute()) return true;
+		 
 		 return false;
 	}
 	
-	public boolean execDrop(String itemname) {
+	public boolean execDrop() {
 		DropCommand dc = new DropCommand();
-		if( dc.drop(itemname)) {
-			 return true;
-		}else{
-			return false;
-		}
+		if( dc.execute()) return true;
+		
+		return false;
 	}
 }
