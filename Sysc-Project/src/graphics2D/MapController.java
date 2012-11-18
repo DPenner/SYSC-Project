@@ -9,8 +9,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class MapController extends MouseAdapter implements ComponentListener {
-	private MapView view;
-	private Tile currentTile; //The tile that the mouse is hovering over
+	protected MapView view;
+	protected Tile actionTile; //The tile that an action is to be performed on
 	private Player player; //for future use
 	
 	/**
@@ -31,11 +31,11 @@ public class MapController extends MouseAdapter implements ComponentListener {
 	@Override
 	public void mouseMoved(MouseEvent e){
 		Tile hoverTile = view.getTile(e.getPoint());
-		if (hoverTile == currentTile) return; //no change
+		if (hoverTile == actionTile) return; //no change
 		
-		unHighLightCurrentTile();
-		currentTile = hoverTile;
-		highLightCurrentTile();
+		performActionOnExitedTile();
+		actionTile = hoverTile;
+		performActionOnEnteredTile();
 	}
 	
 	/**
@@ -43,8 +43,8 @@ public class MapController extends MouseAdapter implements ComponentListener {
 	 */
 	@Override
 	public void mouseEntered(MouseEvent e){
-		currentTile = view.getTile(e.getPoint());
-		highLightCurrentTile();
+		actionTile = view.getTile(e.getPoint());
+		performActionOnEnteredTile();
 	}
 	
 	/**
@@ -52,20 +52,20 @@ public class MapController extends MouseAdapter implements ComponentListener {
 	 */
 	@Override
 	public void mouseExited(MouseEvent e){
-		unHighLightCurrentTile();
-		currentTile = null;
+		performActionOnExitedTile();
+		actionTile = null;
 	}
 	
 	//------------Mouse helpers------------//
 	//Highlights and unhighlights tiles if they are not null
-	private void highLightCurrentTile(){
-		if (currentTile != null){
-			view.highLight(currentTile);
+	protected void performActionOnEnteredTile(){
+		if (actionTile != null){
+			view.highLight(actionTile);
 		}
 	}
-	private void unHighLightCurrentTile(){
-		if (currentTile != null){
-			view.unHighLight(currentTile);
+	protected void performActionOnExitedTile(){
+		if (actionTile != null){
+			view.unHighLight(actionTile);
 		}
 	}
 
