@@ -34,8 +34,7 @@ import commands.GoCommand;
 public class KDTMouseController implements MouseListener {
 	private static final int BUTTON3 = 3;
 	private static final int BUTTON1 = 1;
-	Point middle;
-	//MapView view;  // replace with KDTView
+	private int numExecuted = 0;
 	FirstPersonView view;
 	CommandController kdtCC;
 	
@@ -43,8 +42,6 @@ public class KDTMouseController implements MouseListener {
 		this.view = fpView;
 		view.addMouseListener(this);
 		this.kdtCC = kdtCC;	
-		middle = new Point(200,200);
-		
 	}
 		
 	@Override
@@ -149,29 +146,36 @@ public class KDTMouseController implements MouseListener {
 	public void mousePressed(MouseEvent e) {
 		// Right-mouse press to pick-up an item
 		if(e.getButton() != BUTTON1) {
-			
-			if(e.getButton()== BUTTON3 && view.isItemContains(e.getPoint())) {
-			//if(e.getButton()== BUTTON3 && isItemContains(e.getPoint())) {
-				kdtCC.execPickup();
-				System.out.println("Button presses was " + e.getButton());
+			if(numExecuted == 1) {
+				if(e.getButton()== BUTTON3 && view.isItemContains(e.getPoint())) {
+				//if(e.getButton()== BUTTON3 && isItemContains(e.getPoint())) {
+					
+					kdtCC.execPickup();
+					
+					System.out.println("Button presses was " + e.getButton());
+				}
+				
+				boolean isInventoryPanel = e.getSource() instanceof graphics2D.InventoryPanel;
+				if( isInventoryPanel) 
+				{
+					InventoryPanel inventoryPanel = (InventoryPanel) e.getSource();
+					if(inventoryPanel.hasItem(e.getPoint())) 
+					{
+						//execute pickup
+						String itemName = inventoryPanel.getItemAtPosition(e.getPoint());
+						if(!itemName.isEmpty())
+						{
+							kdtCC.execDrop(itemName);
+						}
+						
+						
+					}  
+				}// end if check for inventory panel
+				numExecuted = 0;
+			}else {
+				numExecuted ++;
 			}
 			
-			boolean isInventoryPanel = e.getSource() instanceof graphics2D.InventoryPanel;
-			if( isInventoryPanel) 
-			{
-				InventoryPanel inventoryPanel = (InventoryPanel) e.getSource();
-				if(inventoryPanel.hasItem(e.getPoint())) 
-				{
-					//execute pickup
-					String itemName = inventoryPanel.getItemAtPosition(e.getPoint());
-					if(!itemName.isEmpty())
-					{
-						kdtCC.execDrop(itemName);
-					}
-					
-					
-				}  
-			}// end if check for inventory panel
 		}
 	}
 	

@@ -78,9 +78,7 @@ public class KDTView {
 		g=f.getGraphics();
 		
 		addComponentsToPaneUsingBorderLayout(cp);
-		
-		
-						
+								
 		f.pack();
 		f.setLocationRelativeTo(null);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
