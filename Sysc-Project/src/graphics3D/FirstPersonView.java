@@ -95,14 +95,16 @@ public class FirstPersonView extends JScrollPane implements PlayerListener{
 	 */
 	@Override
 	public void itemAdded(PlayerEvent e) {
-		// TODO Auto-generated method stub
-		
+		Tile newPosition = e.getPosition();
+		backgroundLayer.draw(newPosition, DEFAULT_BACKDIR);
+		foregroundLayer.draw(newPosition, DEFAULT_BACKDIR);
 	}
 
 	@Override
 	public void itemDropped(PlayerEvent e) {
-		// TODO Auto-generated method stub
-		
+		Tile newPosition = e.getPosition();
+		backgroundLayer.draw(newPosition, DEFAULT_BACKDIR);
+		foregroundLayer.draw(newPosition, DEFAULT_BACKDIR);
 	}
 
 	@Override

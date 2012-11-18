@@ -19,7 +19,7 @@ public class ForegroundPanel extends JPanel{
 	private static final Rectangle ITEM_AREA_RECT = new Rectangle( FirstPersonView.OUTER_BOX/2-100, FirstPersonView.OUTER_BOX-(FirstPersonView.OUTER_BOX-FirstPersonView.INNER_BOX)/2 - 20, 80, 40 );
 	private static final Color DOOR_COLOR = Color.decode("0x993300"); //brown
 	private static final Color MONSTER_COLOR = Color.RED;
-	private static final int MONSTER_SIZE = 20;
+	private static final int MONSTER_SIZE = 60;
 	private static final Color DOORNOB_COLOR = Color.GRAY;
 	private static final int DOOR_WIDTH = 50;
 	private static final int DOOR_HEIGHT = 100;
@@ -90,7 +90,7 @@ public class ForegroundPanel extends JPanel{
 		drawBack(g);
 		
 		if(tile.hasItems()) drawItemChest(g);
-	}
+}
 	
 	private void drawRight(Graphics g) {
 		Direction left = backDir.getRightDirection();
@@ -106,7 +106,7 @@ public class ForegroundPanel extends JPanel{
 		else if(tile.hasCharacter(left))
 		{
 			g.setColor(MONSTER_COLOR);
-			g.fillOval((int)leftDoorBound.getMaxX(), (int)leftDoorBound.getMaxY()- MONSTER_SIZE, MONSTER_SIZE, MONSTER_SIZE);
+			g.fillOval((int)leftDoorBound.getMaxX()- MONSTER_SIZE/2, (int)leftDoorBound.getCenterY() - MONSTER_SIZE, MONSTER_SIZE/2, MONSTER_SIZE);
 		}
 	}
 
@@ -124,7 +124,7 @@ public class ForegroundPanel extends JPanel{
 		else if(tile.hasCharacter(right))
 		{
 			g.setColor(MONSTER_COLOR);
-			g.fillOval((int)rightDoorBound.getMaxX(), (int)rightDoorBound.getMaxY()- MONSTER_SIZE, MONSTER_SIZE, MONSTER_SIZE);
+			g.fillOval((int)rightDoorBound.getMinX(), (int)rightDoorBound.getCenterY()- MONSTER_SIZE, MONSTER_SIZE/2, MONSTER_SIZE);
 		}
 	}
 
@@ -143,7 +143,7 @@ public class ForegroundPanel extends JPanel{
 		else if(tile.hasCharacter(back))
 		{
 			g.setColor(MONSTER_COLOR);
-			g.fillOval((int)backWall.getCenterX(), (int)backWall.getMaxY()- MONSTER_SIZE, MONSTER_SIZE, MONSTER_SIZE);
+			g.fillOval((int)backWall.getCenterX()-MONSTER_SIZE/2, (int)(backWall.getMinY()+ MONSTER_SIZE*1.5), MONSTER_SIZE, MONSTER_SIZE);
 		}
 	}
 
