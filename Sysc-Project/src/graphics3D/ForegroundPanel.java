@@ -16,14 +16,14 @@ public class ForegroundPanel extends JPanel{
 	
 	private static final Color ITEM_COLOR = Color.decode("0x964B00");
 	private static final Color ITEM_DECORATION_COLOR = Color.GRAY;
-	private static final Rectangle ITEM_AREA_RECT = new Rectangle( 150+150/2 - 50, 150 - 150/2 + 10, 60, 20 );
+	private static final Rectangle ITEM_AREA_RECT = new Rectangle( FirstPersonView.OUTER_BOX/2-100, FirstPersonView.OUTER_BOX-(FirstPersonView.OUTER_BOX-FirstPersonView.INNER_BOX)/2 - 20, 80, 40 );
 	private static final Color DOOR_COLOR = Color.decode("0x993300"); //brown
 	private static final Color MONSTER_COLOR = Color.RED;
 	private static final int MONSTER_SIZE = 20;
 	private static final Color DOORNOB_COLOR = Color.GRAY;
-	private static final int DOOR_WIDTH = 6;
-	private static final int DOOR_HEIGHT = 20;
-	private static final int DOORNOB_SIZE = 2;
+	private static final int DOOR_WIDTH = 40;
+	private static final int DOOR_HEIGHT = 100;
+	private static final int DOORNOB_SIZE = 10;
 	
 	//How much to offset x and y for this entire component
 	private static final int xOffSet = 0;
@@ -149,11 +149,11 @@ public class ForegroundPanel extends JPanel{
 	private void drawItemChest(Graphics g)
 	{
 		//draw item chest
-		final int ITEM_HEIGHT_OFFSET = 12;
-		final int ITEM_WIDTH_OFFSET = 8;
-		final int DECORATION_WIDTH = 3;
-		final int DECORATION_OFFSET1 = 11;
-		final int DECORATION_OFFSET2 = 27;
+		final int ITEM_HEIGHT_OFFSET = 0;
+		final int ITEM_WIDTH_OFFSET = 0;
+		final int DECORATION_WIDTH = 5;
+		final int DECORATION_OFFSET1 = 15;
+		final int DECORATION_OFFSET2 = 60;
 		
 		g.setColor(ITEM_COLOR);
 		g.fill3DRect(ITEM_AREA_RECT.x + ITEM_WIDTH_OFFSET, ITEM_AREA_RECT.y + ITEM_HEIGHT_OFFSET, 
@@ -161,8 +161,6 @@ public class ForegroundPanel extends JPanel{
 		g.setColor(ITEM_DECORATION_COLOR);
 		g.fill3DRect(ITEM_AREA_RECT.x + DECORATION_OFFSET1, ITEM_AREA_RECT.y + ITEM_HEIGHT_OFFSET, DECORATION_WIDTH, ITEM_AREA_RECT.height - 2*ITEM_HEIGHT_OFFSET, true);
 		g.fill3DRect(ITEM_AREA_RECT.x + DECORATION_OFFSET2, ITEM_AREA_RECT.y + ITEM_HEIGHT_OFFSET, DECORATION_WIDTH, ITEM_AREA_RECT.height - 2*ITEM_HEIGHT_OFFSET, true);
-	
-	
 	}
 
 	public boolean isItemContains(Point p) {
