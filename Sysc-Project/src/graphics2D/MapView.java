@@ -82,6 +82,7 @@ public class MapView extends JScrollPane {
 		//add panels
 		tileLayer = new TilePanel(this);
 		edgeLayer = new EdgePanel(this);
+		
 		map.add(tileLayer, TILE_LAYER_DEPTH);
         map.add(edgeLayer, EDGE_LAYER_DEPTH);
         

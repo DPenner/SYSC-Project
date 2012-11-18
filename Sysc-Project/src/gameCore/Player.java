@@ -69,6 +69,10 @@ public class Player extends Character
 			{
 				this.myPosition=myPosition.moveCharacter(direction);  //move character to the next tile
 				output.append("You moved "+ direction + ".");
+				
+				//-- added for testing mouse events ---
+				
+				System.out.println("Player has moved "+ direction + ".");
 				hasMoved = true;
 			}
 		}

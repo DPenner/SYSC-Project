@@ -15,6 +15,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+import commands.CommandController;
+
 
 /**
  * View for the KDT Maze
@@ -41,7 +43,10 @@ public class KDTView {
 	private Inventory inv;
 	
 	private JFrame f;
-		
+	
+	private KDTMouseController kdtMC;
+	private CommandController kdtCC;
+	
 	private Container cp;
 	private Graphics g;	
 	
@@ -53,7 +58,9 @@ public class KDTView {
 	 * @param player the player instance
 	 * @param level the current level
 	 */
-	public KDTView(Player player, Level level){
+	public KDTView(Player player, Level level, CommandController commandController){
+		kdtCC = commandController;
+				
 		//Create the GUI
 		f= new JFrame("Kraft Dinner Table Maze");
 		
@@ -65,6 +72,7 @@ public class KDTView {
 		f.setMinimumSize(new Dimension(600, 700));
 		
 		cp=f.getContentPane();
+		
 		//addComponentsToPaneUsingBAGLayout(cp);
 		addComponentsToPaneUsingBorderLayout(cp);
 		
@@ -82,7 +90,11 @@ public class KDTView {
 		pane.setLayout(new BorderLayout());			
 		
 		MapView pMap = new MapView(level);
-		MapController mController = new MapController(pMap);
+		//km added for testing KDT MouseListener
+		KDTMouseController kdtMC = new KDTMouseController(kdtCC, pMap);
+		pMap.addMouseListener(kdtMC);
+		
+		//MapController mController = new MapController(pMap);
 		pane.add(pMap, BorderLayout.CENTER);
 		
 		JPanel pOutput = TextOutputPanel.getTextOutputPanel();

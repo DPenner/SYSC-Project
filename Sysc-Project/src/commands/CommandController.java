@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CommandController extends TextOutputPanelObservable implements KeyEventDispatcher{
+public class CommandController extends TextOutputPanelObservable implements KeyEventDispatcher {
 	private static List<Command> undoList;
 	private static Map<Integer, Command> keyToCommandMap;
     private static int undo_index;
@@ -44,7 +44,7 @@ public class CommandController extends TextOutputPanelObservable implements KeyE
     	
     	initializeKeyToCommandMap();
     }
-    
+        
     private void initializeKeyToCommandMap()
     {
     	keyToCommandMap.put(KeyEvent.VK_UP, new GoCommand(Direction.NORTH));
@@ -117,5 +117,39 @@ public class CommandController extends TextOutputPanelObservable implements KeyE
 			if(c != null) if(c.execute()) saveGameState(c);
 		}
 		return false;
+	}
+	
+	// -----  Commands to support KDTMouseController ------
+	public void execUndo() {
+		undoCommand();
+	}
+	
+	public void execRedo() {
+		redoCommand();
+	}
+	
+	public boolean execGo(Direction d) {
+		Command c = new GoCommand(d);
+		if(c != null && c.execute()) {
+			saveGameState(c);
+			return true;  //moved
+		}
+		return false;  //not moved
+	}
+	
+	public boolean execPickup() {
+		 Command c = new PickUpCommand();
+		 if(c.execute()) {
+			 return true;
+		 }
+		 return false;
+	}
+	
+	public boolean execDrop() {
+		Command c = new DropCommand();
+		if(c.execute()) {
+			 return true;
+		 }
+		 return false;
 	}
 }
