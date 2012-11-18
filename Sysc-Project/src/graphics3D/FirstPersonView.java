@@ -90,6 +90,11 @@ public class FirstPersonView extends JScrollPane implements PlayerListener{
 	{
 		return backgroundLayer.directionContaining(p);
 	}
+	
+	public boolean isFloorContains(Point p)
+	{
+		return backgroundLayer.isFloorContains(p);
+	}
 	/*
 	 * Unimplemented methods of player listener
 	 */
