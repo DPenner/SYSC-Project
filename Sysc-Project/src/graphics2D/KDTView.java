@@ -119,9 +119,10 @@ public class KDTView {
 
 		pane.add(sidePanel, BorderLayout.LINE_END);
 		
+		
 		FirstPersonView fpView = new FirstPersonView(player);
 		
-		KDTMouseController kdtMouseController = new KDTMouseController(kdtCC, fpView);
+		kdtMouseController = new KDTMouseController(kdtCC, fpView);
 		fpView.addMouseListener(kdtMouseController);
 		
 		pane.add(fpView, BorderLayout.CENTER);
