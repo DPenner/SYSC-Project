@@ -152,7 +152,7 @@ public class KDTView {
 		undo.addActionListener(kdtMenuController);
 		
 		JMenuItem redo = new JMenuItem("Redo");
-		undo.addActionListener(kdtMenuController);
+		redo.addActionListener(kdtMenuController);
 		
 		JMenuItem help = new JMenuItem("Help");
 		help.setToolTipText("View help manual");
