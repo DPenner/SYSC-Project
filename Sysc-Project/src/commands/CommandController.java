@@ -2,6 +2,7 @@ package commands;
 /**
 * CommandController handles the keyboard input for each command.
 * It also handles the logic for redoing and undoing commands.
+* Added methods to handle mouse events from the KDTMouseController.
 *
 * @author Group D
 * @author Main Author: Trang Pham
@@ -13,7 +14,7 @@ package commands;
 * Darrell Penner
 *
 *
-* @version 2.0
+* @version 3.0
 *
 */
 import gameCore.Direction;
@@ -145,11 +146,12 @@ public class CommandController extends TextOutputPanelObservable implements KeyE
 		 return false;
 	}
 	
-	public boolean execDrop() {
-		Command c = new DropCommand();
-		if(c.execute()) {
+	public boolean execDrop(String itemname) {
+		DropCommand dc = new DropCommand();
+		if( dc.drop(itemname)) {
 			 return true;
-		 }
-		 return false;
+		}else{
+			return false;
+		}
 	}
 }

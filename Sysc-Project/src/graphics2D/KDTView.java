@@ -44,7 +44,7 @@ public class KDTView {
 	
 	private JFrame f;
 	
-	private KDTMouseController kdtMC;
+	private KDTMouseController kdtMouseController;
 	private CommandController kdtCC;
 	
 	private Container cp;
@@ -91,8 +91,8 @@ public class KDTView {
 		
 		MapView pMap = new MapView(level);
 		//km added for testing KDT MouseListener
-		KDTMouseController kdtMC = new KDTMouseController(kdtCC, pMap);
-		pMap.addMouseListener(kdtMC);
+		KDTMouseController kdtMouseController = new KDTMouseController(kdtCC, pMap);
+		pMap.addMouseListener(kdtMouseController);
 		
 		//MapController mController = new MapController(pMap);
 		pane.add(pMap, BorderLayout.CENTER);
@@ -103,6 +103,7 @@ public class KDTView {
 		//side panel
 		JPanel pPlayer = new PlayerStatusPanel(player);
 		JPanel pInventory = new InventoryPanel(player);
+		pInventory.addMouseListener(kdtMouseController);
 		
 		JPanel sidePanel = new JPanel(new GridLayout(2,0));
 		
@@ -124,13 +125,13 @@ public class KDTView {
 	 */
 	private void addMenusToFrame() {
 		
-		KDTMenuController kdtMC=new KDTMenuController(f);	
+		KDTMenuController kdtMenuController=new KDTMenuController(f);	
 		//--------- MENUS ---------
 		JMenu file=new JMenu("File");
 		
 		JMenuItem exit = new JMenuItem("Exit");
 		exit.setToolTipText("Exit Kraft Dinner Table Maze");
-		exit.addActionListener(kdtMC);
+		exit.addActionListener(kdtMenuController);
 		
 		JMenuItem help = new JMenuItem("Help");
 		help.setToolTipText("View help manual");
