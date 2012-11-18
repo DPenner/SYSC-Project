@@ -99,23 +99,24 @@ class TilePanel extends LayoutPanel<Tile>{
 		g.fillRect(tileRect.x, tileRect.y, tileRect.width, tileRect.height);
 	}
 	private void drawCharacter(Graphics g, Rectangle tileRect, Color color){
-		final int CHARACTER_OFFSET = 10;
+		int characterOffset = parentMap.getTileSize() / 4;
 		g.setColor(color);
-		g.fillOval(tileRect.x + CHARACTER_OFFSET, tileRect.y + CHARACTER_OFFSET, tileRect.width - 2*CHARACTER_OFFSET, tileRect.height - 2*CHARACTER_OFFSET);
+		g.fillOval(tileRect.x + characterOffset, tileRect.y + characterOffset, tileRect.width - 2*characterOffset, tileRect.height - 2*characterOffset);
 	}
 	private void drawItems(Graphics g, Rectangle tileRect){
-		final int ITEM_HEIGHT_OFFSET = 12;
-		final int ITEM_WIDTH_OFFSET = 8;
-		final int DECORATION_WIDTH = 3;
-		final int DECORATION_OFFSET1 = 11;
-		final int DECORATION_OFFSET2 = 27;
+		int tileSize = parentMap.getTileSize();
+		int itemHeightOffset = tileSize / 3;
+		int itemWidthOffset = tileSize / 4;
+		int decorationWidth = tileSize / 11;
+		int decorationOffset1 = tileSize / 3;
+		int decorationOffset2 = 2*tileSize / 3;
 		
 		g.setColor(ITEM_COLOR);
-		g.fill3DRect(tileRect.x + ITEM_WIDTH_OFFSET, tileRect.y + ITEM_HEIGHT_OFFSET, 
-					 tileRect.width - 2*ITEM_WIDTH_OFFSET, tileRect.height - 2*ITEM_HEIGHT_OFFSET, true);
+		g.fill3DRect(tileRect.x + itemWidthOffset, tileRect.y + itemHeightOffset, 
+					 tileRect.width - 2*itemWidthOffset, tileRect.height - 2*itemHeightOffset, true);
 		g.setColor(ITEM_DECORATION_COLOR);
-		g.fill3DRect(tileRect.x + DECORATION_OFFSET1, tileRect.y + ITEM_HEIGHT_OFFSET, DECORATION_WIDTH, tileRect.height - 2*ITEM_HEIGHT_OFFSET, true);
-		g.fill3DRect(tileRect.x + DECORATION_OFFSET2, tileRect.y + ITEM_HEIGHT_OFFSET, DECORATION_WIDTH, tileRect.height - 2*ITEM_HEIGHT_OFFSET, true);
+		g.fill3DRect(tileRect.x + decorationOffset1, tileRect.y + itemHeightOffset, decorationWidth, tileRect.height - 2*itemHeightOffset, true);
+		g.fill3DRect(tileRect.x + decorationOffset2, tileRect.y + itemHeightOffset, decorationWidth, tileRect.height - 2*itemHeightOffset, true);
 	}
 	
 	/**
@@ -170,6 +171,14 @@ class TilePanel extends LayoutPanel<Tile>{
 	
 	//------------Adding and getting------------//
 	/**
+	 * Checks if the given tile is registered to this view
+	 * @param tileLocation The location of the tile to check
+	 * @return True if the tile exists in this view, false otherwise 
+	 */
+	protected boolean hasTile(Point tileLocation){
+		return tileLookup.containsKey(tileLocation);
+	}
+	/**
 	 * Retrieves the Tile at a particular
 	 * @param tileLocation
 	 * @return
@@ -180,11 +189,22 @@ class TilePanel extends LayoutPanel<Tile>{
 	
 	/**
 	 * Adds a Tile to this panel
+	 * @param t The tile to add
 	 */
 	@Override
 	protected void addLayoutObject(Tile t){
 		tileColors.put(t.getLocation(), DEFAULT_TILE_COLOR);
 		tileLookup.put(t.getLocation(), t);
 		super.addLayoutObject(t);
+	}
+	
+	/**
+	 * Removes a Tile from this panel
+	 */
+	@Override
+	protected void removeLayoutObject(Tile t){
+		tileColors.remove(t.getLocation());
+		tileLookup.remove(t.getLocation());
+		super.removeLayoutObject(t);
 	}
 }

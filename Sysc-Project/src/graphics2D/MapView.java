@@ -5,9 +5,6 @@ import gameLoader.Level;
 
 import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 
 import javax.swing.*;
 
@@ -136,7 +133,7 @@ public class MapView extends JScrollPane {
 		edgeLayer.setBounds(this.getBounds());
 	}
 	
-	//------------Adding LayoutObjects-----------//
+	//------------Adding and removing LayoutObjects-----------//
 	/**
 	 * Adds a tile to the MapView
 	 * @param t The Tile to be added. 
@@ -146,11 +143,27 @@ public class MapView extends JScrollPane {
 	}
 	
 	/**
-	 * Adds an Edge to the MapView
+	 * Removes a tile to the MapView
+	 * @param t The Tile to be removed. 
+	 */
+	public void removeTile(Tile t){
+		tileLayer.removeLayoutObject(t);
+	}
+	
+	/**
+	 * Adds an Edge to the MapView.
 	 * @param edge The edge to be added.
 	 */
 	public void addEdge(Edge edge){
 		edgeLayer.addLayoutObject(edge);
+	}
+	
+	/**
+	 * Removes an Edge to the MapView.
+	 * @param edge The edge to be removed.
+	 */
+	public void removeEdge(Edge edge){
+		edgeLayer.removeLayoutObject(edge);
 	}
 	
 	//------------Scaling-----------//
@@ -168,10 +181,13 @@ public class MapView extends JScrollPane {
 		return getOffsettedY(tileLocation.y);
 	}
 	
-	private Point getTileLocation(Point offsettedLocation){
+	public Point getTileLocation(Point offsettedLocation){
 		return new Point(offsettedLocation.x/tileSize - offset.x, offsettedLocation.y/tileSize - offset.y);
 	}
-	protected Tile getTile(Point offsettedLocation){
+	public boolean hasTile(Point offsettedLocation){
+		return tileLayer.hasTile(getTileLocation(offsettedLocation));
+	}
+	public Tile getTile(Point offsettedLocation){
 		return tileLayer.getTile(getTileLocation(offsettedLocation));
 	}
 	
