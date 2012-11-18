@@ -153,7 +153,7 @@ public class KDTView {
 		
 		JMenuItem help = new JMenuItem("Help");
 		help.setToolTipText("View help manual");
-		help.addActionListener(new HelpListener());
+		help.addActionListener(kdtMenuController);
 			
 		file.add(help);
 		file.add(exit);
