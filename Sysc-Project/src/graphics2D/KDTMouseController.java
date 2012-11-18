@@ -39,15 +39,14 @@ public class KDTMouseController implements MouseListener {
 	FirstPersonView view;
 	CommandController kdtCC;
 	
-	//--- modify the view in arg support NEW view 
-	public KDTMouseController(CommandController kdtCC, FirstPersonView view) {
-		this.view = view;
+	public KDTMouseController(CommandController kdtCC, FirstPersonView fpView) {
+		this.view = fpView;
 		view.addMouseListener(this);
 		this.kdtCC = kdtCC;	
-		//middle = new Point(200,200);
+		middle = new Point(200,200);
 		
 	}
-	
+		
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		//test double-click
@@ -57,7 +56,7 @@ public class KDTMouseController implements MouseListener {
 		}
 		
 		// handle direction
-		Direction direction = view.directionContaining(e.getPoint());
+		Direction direction = directionContaining(e.getPoint());
 		if(direction != null) {
 			switch (direction) 
 			{	
@@ -84,7 +83,7 @@ public class KDTMouseController implements MouseListener {
 				
 			}
 		}
-			
+	
 	}
 	
 
@@ -102,17 +101,18 @@ public class KDTMouseController implements MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		
-		if(e.getButton()!=BUTTON1) {
+		// Right-mouse press to pick-up an item
+		if(e.getButton() != BUTTON1) {
 			
-			// Right-mouse press to pick-up an item
-			if(e.getButton()== BUTTON3 && view.isItemContains(e.getPoint())) {
+			if(e.getButton()== BUTTON3 && isItemContains(e.getPoint())) {
+			//if(e.getButton()== BUTTON3 && isItemContains(e.getPoint())) {
 				kdtCC.execPickup();
 				System.out.println("Button presses was " + e.getButton());
 			}
 			
 			boolean isInventoryPanel = e.getSource() instanceof graphics2D.InventoryPanel;
-			if( isInventoryPanel) {
+			if( isInventoryPanel) 
+			{
 				InventoryPanel inventoryPanel = (InventoryPanel) e.getSource();
 				if(inventoryPanel.hasItem(e.getPoint())) 
 				{
@@ -122,17 +122,38 @@ public class KDTMouseController implements MouseListener {
 					{
 						kdtCC.execDrop(itemName);
 					}
-									
-				}
-			}
+					
+					
+				}  
+			}// end if check for inventory panel
 		}
 	}
-	
+	/**
+	 * 
+	 * @param point
+	 * @return
+	 */
+	private boolean isItemContains(Point point) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 
 	}
 
+	//------ Methods for testing purposes ------
+	/**
+	 * Testing directioContaining panel
+	 * @param point
+	 * @return
+	 */
+	private Direction directionContaining(Point point) {
+		// TODO Auto-generated method stub
+		return Direction.SOUTH;
+		//return null;
+	}
 }
 
