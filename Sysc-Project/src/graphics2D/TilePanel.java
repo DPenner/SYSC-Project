@@ -36,8 +36,8 @@ class TilePanel extends LayoutPanel<Tile>{
 	private static final Color ITEM_COLOR = Color.decode("0x964B00");
 	private static final Color ITEM_DECORATION_COLOR = Color.GRAY;
 	
-	private int tileSize;
-	private int edgeWidth;
+	//private int tileSize;
+	//private int edgeWidth;
 	
 	private Map<Point, Tile> tileLookup; //indexing by point makes it easier to locate the tile
 	private Map<Point, Color> tileColors;
@@ -52,8 +52,6 @@ class TilePanel extends LayoutPanel<Tile>{
 		tileColors = new HashMap<Point, Color>();
 		
 		//saved internally for convenience
-		tileSize = mapView.getTileSize();
-		edgeWidth = mapView.getEdgeWidth();
 	}
 
 	//-------------Tile drawing------------//
@@ -126,6 +124,7 @@ class TilePanel extends LayoutPanel<Tile>{
 	 * @return
 	 */
 	private Rectangle getTileRectangle(Tile t){
+		int tileSize = parentMap.getTileSize();
 		return new Rectangle(parentMap.getOffsettedX(t.getLocation()), 
 				             parentMap.getOffsettedY(t.getLocation()), tileSize, tileSize);
 	}
@@ -136,6 +135,7 @@ class TilePanel extends LayoutPanel<Tile>{
 	 * @return
 	 */
 	private Rectangle getTileAndEdgeRectangle(Tile t){
+		int edgeWidth = parentMap.getEdgeWidth();
 		return new Rectangle(getTileRectangle(t).x - edgeWidth, getTileRectangle(t).y - edgeWidth,
 							 getTileRectangle(t).width + edgeWidth*2, getTileRectangle(t).height + edgeWidth*2);
 	}
