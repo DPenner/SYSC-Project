@@ -89,49 +89,40 @@ public class KDTView {
 	 * Add components to Content Pane using BorderLayout
 	 */
 	private void addComponentsToPaneUsingBorderLayout(Container pane){
-		pane.setLayout(new BorderLayout());			
+		pane.setLayout(new BorderLayout());		
 		
-
-		MapView pMap = new MapView(level,20,2);
-		pMap.setPreferredSize(new Dimension(250,250));
-				
-		MapController mController = new MapController(pMap);
-		//pane.add(pMap, BorderLayout.CENTER);
-		
-		/*MapView pMap = new MapView(level);
-		MapController mController = new MapController(pMap);
-		pane.add(pMap, BorderLayout.CENTER);*/
-		
-		JPanel pOutput = TextOutputPanel.getTextOutputPanel();
-		pane.add(pOutput, BorderLayout.PAGE_END);
-		
-		//side panel
-		JPanel pPlayer = new PlayerStatusPanel(player);
-		JPanel pInventory = new InventoryPanel(player);
-		pInventory.addMouseListener(kdtMouseController);
-		
-		JPanel sidePanel = new JPanel(new GridLayout(2,0));
-		JPanel playerPanel = new JPanel(new GridLayout(0, 2));
-		
-		pPlayer.setPreferredSize(new Dimension(250/2, 320-250));
-		pInventory.setPreferredSize(new Dimension(250/2, 320-250));
-		sidePanel.setPreferredSize(new Dimension(250, 320));
-		
-		playerPanel.add(pPlayer);
-		playerPanel.add(pInventory);
-		
-		sidePanel.add(pMap);
-		sidePanel.add(playerPanel);
-
-		pane.add(sidePanel, BorderLayout.LINE_END);
 		
 		FirstPersonView fpView = new FirstPersonView(player);
-		fpView.setPreferredSize(new Dimension(300,320));
-		
 		kdtMouseController = new KDTMouseController(kdtCC, fpView);
-		fpView.addMouseListener(kdtMouseController);
-		
+		fpView.setPreferredSize(new Dimension(300,320));
 		pane.add(fpView, BorderLayout.CENTER);
+		
+		//side panel
+		JPanel sidePanel = new JPanel(new GridLayout(2,0));
+		sidePanel.setPreferredSize(new Dimension(250, 320));
+		
+		MapView pMap = new MapView(level,20,2);
+		pMap.setPreferredSize(new Dimension(250,250));			
+		MapController mController = new MapController(pMap);
+		sidePanel.add(pMap);
+		
+		JPanel playerPanel = new JPanel(new GridLayout(0, 2));
+		
+		JPanel pPlayer = new PlayerStatusPanel(player);
+		pPlayer.setPreferredSize(new Dimension(250/2, 320-250));
+		playerPanel.add(pPlayer);
+		
+		JPanel pInventory = new InventoryPanel(player);
+		pInventory.setPreferredSize(new Dimension(250/2, 320-250));
+		pInventory.addMouseListener(kdtMouseController);
+		playerPanel.add(pInventory);
+		
+
+		sidePanel.add(playerPanel);
+		pane.add(sidePanel, BorderLayout.LINE_END);
+
+		JPanel pOutput = TextOutputPanel.getTextOutputPanel();
+		pane.add(pOutput, BorderLayout.PAGE_END);
 	}
 	
 	

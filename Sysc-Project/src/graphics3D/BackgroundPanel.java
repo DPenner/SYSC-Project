@@ -155,4 +155,7 @@ public class BackgroundPanel extends JPanel{
 		if(leftWall.contains(p)) return forwardDir.getLeftDirection();
 		return null;
 	}
+	public boolean isFloorContains(Point p) {
+		return floor.contains(p);
+	}
 }
