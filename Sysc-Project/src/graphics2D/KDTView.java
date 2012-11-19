@@ -23,6 +23,7 @@ import commands.CommandController;
  * View for the KDT Maze
  * 
  * Container for the MAPview, InventoryPanel, PlayerStatusPanel, and TextOutputPanel
+ * v2.0 added mouse events and support for first person view, MapView made smaller and added to right side
  * 
  * @author Group D
  * @author Main author: Karen Madore
@@ -56,12 +57,13 @@ public class KDTView {
 	
 	/**
 	 * Constructor for KDTView
-	 * -creates the Frame, adds the components onto the frame, and registers the ActionListeners
+	 * -creates the Frame, adds the components onto the frame, and registers the ActionListeners and MouseListeners
 	 * @param player the player instance
 	 * @param level the current level
+	 * @param cmdCtrl the command controller for handling game actions
 	 */
-	public KDTView(Player player, Level level, CommandController commandController){
-		kdtCC = commandController;
+	public KDTView(Player player, Level level, CommandController cmdCtrl){
+		kdtCC = cmdCtrl;
 				
 		//Create the GUI
 		f= new JFrame("Kraft Dinner Table Maze");
@@ -91,7 +93,7 @@ public class KDTView {
 	private void addComponentsToPaneUsingBorderLayout(Container pane){
 		pane.setLayout(new BorderLayout());		
 		
-		
+		//first person view and init KDTMouseController
 		FirstPersonView fpView = new FirstPersonView(player);
 		kdtMouseController = new KDTMouseController(kdtCC, fpView);
 		fpView.setPreferredSize(new Dimension(300,320));
@@ -101,11 +103,13 @@ public class KDTView {
 		JPanel sidePanel = new JPanel(new GridLayout(2,0));
 		sidePanel.setPreferredSize(new Dimension(250, 320));
 		
+		//Map view setup and add to sidePanel
 		MapView pMap = new MapView(level,20,2);
 		pMap.setPreferredSize(new Dimension(250,250));			
 		MapController mController = new MapController(pMap);
 		sidePanel.add(pMap);
 		
+		//PlayerPanel setup as gridLayout. Add player status and inventory to this panel
 		JPanel playerPanel = new JPanel(new GridLayout(0, 2));
 		
 		JPanel pPlayer = new PlayerStatusPanel(player);
@@ -117,7 +121,7 @@ public class KDTView {
 		//pInventory.addMouseListener(kdtMouseController);
 		playerPanel.add(pInventory);
 		
-
+		//Add playerPanel to sidePanel
 		sidePanel.add(playerPanel);
 		pane.add(sidePanel, BorderLayout.LINE_END);
 

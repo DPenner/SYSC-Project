@@ -32,24 +32,23 @@ import commands.GoCommand;
  * @version 1.0
  */
 public class KDTMouseController implements MouseListener {
+	//------------Fields------------//
 	private static final int RIGHTCLICK = 3;
 	private static final int LEFTCLICK = 1;
 	FirstPersonView view;
 	CommandController kdtCC;
-	
+	//------------Constructors------------//
 	public KDTMouseController(CommandController kdtCC, FirstPersonView fpView) {
 		this.view = fpView;
 		view.addMouseListener(this);
 		this.kdtCC = kdtCC;	
 	}
-		
-	@Override
-	public void mouseClicked(MouseEvent e) {
-
-	}
 
 	/**
-	 * @param e
+	 * goDirection Method checks to see if user clicked on an specific direction(opening/door) in FirstPersonView
+	 * and executes the go command to move player to the tile in the specified direction
+	 *  
+	 * @param e - MouseEvent fired from KDTView
 	 */
 	private void goDirection(MouseEvent e) {
 		// handle direction
@@ -84,20 +83,33 @@ public class KDTMouseController implements MouseListener {
 			}
 		}
 	}
+	/**
+	 * Unimplemented methods for MouseListener interface
+	 */
 	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+	
+	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
+	/**
+	 * MousePressed method checks for right-clicks and executes pickup or drop.
+	 * If the an item was right-clicked, then execute a pickup.
+	 * If the floor was right-clicked, then execute a drop.
+	 * 
+	 * @param - MouseEvent fired from KDTView
+	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// Right-mouse press to pick-up an item
@@ -106,7 +118,12 @@ public class KDTMouseController implements MouseListener {
 			else if (view.isFloorContains(e.getPoint())) kdtCC.execDrop();
 		}
 	}
-	
+	/**
+	 * MouseReleased method -if user did not click on an area where the items are located, then go in 
+	 * the direction clicked.
+	 * 
+	 * @param - MouseEvent fired from KDTView
+	 */
 	@Override
 	public void mouseReleased(MouseEvent e) 
 	{

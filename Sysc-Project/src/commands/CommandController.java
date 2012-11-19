@@ -121,14 +121,25 @@ public class CommandController extends TextOutputPanelObservable implements KeyE
 	}
 	
 	// -----  Commands to support KDTMouseController ------
+	/**
+	 * ExecUndo wrapper for executing undo from KDTMouseController
+	 */
 	public void execUndo() {
 		undoCommand();
 	}
 	
+	/**
+	 * ExecRedo wrapper for executing redo from KDTMouseController
+	 */
 	public void execRedo() {
 		redoCommand();
 	}
 	
+	/**
+	 * ExecGo wrapper for executing go in specifiec direction from KDTMouseController
+	 * @param d direction to go
+	 * @return	true if executed move, else false
+	 */
 	public boolean execGo(Direction d) {
 		Command c = new GoCommand(d);
 		if(c != null && c.execute()) {
@@ -138,6 +149,10 @@ public class CommandController extends TextOutputPanelObservable implements KeyE
 		return false;  //not moved
 	}
 	
+	/**
+	 * ExecPickup wrapper for executing Pickup from KDTMouseController
+	 * @return true if item picked up, else false
+	 */
 	public boolean execPickup() {
 		 Command c = new PickUpCommand();
 		 if(c.execute()) return true;
@@ -145,6 +160,10 @@ public class CommandController extends TextOutputPanelObservable implements KeyE
 		 return false;
 	}
 	
+	/**
+	 * ExecDrop wrapper for executing drop item from KDTMouseController
+	 * @return true if item successfully dropped, else return false.
+	 */
 	public boolean execDrop() {
 		DropCommand dc = new DropCommand();
 		if( dc.execute()) return true;
