@@ -35,20 +35,22 @@ import javax.swing.JPanel;
  */
 
 public class InventoryPanel extends JPanel implements PlayerListener{
+	
 	private Player player;
 	private Inventory inventory;
 	
 	private BufferedImage img_redkey;
 	
-	private static int ITEM_HEIGHT = 50;
-	private static int ITEM_WIDTH = 50;
-	private static int IMG_XOFFSET = 20;
-	private static int IMG_YOFFSET = 50;
+	private static final int ITEM_HEIGHT = 50;
+	private static final int ITEM_WIDTH = 50;
+	private static final int IMG_XOFFSET = 20;
+	private static final int IMG_YOFFSET = 50;
 	
-	private static int TEXT_OFFSET = 10;
-	private static int TEXT_TAB1=20;
-	private static int ROW_OFFSET = 30;
-	
+	private static final int TEXT_OFFSET = 10;
+	private static final int TEXT_TAB1 = 20;
+	private static final int LINE_HEIGHT = 20;
+	private static final int FIRST_LINE = LINE_HEIGHT;
+	 
 	/**
 	 * Constructor for InventoryPanel
 	 * @param p - the player in the game
@@ -58,7 +60,6 @@ public class InventoryPanel extends JPanel implements PlayerListener{
 		player=p;
 		inventory = player.getInventory();
 		
-		//addComponentsToInventoryPanel();
 		player.addPlayerListener(this);
 		
 		//loadImage();
@@ -69,12 +70,12 @@ public class InventoryPanel extends JPanel implements PlayerListener{
 	 */
 	@Override
 	public void paintComponent(Graphics g) {
-		int top = 12;
-		int row = 1;
-		
+			
 		super.paintComponent(g);
-		g.drawString("Player Inventory", TEXT_OFFSET, top);
-		drawInventory(g, top + ROW_OFFSET);
+		
+		g.drawString("Player Inventory", 10, 17);
+		
+		drawInventory(g);
 	}
 	
 	/**
@@ -126,12 +127,13 @@ public class InventoryPanel extends JPanel implements PlayerListener{
 	 * @param g - graphics layer to draw it on
 	 * @param y - drawing at y position on the panel
 	 */
-	private void drawInventory(Graphics g, int y){
-		for(int i=0; i<inventory.size(); i++)
+	private void drawInventory(Graphics g){
+		for(int i = 0; i < inventory.size(); i++)
 		{
-			//g.drawString(inventory.getItem(i).toString(), TEXT_TAB1, y+ i*ROW_OFFSET);
 			String itemName = inventory.getItem(i).toString();
-			g.drawString(itemName,IMG_XOFFSET, ROW_OFFSET *(i+1));
+			
+			int positionFromTopofPanel = FIRST_LINE + (LINE_HEIGHT * (i+1));
+			g.drawString(itemName, IMG_XOFFSET, positionFromTopofPanel);
 			
 			/*if(itemName.equals("RedKey")) 
 			{	

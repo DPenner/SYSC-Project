@@ -56,13 +56,6 @@ public class KDTMouseController implements MouseListener {
 		
 		Direction direction = view.directionContaining(e.getPoint());
 		
-		//--- remove later ---
-		
-		if (direction != null)
-		{
-			System.out.printf("Direction clicked is : " + direction.toString() + "\n");
-		}
-		
 		if(direction != null) {
 			switch (direction) 
 			{	

@@ -114,7 +114,7 @@ public class KDTView {
 		
 		JPanel pInventory = new InventoryPanel(player);
 		pInventory.setPreferredSize(new Dimension(250/2, 320-250));
-		pInventory.addMouseListener(kdtMouseController);
+		//pInventory.addMouseListener(kdtMouseController);
 		playerPanel.add(pInventory);
 		
 
@@ -141,9 +141,11 @@ public class KDTView {
 		
 		JMenu edit=new JMenu("Edit");
 		JMenuItem undo = new JMenuItem("Undo");
+		exit.setToolTipText("Undo one move/action.");
 		undo.addActionListener(kdtMenuController);
 		
 		JMenuItem redo = new JMenuItem("Redo");
+		exit.setToolTipText("Redo one move/action.");
 		redo.addActionListener(kdtMenuController);
 		
 		JMenuItem help = new JMenuItem("Help");
