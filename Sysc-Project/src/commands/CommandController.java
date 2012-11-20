@@ -155,8 +155,11 @@ public class CommandController extends TextOutputPanelObservable implements KeyE
 	 */
 	public boolean execPickup() {
 		 Command c = new PickUpCommand();
-		 if(c.execute()) return true;
-		 
+		 if(c.execute()) 
+		 {
+			 saveGameState(c);
+			 return true;
+		 }
 		 return false;
 	}
 	
@@ -166,8 +169,11 @@ public class CommandController extends TextOutputPanelObservable implements KeyE
 	 */
 	public boolean execDrop() {
 		DropCommand dc = new DropCommand();
-		if( dc.execute()) return true;
-		
+		if( dc.execute()) 
+		{
+			saveGameState(dc);
+			return true;
+		}
 		return false;
 	}
 }

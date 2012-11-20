@@ -28,6 +28,7 @@ public class BackgroundPanel extends JPanel{
 	
 	private Tile tile;
 	private Direction backDir; //the direction player came from
+	private Direction forwardDir;
 	
 	private Polygon ceiling;
 	private Polygon floor;
@@ -81,6 +82,7 @@ public class BackgroundPanel extends JPanel{
 	public void draw(Tile tile, Direction backDir) {
 		this.tile = tile;
 		this.backDir = backDir;
+		forwardDir = backDir.getOppositeDirection();
 		repaint();
 	}
 
