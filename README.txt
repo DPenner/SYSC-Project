@@ -27,8 +27,10 @@ Trang Pham:
 Darrell Penner:
 - Game Layout
     Classes: Room, Tile, Edge, Exit, LayoutObject and related test classes
-- Map Display and controller
+- 2D Map View and Controller
     Classes: MapView, MapController, TilePanel, EdgePanel, LayoutPanel
+- Level Editor View and Controller //IN PROGRESS
+    Classes: LevelEditorView, EditorPanel, EditorController
 
 DELIVERABLES:
 Design Documentation iteration 3.docx - Our documentation on the design of our game.
