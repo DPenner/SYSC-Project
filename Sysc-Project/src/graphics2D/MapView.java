@@ -5,7 +5,6 @@ import gameLoader.Level;
 
 import java.awt.Dimension;
 import java.awt.Point;
-import java.util.List;
 
 import javax.swing.*;
 
@@ -41,10 +40,6 @@ public class MapView extends JScrollPane {
 	private JLayeredPane map;
 	private TilePanel tileLayer;
 	private EdgePanel edgeLayer;
-	
-	//Helps set up the panel's bounds
-	private int levelWidth;
-	private int levelHeight;
 	
 	//offset is the value of the Tile at the top left corner
 	private Point offset;
@@ -118,7 +113,7 @@ public class MapView extends JScrollPane {
 	}
 	
 	/**
-	 * Sets the panel bounds to whichever is larger: the level, or the size of this component
+	 * Sets the panel bounds to to the size of this component
 	 */
 	public void setPanelBounds(){
 		int width = this.getSize().width;
