@@ -34,6 +34,7 @@ abstract class LayoutPanel<T extends LayoutObject> extends JPanel implements Obs
 	protected MapView parentMap;
 	protected Set<T> layoutObjects;
 	private Queue<T> buffer; //For synchronization purposes
+	private Queue<T> removeBuffer;
 	
 	/**
 	 * Initialize the LayoutPanel with the given MapView
@@ -46,6 +47,7 @@ abstract class LayoutPanel<T extends LayoutObject> extends JPanel implements Obs
 		this.parentMap = parentMap;
 		layoutObjects = new HashSet<T>();
 		buffer = new ConcurrentLinkedQueue<T>();
+		removeBuffer = new ConcurrentLinkedQueue<T>();
 	}
 	
 	/**
@@ -89,27 +91,39 @@ abstract class LayoutPanel<T extends LayoutObject> extends JPanel implements Obs
 		if (layoutObject == null){
 			throw new IllegalArgumentException("layoutObject cannot be null");
 		}
+
 		buffer.add(layoutObject); //place on buffer to be added to main set later
 		layoutObject.addObserver(this);
 		
 		//Queues an event that adds the layoutObject to the main set and repaints the area that the 
 		//object is added in. Synchronization is needed since the paintComponent method iterates
 		//through the same set that this method is adding to (otherwise a ConcurrentModificationException may occur).
-        SwingUtilities.invokeLater(new Runnable(){
-            @Override
-			public void run() {
-            	T newLayoutObject = buffer.remove();
-            	layoutObjects.add(newLayoutObject);		
-    			repaint(getRepaintRectangle(newLayoutObject));
-            }
-        });
+	    SwingUtilities.invokeLater(new Runnable(){
+	    @Override
+		public void run() {
+	        T newLayoutObject = buffer.remove();
+	       	layoutObjects.add(newLayoutObject);		
+	   		repaint(getRepaintRectangle(newLayoutObject));
+	    	}
+	    });
 	}
 	
-	protected void removeLayoutObject(final T layoutObject){
+	/**
+	 * Removes a layoutObject for this panel to observe
+	 * @param layoutObject The object to stop observing
+	 */
+	protected void removeLayoutObject(T layoutObject){
+		if (layoutObject == null){
+			throw new IllegalArgumentException("layoutObject cannot be null");
+		}
+		removeBuffer.add(layoutObject);
+		layoutObject.deleteObserver(this);
+		
 		SwingUtilities.invokeLater(new Runnable(){
 			public void run(){
-				layoutObjects.remove(layoutObject);
-				repaint(getRepaintRectangle(layoutObject));
+				T newLayoutObject = removeBuffer.remove();
+				layoutObjects.remove(newLayoutObject);
+				repaint(getRepaintRectangle(newLayoutObject));
 			}
 		});
 	}

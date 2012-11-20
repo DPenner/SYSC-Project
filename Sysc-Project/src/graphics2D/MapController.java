@@ -1,6 +1,5 @@
 package graphics2D;
 
-import gameCore.Player;
 import gameCore.Tile;
 
 import java.awt.event.ComponentEvent;
@@ -9,14 +8,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class MapController extends MouseAdapter implements ComponentListener {
-	protected MapView view;
-	protected Tile actionTile; //The tile that an action is to be performed on
-	private Player player; //for future use
+	private MapView view;
+	private Tile currentTile; //The tile that the mouse is hovering over
 	
 	/**
-	 * Initializes the MapController, which controls the given MapView
-	 * @param view The view which this controller is to control
-	 */
+	* Initializes the MapController, which controls the given MapView
+	* @param view The view which this controller is to control
+	*/
 	public MapController(MapView view){
 		this.view = view;
 		view.addMouseListener(this);
@@ -26,82 +24,78 @@ public class MapController extends MouseAdapter implements ComponentListener {
 	
 	//------------Mouse Adapter------------//
 	/**
-	 * HighLights tiles under which the mouse moves.
-	 */
+	* HighLights tiles under which the mouse moves.
+	*/
 	@Override
 	public void mouseMoved(MouseEvent e){
 		Tile hoverTile = view.getTile(e.getPoint());
-		if (hoverTile == actionTile) return; //no change
-		
-		performActionOnExitedTile();
-		actionTile = hoverTile;
-		performActionOnEnteredTile();
+		if (hoverTile == currentTile) return; //no change
+	
+		unHighLightCurrentTile();
+		currentTile = hoverTile;
+		highLightCurrentTile();
 	}
 	
 	/**
-	 * HighLights the tile under which the mouse entered.
-	 */
+	* HighLights the tile under which the mouse entered.
+	*/
 	@Override
 	public void mouseEntered(MouseEvent e){
-		actionTile = view.getTile(e.getPoint());
-		performActionOnEnteredTile();
+		currentTile = view.getTile(e.getPoint());
+		highLightCurrentTile();
 	}
 	
 	/**
-	 * Unhighlights any highlighed tile
-	 */
+	* Unhighlights any highlighed tile
+	*/
 	@Override
 	public void mouseExited(MouseEvent e){
-		performActionOnExitedTile();
-		actionTile = null;
+		unHighLightCurrentTile();
+		currentTile = null;
 	}
 	
 	//------------Mouse helpers------------//
 	//Highlights and unhighlights tiles if they are not null
-	protected void performActionOnEnteredTile(){
-		if (actionTile != null){
-			view.highLight(actionTile);
+	private void highLightCurrentTile(){
+		if (currentTile != null){
+			view.highLight(currentTile);
 		}
 	}
-	protected void performActionOnExitedTile(){
-		if (actionTile != null){
-			view.unHighLight(actionTile);
+	
+	private void unHighLightCurrentTile(){
+		if (currentTile != null){
+			view.unHighLight(currentTile);
 		}
 	}
-
+	
 	//-----------Component Listeners------------//
 	
 	/**
-	 * Empty implementation
-	 */
+	* Empty implementation
+	*/
 	@Override
 	public void componentHidden(ComponentEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
+	
 	/**
-	 * Empty implementation
-	 */
+	* Empty implementation
+	*/
 	@Override
 	public void componentMoved(ComponentEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
-
+	
 	/**
-	 * Ensures that the MapView displays all in its new size
-	 */
+	* Ensures that the MapView displays all in its new size
+	*/
 	@Override
 	public void componentResized(ComponentEvent e) {
 		view.setPanelBounds();
 	}
 	
 	/**
-	 * Empty implementation
-	 */
+	* Empty implementation
+	*/
 	@Override
 	public void componentShown(ComponentEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 }
