@@ -29,7 +29,7 @@ Darrell Penner:
     Classes: Room, Tile, Edge, Exit, LayoutObject and related test classes
 - 2D Map View and Controller
     Classes: MapView, MapController, TilePanel, EdgePanel, LayoutPanel
-- Level Editor View and Controller //IN PROGRESS
+- Level Editor View and Controller //IN PROGRESS, NOT INCLUDED IN THIS ITERATION
     Classes: LevelEditorView, EditorPanel, EditorController
 
 DELIVERABLES:
@@ -53,8 +53,9 @@ CHANGES:
 - Text Command interface has been removed and replaced by GUI interface
 
 ROADMAP:
+- Level editor, save/load of game and levels
 - use image files to enhance the look of the game.  For example, the characters and items will have 
   more visual appeal.
-- create a more complex second level
+- create a more complex second level (to be done in conjunction with level editor)
 - enable use of weapons
 - Make it actually possible to win the game
