@@ -21,6 +21,8 @@ Trang Pham:
    Command, CommandController, GoCommand, SreachCommand, DropCommand, PickUpCommand
 - in graphics2D
    TextOutputPanel, HelpListener, TextOutputPanelObserver
+- graphics3D
+   FirstPersonView, ForegroundLayer, BackgroundLayer
 
 Darrell Penner:
 - Game Layout
