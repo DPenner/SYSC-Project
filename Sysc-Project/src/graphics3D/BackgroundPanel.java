@@ -28,7 +28,6 @@ public class BackgroundPanel extends JPanel{
 	
 	private Tile tile;
 	private Direction backDir; //the direction player came from
-	private Direction forwardDir; //the direction player is facing
 	
 	private Polygon ceiling;
 	private Polygon floor;
@@ -95,12 +94,10 @@ public class BackgroundPanel extends JPanel{
 		super.paintComponent(g);
 		this.setBackground(BACKGROUND_COLOR);
 		
-		forwardDir = backDir.getOppositeDirection();
-		
-		Direction wallDir = forwardDir.getLeftDirection();
+		Direction wallDir = backDir.getRightDirection();
 		drawWall(g, tile, wallDir, leftWall);
 		
-		wallDir = forwardDir.getRightDirection();
+		wallDir = backDir.getLeftDirection();
 		drawWall(g, tile, wallDir, rightWall);
 		
 		drawBackWall(g, tile, backDir);
