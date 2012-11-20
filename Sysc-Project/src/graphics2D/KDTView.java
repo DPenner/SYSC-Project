@@ -16,11 +16,14 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+import commands.CommandController;
+
 
 /**
  * View for the KDT Maze
  * 
  * Container for the MAPview, InventoryPanel, PlayerStatusPanel, and TextOutputPanel
+ * v2.0 added mouse events and support for first person view, MapView made smaller and added to right side
  * 
  * @author Group D
  * @author Main author: Karen Madore
@@ -32,7 +35,8 @@ import javax.swing.JMenuItem;
  * Darrell Penner
  * 
  *
- * @version 1.0
+ * @version 2.0
+ *  
  */
 public class KDTView {
 	//------------Fields------------//
@@ -42,7 +46,10 @@ public class KDTView {
 	private Inventory inv;
 	
 	private JFrame f;
-		
+	
+	private KDTMouseController kdtMouseController;
+	private CommandController kdtCC;
+	
 	private Container cp;
 	private Graphics g;	
 	
@@ -50,11 +57,14 @@ public class KDTView {
 	
 	/**
 	 * Constructor for KDTView
-	 * -creates the Frame, adds the components onto the frame, and registers the ActionListeners
+	 * -creates the Frame, adds the components onto the frame, and registers the ActionListeners and MouseListeners
 	 * @param player the player instance
 	 * @param level the current level
+	 * @param cmdCtrl the command controller for handling game actions
 	 */
-	public KDTView(Player player, Level level){
+	public KDTView(Player player, Level level, CommandController cmdCtrl){
+		kdtCC = cmdCtrl;
+				
 		//Create the GUI
 		f= new JFrame("Kraft Dinner Table Maze");
 		
@@ -63,15 +73,16 @@ public class KDTView {
 		
 		addMenusToFrame();
 		f.setSize(600, 700);
-		f.setMinimumSize(new Dimension(600, 700));
+		f.setMinimumSize(new Dimension(550, 535));
+		f.setResizable(false);
 		
 		cp=f.getContentPane();
-		//addComponentsToPaneUsingBAGLayout(cp);
-		addComponentsToPaneUsingBorderLayout(cp);
-		
 		g=f.getGraphics();
-						
-		//f.pack();
+		
+		addComponentsToPaneUsingBorderLayout(cp);
+								
+		f.pack();
+		f.setLocationRelativeTo(null);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
 	}
@@ -80,29 +91,42 @@ public class KDTView {
 	 * Add components to Content Pane using BorderLayout
 	 */
 	private void addComponentsToPaneUsingBorderLayout(Container pane){
-		pane.setLayout(new BorderLayout());			
+		pane.setLayout(new BorderLayout());		
 		
-		/*MapView pMap = new MapView(level);
-		MapController mController = new MapController(pMap);
-		pane.add(pMap, BorderLayout.CENTER);*/
-		
-		JPanel pOutput = TextOutputPanel.getTextOutputPanel();
-		pane.add(pOutput, BorderLayout.PAGE_END);
+		//first person view and init KDTMouseController
+		FirstPersonView fpView = new FirstPersonView(player);
+		kdtMouseController = new KDTMouseController(kdtCC, fpView);
+		fpView.setPreferredSize(new Dimension(300,320));
+		pane.add(fpView, BorderLayout.CENTER);
 		
 		//side panel
-		JPanel pPlayer = new PlayerStatusPanel(player);
-		JPanel pInventory = new InventoryPanel(player);
-		
 		JPanel sidePanel = new JPanel(new GridLayout(2,0));
+		sidePanel.setPreferredSize(new Dimension(250, 320));
 		
-		sidePanel.add(pPlayer);
-		sidePanel.add(pInventory);
-
+		//Map view setup and add to sidePanel
+		MapView pMap = new MapView(level,20,2);
+		pMap.setPreferredSize(new Dimension(250,250));			
+		MapController mController = new MapController(pMap);
+		sidePanel.add(pMap);
+		
+		//PlayerPanel setup as gridLayout. Add player status and inventory to this panel
+		JPanel playerPanel = new JPanel(new GridLayout(0, 2));
+		
+		JPanel pPlayer = new PlayerStatusPanel(player);
+		pPlayer.setPreferredSize(new Dimension(250/2, 320-250));
+		playerPanel.add(pPlayer);
+		
+		JPanel pInventory = new InventoryPanel(player);
+		pInventory.setPreferredSize(new Dimension(250/2, 320-250));
+		//pInventory.addMouseListener(kdtMouseController);
+		playerPanel.add(pInventory);
+		
+		//Add playerPanel to sidePanel
+		sidePanel.add(playerPanel);
 		pane.add(sidePanel, BorderLayout.LINE_END);
-		
-		FirstPersonView fpView = new FirstPersonView(player);
-		pane.add(fpView, BorderLayout.CENTER);
 
+		JPanel pOutput = TextOutputPanel.getTextOutputPanel();
+		pane.add(pOutput, BorderLayout.PAGE_END);
 	}
 	
 	
@@ -111,101 +135,38 @@ public class KDTView {
 	 */
 	private void addMenusToFrame() {
 		
-		KDTMenuController kdtMC=new KDTMenuController(f);	
+		KDTMenuController kdtMenuController=new KDTMenuController(f, kdtCC);	
 		//--------- MENUS ---------
 		JMenu file=new JMenu("File");
 		
 		JMenuItem exit = new JMenuItem("Exit");
 		exit.setToolTipText("Exit Kraft Dinner Table Maze");
-		exit.addActionListener(kdtMC);
+		exit.addActionListener(kdtMenuController);
+		
+		JMenu edit=new JMenu("Edit");
+		JMenuItem undo = new JMenuItem("Undo");
+		exit.setToolTipText("Undo one move/action.");
+		undo.addActionListener(kdtMenuController);
+		
+		JMenuItem redo = new JMenuItem("Redo");
+		exit.setToolTipText("Redo one move/action.");
+		redo.addActionListener(kdtMenuController);
 		
 		JMenuItem help = new JMenuItem("Help");
 		help.setToolTipText("View help manual");
-		help.addActionListener(new HelpListener());
+		help.addActionListener(kdtMenuController);
 			
 		file.add(help);
 		file.add(exit);
+		
+		edit.add(undo);
+		edit.add(redo);
 				
 		JMenuBar mainBar=new JMenuBar();
 		mainBar.add(file);
+		mainBar.add(edit);
 		
 		f.setJMenuBar(mainBar);
 	}
-	
-		
-	/**
-	 * Add the components to the Content Pane using GridBagLayout
-	 * ---- NOT USING this layout ---
-	 */
-	/*
-	private void addComponentsToPaneUsingBAGLayout(Container pane) {
-		GridBagConstraints c;
-				
-	    pane.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-	   	    
-	    KDTMainPanel pMain= new KDTMainPanel();
-	    pMain.setLayout(new BoxLayout(pMain, BoxLayout.Y_AXIS));
-	        
-	    JButton button;
-		pane.setLayout(new GridBagLayout());
-		
-		
-		c = new GridBagConstraints();
-	
-		//------------Main Panel------------//
-		//c.ipady = 600;      //make this component tall
-		//c.ipadx = 400;
-		c.weightx = 1.0;
-		//JButton jb=new JButton("Test");
-		c.gridwidth = 2;
-		c.gridheight= 2;
-		//c.insets = new Insets(5,5,5,5);
-		c.gridx = 0;
-		c.gridy = 0;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.fill = GridBagConstraints.VERTICAL;
-		pane.add(pMain, c);
-		//pane.setSize(300, 200);
-		
-		//------------Player Status Panel------------//
-		JPanel pPlayer = new PlayerStatusPanel();
-		pPlayer.setLayout(new BoxLayout(pPlayer, BoxLayout.Y_AXIS));
-		c.ipadx=0;
-		c.ipady=0;
-		//c.ipadx=200;
-		//c.ipady = 300;
-		c.weightx = .25;
-		c.gridx = 2;
-		c.gridy = 0;
-		//c.insets = new Insets(5,5,5,5);
-		c.fill = GridBagConstraints.HORIZONTAL;
-		pane.add(pPlayer, c);
-		
-		JPanel pInventory = new InventoryPanel();
-		pInventory.setLayout(new BoxLayout(pInventory, BoxLayout.Y_AXIS));
-		c.ipadx=200;
-		c.ipady = 300;
-		c.weightx = 0.25;
-		c.gridx = 2;
-		c.gridy = 1;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		//pane.add(pInventory, c);
-
-		//------------Input and Status Panel------------//
-		JPanel pInput = new InputPanel();
-		
-		c.ipady = 0;       //reset to default
-		c.weighty = 1.5;   //request any extra vertical space
-		c.anchor = GridBagConstraints.PAGE_END; //bottom of space
-		c.insets = new Insets(10,0,0,0);  //top padding
-		c.gridx = 0;       //aligned with button 2
-		c.gridy = 2;       //third row
-		c.gridwidth = 3;   //2 columns wide
-		c.fill = GridBagConstraints.HORIZONTAL;
-		pane.add(pInput, c);
-	    
-
-	}
-	*/
-
+			
 }

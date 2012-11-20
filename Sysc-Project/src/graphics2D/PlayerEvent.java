@@ -33,6 +33,8 @@ public class PlayerEvent extends EventObject {
 	 */
 	public PlayerEvent(Object source){
 		super(source);
+		
+		if(source instanceof Player) this.player = (Player) source;
 	}
 	/**
 	 * Get the Player for the listeners

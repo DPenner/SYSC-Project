@@ -3,7 +3,7 @@ package gameLoader;
 import java.awt.KeyboardFocusManager;
 
 import commands.CommandController;
-
+import graphics2D.KDTMouseController;
 import gameCore.Player;
 import graphics2D.KDTView;
 import graphics2D.TextOutputPanelObservable;
@@ -43,8 +43,12 @@ public class Game extends TextOutputPanelObservable
         }
         else
         {
-    		new KDTView(player, level);
     		KeyDispatcherController.initializeKeyDispatchController(player);
+    		
+    		KDTView kdtView = new KDTView(player, level, KeyDispatcherController.getCommandController());
+    		    		
+    		//KDTMouseController kdtMC= new KDTMouseController(KeyDispatcherController.getCommandController(), kdtView);
+    			
             
          	printWelcome(); 
         }
@@ -120,6 +124,13 @@ public class Game extends TextOutputPanelObservable
         {
         	KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 			manager.removeKeyEventDispatcher(keyEventDispatcher);
+        }
+        
+        /**
+         * Return instance of the CommandController so that the KDTMouseController can issue commands as well
+         */
+        public static CommandController getCommandController() {
+        	return keyEventDispatcher;
         }
     }
     

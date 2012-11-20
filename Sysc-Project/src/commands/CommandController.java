@@ -2,6 +2,7 @@ package commands;
 /**
 * CommandController handles the keyboard input for each command.
 * It also handles the logic for redoing and undoing commands.
+* Added methods to handle mouse events from the KDTMouseController.
 *
 * @author Group D
 * @author Main Author: Trang Pham
@@ -13,7 +14,7 @@ package commands;
 * Darrell Penner
 *
 *
-* @version 2.0
+* @version 3.0
 *
 */
 import gameCore.Direction;
@@ -27,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CommandController extends TextOutputPanelObservable implements KeyEventDispatcher{
+public class CommandController extends TextOutputPanelObservable implements KeyEventDispatcher {
 	private static List<Command> undoList;
 	private static Map<Integer, Command> keyToCommandMap;
     private static int undo_index;
@@ -44,7 +45,7 @@ public class CommandController extends TextOutputPanelObservable implements KeyE
     	
     	initializeKeyToCommandMap();
     }
-    
+        
     private void initializeKeyToCommandMap()
     {
     	keyToCommandMap.put(KeyEvent.VK_UP, new GoCommand(Direction.NORTH));
@@ -116,6 +117,57 @@ public class CommandController extends TextOutputPanelObservable implements KeyE
 			Command c = keyToCommandMap.get(keyPressed);
 			if(c != null) if(c.execute()) saveGameState(c);
 		}
+		return false;
+	}
+	
+	// -----  Commands to support KDTMouseController ------
+	/**
+	 * ExecUndo wrapper for executing undo from KDTMouseController
+	 */
+	public void execUndo() {
+		undoCommand();
+	}
+	
+	/**
+	 * ExecRedo wrapper for executing redo from KDTMouseController
+	 */
+	public void execRedo() {
+		redoCommand();
+	}
+	
+	/**
+	 * ExecGo wrapper for executing go in specifiec direction from KDTMouseController
+	 * @param d direction to go
+	 * @return	true if executed move, else false
+	 */
+	public boolean execGo(Direction d) {
+		Command c = new GoCommand(d);
+		if(c != null && c.execute()) {
+			saveGameState(c);
+			return true;  //moved
+		}
+		return false;  //not moved
+	}
+	
+	/**
+	 * ExecPickup wrapper for executing Pickup from KDTMouseController
+	 * @return true if item picked up, else false
+	 */
+	public boolean execPickup() {
+		 Command c = new PickUpCommand();
+		 if(c.execute()) return true;
+		 
+		 return false;
+	}
+	
+	/**
+	 * ExecDrop wrapper for executing drop item from KDTMouseController
+	 * @return true if item successfully dropped, else return false.
+	 */
+	public boolean execDrop() {
+		DropCommand dc = new DropCommand();
+		if( dc.execute()) return true;
+		
 		return false;
 	}
 }

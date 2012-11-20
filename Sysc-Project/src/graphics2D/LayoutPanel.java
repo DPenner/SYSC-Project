@@ -105,6 +105,15 @@ abstract class LayoutPanel<T extends LayoutObject> extends JPanel implements Obs
         });
 	}
 	
+	protected void removeLayoutObject(final T layoutObject){
+		SwingUtilities.invokeLater(new Runnable(){
+			public void run(){
+				layoutObjects.remove(layoutObject);
+				repaint(getRepaintRectangle(layoutObject));
+			}
+		});
+	}
+	
 	/**
 	 * Gets the area which needs to be repainted for a given object.
 	 * @param layoutObject The object which needs to be repainted

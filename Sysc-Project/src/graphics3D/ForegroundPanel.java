@@ -16,14 +16,14 @@ public class ForegroundPanel extends JPanel{
 	
 	private static final Color ITEM_COLOR = Color.decode("0x964B00");
 	private static final Color ITEM_DECORATION_COLOR = Color.GRAY;
-	private static final Rectangle ITEM_AREA_RECT = new Rectangle( 150+150/2 - 50, 150 - 150/2 + 10, 60, 20 );
+	private static final Rectangle ITEM_AREA_RECT = new Rectangle( FirstPersonView.OUTER_BOX/2-100, FirstPersonView.OUTER_BOX-(FirstPersonView.OUTER_BOX-FirstPersonView.INNER_BOX)/2 - 20, 80, 40 );
 	private static final Color DOOR_COLOR = Color.decode("0x993300"); //brown
 	private static final Color MONSTER_COLOR = Color.RED;
-	private static final int MONSTER_SIZE = 20;
+	private static final int MONSTER_SIZE = 60;
 	private static final Color DOORNOB_COLOR = Color.GRAY;
-	private static final int DOOR_WIDTH = 6;
-	private static final int DOOR_HEIGHT = 20;
-	private static final int DOORNOB_SIZE = 2;
+	private static final int DOOR_WIDTH = 50;
+	private static final int DOOR_HEIGHT = 100;
+	private static final int DOORNOB_SIZE = 8;
 	
 	//How much to offset x and y for this entire component
 	private static final int xOffSet = 0;
@@ -39,7 +39,6 @@ public class ForegroundPanel extends JPanel{
 	
 	public ForegroundPanel()
 	{
-
 		this.setSize(FirstPersonView.OUTER_BOX, FirstPersonView.OUTER_BOX + FirstPersonView.BACKDIR_HEIGHT);
 		
 		Rectangle outer = new Rectangle(xOffSet,yOffSet, FirstPersonView.OUTER_BOX, FirstPersonView.OUTER_BOX);
@@ -56,16 +55,18 @@ public class ForegroundPanel extends JPanel{
 		dpInner.setLocation((int)outer.getCenterX() - doorPositioningInner/2, (int)outer.getCenterY() - doorPositioningInner/2);
 		
 		leftDoor = new Polygon();
-		leftDoor.addPoint((int) dpOuter.getMaxX(), dpOuter.y); //bot left of outer box = box left of leftDoor
-		leftDoor.addPoint((int) dpOuter.getMaxX() - DOOR_HEIGHT, dpOuter.y); //top left of door
-		leftDoor.addPoint((int) dpInner.getMaxX(), dpInner.y); //bot left of inner box = bot right of leftDoor
-		leftDoor.addPoint((int) dpInner.getMaxX() - DOOR_HEIGHT, dpInner.y);
-		
+		//leftDoor
+		leftDoor.addPoint((int) dpOuter.getMinX(), (int) dpOuter.getMaxY());//bot left of outer
+		leftDoor.addPoint((int) dpInner.getMinX(), (int) dpInner.getMaxY());//bot left of outer//bot left of inner
+		leftDoor.addPoint((int) dpInner.getMinX(), (int) dpInner.getMaxY()-DOOR_HEIGHT);//bot left of inner - height
+		leftDoor.addPoint((int) dpOuter.getMinX(), (int) dpOuter.getMaxY()-DOOR_HEIGHT);//bot left of outer - height
+	
 		rightDoor = new Polygon();
-		rightDoor.addPoint((int) dpOuter.getMaxX(), (int)dpOuter.getMaxY()); //bot right of outer box = box right of rightDoor
-		rightDoor.addPoint((int) dpOuter.getMaxX() - DOOR_HEIGHT, (int)dpOuter.getMaxY()); //top left of door
-		rightDoor.addPoint((int) dpInner.getMaxX(), (int)dpInner.getMaxY()); //bot right of inner box = bot right og rightDoor
-		rightDoor.addPoint((int) dpInner.getMaxX() - DOOR_HEIGHT, (int)dpInner.getMaxY());
+		//rightDoor
+		rightDoor.addPoint((int) dpInner.getMaxX(), (int) dpInner.getMaxY());//inner bot right 
+		rightDoor.addPoint((int) dpOuter.getMaxX(), (int) dpOuter.getMaxY());//outer bot right
+		rightDoor.addPoint((int) dpOuter.getMaxX(), (int) dpOuter.getMaxY()-DOOR_HEIGHT);//out bot right - height
+		rightDoor.addPoint((int) dpInner.getMaxX(), (int) dpInner.getMaxY()-DOOR_HEIGHT);//in bot right - height
 		
 		backWall = inner;
 	}
@@ -83,16 +84,16 @@ public class ForegroundPanel extends JPanel{
 	@Override
 	protected void paintComponent(Graphics g){
 		super.paintComponent(g);
-		
-		if(tile.hasItems()) drawItemChest(g);
-		
+
 		drawLeft(g);
 		drawRight(g);
 		drawBack(g);
-	}
+		
+		if(tile.hasItems()) drawItemChest(g);
+}
 	
-	private void drawLeft(Graphics g) {
-		Direction left = backDir.getLeftDirection();
+	private void drawRight(Graphics g) {
+		Direction left = backDir.getRightDirection();
 		Rectangle leftDoorBound = leftDoor.getBounds();
 		if(tile.hasExit(left))
 		{
@@ -100,17 +101,17 @@ public class ForegroundPanel extends JPanel{
 			g.fillPolygon(leftDoor);
 			
 			g.setColor(DOORNOB_COLOR);
-			g.fillOval((int)leftDoorBound.getMaxX() - DOORNOB_SIZE, (int)leftDoorBound.getMaxY() - DOOR_HEIGHT/2, DOORNOB_SIZE, DOORNOB_SIZE);
+			g.fillOval((int)leftDoorBound.getMinX() + DOORNOB_SIZE/2, (int)leftDoorBound.getMinY() + DOOR_HEIGHT/2 + DOORNOB_SIZE, DOORNOB_SIZE, DOORNOB_SIZE);
 		}
 		else if(tile.hasCharacter(left))
 		{
 			g.setColor(MONSTER_COLOR);
-			g.fillOval((int)leftDoorBound.getMaxX(), (int)leftDoorBound.getMaxY()- MONSTER_SIZE, MONSTER_SIZE, MONSTER_SIZE);
+			g.fillOval((int)leftDoorBound.getMaxX()- MONSTER_SIZE/2, (int)leftDoorBound.getCenterY() - MONSTER_SIZE, MONSTER_SIZE/2, MONSTER_SIZE);
 		}
 	}
 
-	private void drawRight(Graphics g) {
-		Direction right = backDir.getRightDirection();
+	private void drawLeft(Graphics g) {
+		Direction right = backDir.getLeftDirection();
 		Rectangle rightDoorBound = rightDoor.getBounds();
 		if(tile.hasExit(right))
 		{
@@ -118,12 +119,12 @@ public class ForegroundPanel extends JPanel{
 			g.fillPolygon(rightDoor);
 			
 			g.setColor(DOORNOB_COLOR);
-			g.fillOval((int)rightDoorBound.getMaxX() - DOORNOB_SIZE, (int)rightDoorBound.getMaxY() - DOOR_HEIGHT/2, DOORNOB_SIZE, DOORNOB_SIZE);
+			g.fillOval((int)rightDoorBound.getMinX() + DOORNOB_SIZE/2, (int)rightDoorBound.getMinY() + DOOR_HEIGHT/2 + DOORNOB_SIZE, DOORNOB_SIZE, DOORNOB_SIZE);
 		}
 		else if(tile.hasCharacter(right))
 		{
 			g.setColor(MONSTER_COLOR);
-			g.fillOval((int)rightDoorBound.getMaxX(), (int)rightDoorBound.getMaxY()- MONSTER_SIZE, MONSTER_SIZE, MONSTER_SIZE);
+			g.fillOval((int)rightDoorBound.getMinX(), (int)rightDoorBound.getCenterY()- MONSTER_SIZE, MONSTER_SIZE/2, MONSTER_SIZE);
 		}
 	}
 
@@ -142,18 +143,18 @@ public class ForegroundPanel extends JPanel{
 		else if(tile.hasCharacter(back))
 		{
 			g.setColor(MONSTER_COLOR);
-			g.fillOval((int)backWall.getCenterX(), (int)backWall.getMaxY()- MONSTER_SIZE, MONSTER_SIZE, MONSTER_SIZE);
+			g.fillOval((int)backWall.getCenterX()-MONSTER_SIZE/2, (int)(backWall.getMinY()+ MONSTER_SIZE*1.5), MONSTER_SIZE, MONSTER_SIZE);
 		}
 	}
 
 	private void drawItemChest(Graphics g)
 	{
 		//draw item chest
-		final int ITEM_HEIGHT_OFFSET = 12;
-		final int ITEM_WIDTH_OFFSET = 8;
-		final int DECORATION_WIDTH = 3;
-		final int DECORATION_OFFSET1 = 11;
-		final int DECORATION_OFFSET2 = 27;
+		final int ITEM_HEIGHT_OFFSET = 0;
+		final int ITEM_WIDTH_OFFSET = 0;
+		final int DECORATION_WIDTH = 5;
+		final int DECORATION_OFFSET1 = 15;
+		final int DECORATION_OFFSET2 = 60;
 		
 		g.setColor(ITEM_COLOR);
 		g.fill3DRect(ITEM_AREA_RECT.x + ITEM_WIDTH_OFFSET, ITEM_AREA_RECT.y + ITEM_HEIGHT_OFFSET, 
@@ -161,8 +162,6 @@ public class ForegroundPanel extends JPanel{
 		g.setColor(ITEM_DECORATION_COLOR);
 		g.fill3DRect(ITEM_AREA_RECT.x + DECORATION_OFFSET1, ITEM_AREA_RECT.y + ITEM_HEIGHT_OFFSET, DECORATION_WIDTH, ITEM_AREA_RECT.height - 2*ITEM_HEIGHT_OFFSET, true);
 		g.fill3DRect(ITEM_AREA_RECT.x + DECORATION_OFFSET2, ITEM_AREA_RECT.y + ITEM_HEIGHT_OFFSET, DECORATION_WIDTH, ITEM_AREA_RECT.height - 2*ITEM_HEIGHT_OFFSET, true);
-	
-	
 	}
 
 	public boolean isItemContains(Point p) {

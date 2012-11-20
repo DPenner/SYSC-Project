@@ -77,8 +77,8 @@ public class FirstPersonView extends JScrollPane implements PlayerListener{
 	@Override
 	public void positionChanged(PlayerEvent e, Direction backDir) {
 		Tile newPosition = e.getPosition();
-		backgroundLayer.draw(newPosition, backDir);
-		foregroundLayer.draw(newPosition, backDir);
+		backgroundLayer.draw(newPosition, DEFAULT_BACKDIR);
+		foregroundLayer.draw(newPosition, DEFAULT_BACKDIR);
 	}
 	
 	public boolean isItemContains(Point p)
@@ -90,19 +90,27 @@ public class FirstPersonView extends JScrollPane implements PlayerListener{
 	{
 		return backgroundLayer.directionContaining(p);
 	}
+	
+	public boolean isFloorContains(Point p)
+	{
+		return backgroundLayer.isFloorContains(p);
+	}
 	/*
 	 * Unimplemented methods of player listener
 	 */
 	@Override
 	public void itemAdded(PlayerEvent e) {
-		// TODO Auto-generated method stub
-		
+		Tile newPosition = e.getPosition();
+		if(newPosition == null) System.out.println("TILE NULL");
+		backgroundLayer.draw(newPosition, DEFAULT_BACKDIR);
+		foregroundLayer.draw(newPosition, DEFAULT_BACKDIR);
 	}
 
 	@Override
 	public void itemDropped(PlayerEvent e) {
-		// TODO Auto-generated method stub
-		
+		Tile newPosition = e.getPosition();
+		backgroundLayer.draw(newPosition, DEFAULT_BACKDIR);
+		foregroundLayer.draw(newPosition, DEFAULT_BACKDIR);
 	}
 
 	@Override

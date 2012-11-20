@@ -69,15 +69,21 @@ public class Player extends Character
 			{
 				this.myPosition=myPosition.moveCharacter(direction);  //move character to the next tile
 				output.append("You moved "+ direction + ".");
-				hasMoved = true;
 				
-				//tell subscribers that the player moved in direction, and the backDir is the opposite direction
-				notifyPositionChanged(direction.getOppositeDirection());
+				//-- added for testing mouse events ---
+				
+				System.out.println("Player has moved "+ direction + ".");
+				hasMoved = true;
 			}
 		}
 		else
 		{
 			output.append(checkIfLockedExit(direction));
+		}
+		if(hasMoved)
+		{
+			//tell subscribers that the player moved in direction, and the backDir is the opposite direction
+			notifyPositionChanged(direction.getOppositeDirection());
 		}
 		return hasMoved;
 	}
