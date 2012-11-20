@@ -47,7 +47,7 @@ public class FirstPersonView extends JScrollPane implements PlayerListener{
 	
 	/**
 	 * Takes a tile, and initializes the view to display all walls, exits, and items in the tile
-	 * @param t The tile to initialize. If null, a blank view is created.
+	 * @param player The player to observe.
 	 */
 	public FirstPersonView(Player player){
 		

@@ -187,7 +187,7 @@ public class InventoryPanel extends JPanel implements PlayerListener{
      * @param topleft - top left corner of the area of start from
      * @param width - width of area check
      * @param height - height of area to check
-     * @return
+     * @return true if the click is within the Bounds of the item
      */
     private boolean withinBounds(Point p, Point topleft, int width, int height){
     

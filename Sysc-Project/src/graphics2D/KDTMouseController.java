@@ -38,6 +38,11 @@ public class KDTMouseController implements MouseListener {
 	FirstPersonView view;
 	CommandController kdtCC;
 	//------------Constructors------------//
+	/**
+	 * KDTMouseController constructor
+	 * @param kdtCC
+	 * @param fpView
+	 */
 	public KDTMouseController(CommandController kdtCC, FirstPersonView fpView) {
 		this.view = fpView;
 		view.addMouseListener(this);
@@ -108,7 +113,7 @@ public class KDTMouseController implements MouseListener {
 	 * If the an item was right-clicked, then execute a pickup.
 	 * If the floor was right-clicked, then execute a drop.
 	 * 
-	 * @param - MouseEvent fired from KDTView
+	 * @param e - MouseEvent fired from KDTView
 	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
@@ -122,7 +127,7 @@ public class KDTMouseController implements MouseListener {
 	 * MouseReleased method -if user did not click on an area where the items are located, then go in 
 	 * the direction clicked.
 	 * 
-	 * @param - MouseEvent fired from KDTView
+	 * @param e - MouseEvent fired from KDTView
 	 */
 	@Override
 	public void mouseReleased(MouseEvent e) 

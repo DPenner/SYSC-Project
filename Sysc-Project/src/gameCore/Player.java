@@ -59,7 +59,7 @@ public class Player extends Character
 					hasMoved = true;
 				}
 				else//defender is still alive.
-				{
+				{	//if (defender.isDead()&&this.isDead()) {throw new EndGameException("Player and monster has died.  GAME OVER!");
 					if(isDead()) throw new EndGameException("Player has died. GAME OVER!");
 					
 					output.append("You attacked: \n" + defender.toString() +"\n"+ this.toString());
@@ -72,7 +72,6 @@ public class Player extends Character
 				
 				//-- added for testing mouse events ---
 				
-				System.out.println("Player has moved "+ direction + ".");
 				hasMoved = true;
 			}
 		}
