@@ -20,6 +20,8 @@ import gameLoader.EndGameException;
 
 
 public class GoCommand extends Command{
+	private static final long serialVersionID = 1;
+	
 	private Direction dir;
 	
 	public GoCommand(Direction dir)

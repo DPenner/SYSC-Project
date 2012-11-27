@@ -25,6 +25,8 @@ import java.util.List;
  */
 public class Player extends Character
 {	//------------Fields------------//
+	private static final long serialVersionID = 1;
+	
 	private int stamina;
 	private List<PlayerListener> pListeners;
 	

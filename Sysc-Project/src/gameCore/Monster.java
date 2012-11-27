@@ -20,6 +20,8 @@ import java.util.Set;
  * @version 1.0
  */
 public class Monster extends Character{
+	private static final long serialVersionID = 1;
+	
 	Direction directions[]=Direction.values();
 	//------------Constructors------------//
 	public Monster(String name, int health, int attack, Tile myPosition){

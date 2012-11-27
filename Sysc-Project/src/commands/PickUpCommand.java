@@ -18,6 +18,8 @@ package commands;
 import javax.swing.JOptionPane;
 
 public class PickUpCommand extends Command{
+	private static final long serialVersionID = 1;
+	
 	private String itemName;
 	@Override
 	public boolean execute() {

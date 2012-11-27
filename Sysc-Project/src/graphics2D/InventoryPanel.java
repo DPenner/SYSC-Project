@@ -41,7 +41,7 @@ public class InventoryPanel extends JPanel implements PlayerListener{
 	
 	private BufferedImage img_redkey;
 	
-	private static final int ITEM_HEIGHT = 50;
+	private static final int ITEM_HEIGHT = 25;
 	private static final int ITEM_WIDTH = 50;
 	private static final int IMG_XOFFSET = 20;
 	private static final int IMG_YOFFSET = 50;
@@ -62,7 +62,7 @@ public class InventoryPanel extends JPanel implements PlayerListener{
 		
 		player.addPlayerListener(this);
 		
-		//loadImage();
+		
 	}
 	
 	/**
@@ -76,6 +76,7 @@ public class InventoryPanel extends JPanel implements PlayerListener{
 		g.drawString("Player Inventory", 10, 17);
 		
 		drawInventory(g);
+		
 	}
 	
 	/**
@@ -83,22 +84,41 @@ public class InventoryPanel extends JPanel implements PlayerListener{
 	 */
 	private void loadImage() {
 		//test drawing an image
-		BufferedImage img_redkey = null;
+		//BufferedImage img_redkey = null;
 		try {
-		    img_redkey = ImageIO.read(new File("/resources/redkey.jpg"));
+			img_redkey = ImageIO.read(new File("resources/redkey.jpg"));
 		    
 		} catch (IOException e) {
 			System.out.printf("image does not exist. ");
 		}
 	}
 	
+	private void drawItem(Graphics g, int index, String itemName)
+	{	
+		int xOffset = IMG_XOFFSET;
+		int yOffset =  FIRST_LINE + (ITEM_HEIGHT * index);
+				//IMG_YOFFSET + ITEM_HEIGHT * index;
+		
+		
+		try {
+			String imagePath = "resources/"+itemName +".png"; 
+			BufferedImage image = ImageIO.read(new File(imagePath));
+			g.drawImage(image, xOffset, yOffset, null);
+				
+		} catch (IOException e) {
+			System.out.printf("image does not exist. ");
+		}
+		
+	}
+		
 	private void drawKey(Graphics g, int index, Color keyColor)
 	{	
 		int xOffset = IMG_XOFFSET;
 		int yOffset = IMG_YOFFSET + ITEM_HEIGHT * index;
 		
-		if(img_redkey != null) {
-			g.drawImage(img_redkey, 0, 25, 50, 50, 0, 0, 50, 50, null);
+		if (keyColor.equals(Color.RED)) {
+			loadImage();
+			g.drawImage(img_redkey, xOffset, yOffset, null);
 		}else {
 			g.setColor(Color.BLACK);
 			g.drawRect(xOffset+7, yOffset+19, 6, 24);
@@ -133,9 +153,13 @@ public class InventoryPanel extends JPanel implements PlayerListener{
 			String itemName = inventory.getItem(i).toString();
 			
 			int positionFromTopofPanel = FIRST_LINE + (LINE_HEIGHT * (i+1));
-			g.drawString(itemName, IMG_XOFFSET, positionFromTopofPanel);
 			
-			/*if(itemName.equals("RedKey")) 
+			// WORKING V2 g.drawString(itemName, IMG_XOFFSET, positionFromTopofPanel);
+			
+			drawItem(g, i, itemName);
+			
+			/*  working v2
+			if(itemName.equals("RedKey")) 
 			{	
 				drawKey(g, i, Color.RED);
 			}

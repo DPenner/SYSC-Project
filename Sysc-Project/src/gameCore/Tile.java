@@ -21,6 +21,7 @@ import java.util.*;
  */
 
 public class Tile extends LayoutObject {
+	private static final long serialVersionID = 1;
 	
 	//------------Fields------------//
 	private Point location;

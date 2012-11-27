@@ -16,6 +16,8 @@ package commands;
 *
 */
 public class SearchCommand extends Command{
+	private static final long serialVersionID = 1;
+	
 	@Override
 	public void undo(){}
 	@Override

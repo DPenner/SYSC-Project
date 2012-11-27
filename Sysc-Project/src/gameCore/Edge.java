@@ -20,6 +20,7 @@ import java.awt.Point;
  */
 
 public class Edge extends LayoutObject {
+	private static final long serialVersionID = 1;
 	
 	protected Tile tile1;
 	protected Tile tile2;

@@ -28,6 +28,7 @@ import java.util.List;
 */
 
 public class Level {
+	private static final long serialVersionID = 1;
 	
 	private int timer;
 	private int gridWidth;

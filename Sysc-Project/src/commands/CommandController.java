@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.Map;
 
 public class CommandController extends TextOutputPanelObservable implements KeyEventDispatcher {
+	private static final long serialVersionID = 1;
+	
 	private static List<Command> undoList;
 	private static Map<Integer, Command> keyToCommandMap;
     private static int undo_index;

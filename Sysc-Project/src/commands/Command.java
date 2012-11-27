@@ -18,6 +18,8 @@ package commands;
 import graphics2D.TextOutputPanelObservable;
 
 public abstract class Command extends TextOutputPanelObservable {
+
+	private static final long serialVersionID = 1;  
 	/**
 	 * Executes the command
 	 * @return true if the command can be undone

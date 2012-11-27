@@ -18,6 +18,7 @@ package gameCore;
  */
 
 public class Exit extends Edge {
+	private static final long serialVersionID = 1;
 	private Item key;
 	
 	/**

@@ -18,6 +18,9 @@ package commands;
 import javax.swing.JOptionPane;
 
 public class DropCommand extends Command{
+	
+	private static final long serialVersionID = 1;
+	
 	private String itemName;
 	
 	@Override

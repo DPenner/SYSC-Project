@@ -15,6 +15,7 @@ package gameCore;
  * @version 1.0
  */
 public class Weapon extends Item {
+	private static final long serialVersionID = 1;
 	//------------Fields------------//
 	private int attackValue;
 	

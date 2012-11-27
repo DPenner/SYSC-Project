@@ -19,6 +19,7 @@ import java.util.List;
  */
 
 public class Inventory {
+	private static final long serialVersionID = 1;
 	//------------Fields------------//
 	private List<Item> items;
 	

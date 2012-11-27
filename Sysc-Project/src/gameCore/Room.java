@@ -22,6 +22,8 @@ import java.util.Set;
 
 public class Room 
 {
+	private static final long serialVersionID = 1;
+	
     private Set<Tile> tiles;
 
     /**
