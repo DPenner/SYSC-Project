@@ -6,29 +6,30 @@ import graphics2D.MapView;
 
 import javax.swing.*;
 
-public class LevelEditorView {
+public class LevelEditorView extends JFrame{
 
 	private MapView editorView;
 	private ModeSwitcher switcher;
 	
 	public LevelEditorView(LevelEditor editor){
-		JFrame frame = new JFrame("Level Editor");
-		frame.setSize(600, 600);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		super("Level Editor");
+
+		this.setSize(600, 600);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JMenuBar menuBar = new JMenuBar();
 		
 		initFileMenu(menuBar);
 		initModeMenu(menuBar);
 		
-		frame.setJMenuBar(menuBar);
+		this.setJMenuBar(menuBar);
 		
 		editorView = new MapView();
 		
-		new EditorController(editor, editorView, switcher);	
-		frame.add(editorView);
+		new EditorController(editor, this);
 		
-		frame.setVisible(true);
+		this.add(editorView);	
+		this.setVisible(true);
 	}
 	
 	private void initModeMenu(JMenuBar menuBar){
@@ -62,6 +63,12 @@ public class LevelEditorView {
 		menuBar.add(fileMenu);
 	}
 	
+	public MapView getEditorView(){
+		return editorView;
+	}
+	public ModeSwitcher getModeSwitcher(){
+		return switcher;
+	}
 	/**
 	 * @param args
 	 */

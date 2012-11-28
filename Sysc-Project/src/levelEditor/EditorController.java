@@ -6,19 +6,23 @@ import java.awt.event.ComponentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.JDialog;
+
 import gameCore.*;
 
 import graphics2D.MapView;
 
 class EditorController extends MouseAdapter implements ComponentListener {
 	
+	LevelEditorView levelEditorFrame;
 	MapView editorView;
 	ModeSwitcher switcher;
 	LevelEditor editor;
 	
-	public EditorController(LevelEditor editor, MapView editorView, ModeSwitcher switcher){
-		this.editorView = editorView;
-		this.switcher = switcher;
+	public EditorController(LevelEditor editor, LevelEditorView levelEditorFrame){
+		this.levelEditorFrame = levelEditorFrame;
+		this.editorView = levelEditorFrame.getEditorView();
+		this.switcher = levelEditorFrame.getModeSwitcher();
 		this.editor = editor;
 		editorView.addMouseListener(this);
 		editorView.addComponentListener(this);
@@ -47,6 +51,9 @@ class EditorController extends MouseAdapter implements ComponentListener {
 		case EXIT:
 			break;
 		case ITEM:
+			if (tileExists){
+				itemClick(offsettedLocation, objectExists);
+			}
 			break;
 		case MONSTER:
 			if (tileExists){
@@ -99,6 +106,11 @@ class EditorController extends MouseAdapter implements ComponentListener {
 		if (!removeObject){
 			editor.addMonster("Babak", 10, 10, monsterTile);
 		}
+	}
+	
+	private void itemClick(Point offsettedLocation, boolean removeObject){
+		Tile itemTile = editorView.getTile(offsettedLocation);	
+		new ItemDialog(levelEditorFrame, itemTile);
 	}
 	
 	private boolean hasObject(Mode mode, Point offsettedLocation){

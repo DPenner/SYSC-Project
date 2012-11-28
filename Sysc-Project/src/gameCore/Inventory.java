@@ -1,6 +1,7 @@
 package gameCore;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 /**
  * Inventory is a collection of Items.  Items can be Weapons in this first revision.
@@ -18,7 +19,7 @@ import java.util.List;
  * @version 1.0
  */
 
-public class Inventory {
+public class Inventory implements Iterable<Item>{
 	//------------Fields------------//
 	private List<Item> items;
 	
@@ -108,5 +109,10 @@ public class Inventory {
 			s+=i.toString() +", ";
 		}
 		return s;
+	}
+
+	@Override
+	public Iterator<Item> iterator() {
+		return items.listIterator();
 	}
 }
