@@ -8,7 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class MapController extends MouseAdapter implements ComponentListener {
-	private MapView view;
+	protected MapView view;
 	private Tile currentTile; //The tile that the mouse is hovering over
 	
 	/**
