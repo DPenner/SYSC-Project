@@ -36,9 +36,6 @@ class TilePanel extends LayoutPanel<Tile>{
 	private static final Color ITEM_COLOR = Color.decode("0x964B00");
 	private static final Color ITEM_DECORATION_COLOR = Color.GRAY;
 	
-	//private int tileSize;
-	//private int edgeWidth;
-	
 	private Map<Point, Tile> tileLookup; //indexing by point makes it easier to locate the tile
 	private Map<Point, Color> tileColors;
 	
