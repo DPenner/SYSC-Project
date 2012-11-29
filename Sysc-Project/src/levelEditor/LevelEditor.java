@@ -14,12 +14,12 @@ public class LevelEditor {
 		tiles = new ArrayList<Tile>();
 	}
 	
-	public void addTile(Tile t){
+	protected void addTile(Tile t){
 		t.setVisited(); //everything is visible in the level editor
 		tiles.add(t);
 	}
 	
-	public Tile getTile(Point location){
+	protected Tile getTile(Point location){
 		for (Tile t : tiles){
 			if (t.getLocation().equals(location)){
 				return t;
@@ -28,41 +28,25 @@ public class LevelEditor {
 		throw new IllegalArgumentException("No tile found at that location");
 	}
 	
-	public void removeTile(Tile tile){
-		tiles.remove(tile);
+	protected void removeTile(Tile t){
+		tiles.remove(t);
 	}
 
-	public void addPlayer(String name, int health, int attack, int stamina, Tile playerTile){
-		if (playerTile == null){
-			throw new IllegalArgumentException("playerTile cannot be null");
+	protected void clearTile(Tile t){
+		for (Item i : t.getInventory()){
+			t.removeItem(i);
 		}
-		removePlayer(); //Only one player allowed
-		playerTile.removeCharacter(); //removing any possible monsters
-		new Player(name, health, attack, stamina, playerTile);
-		this.playerTile = playerTile;
+		
+		if (t.removeCharacter() instanceof Player){
+			playerTile = null;
+		}
 	}
 	
-	public void removePlayer(){
-		if (playerTile != null){
-			playerTile.removeCharacter(); 
-		}
-		playerTile = null;
+	protected boolean hasPlayer(){
+		return playerTile != null;
 	}
 	
-	public void addMonster(String name, int health, int attack, Tile monsterTile){
-		if (monsterTile == null){
-			throw new IllegalArgumentException("monsterTile cannot be null");
-		}
-		if (monsterTile == playerTile){
-			removePlayer();
-		}
-		new Monster(name, health, attack, monsterTile);
-	}
-	
-	public void removeMonster(Tile monsterTile){
-		if (monsterTile == playerTile){
-			throw new IllegalArgumentException("The player is not a monster");
-		}
-		monsterTile.removeCharacter();
+	protected void save(){
+		//some form of exporting goes here
 	}
 }

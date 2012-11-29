@@ -168,13 +168,13 @@ public class MapView extends JLayeredPane implements Scrollable
 	//------------Scaling and Size-----------//
 	//These methods scale back and forth between a Tile's location and its location in this MapView
 	protected int getOffsettedX(int tileX){
-		return (tileX + minX) * tileSize;
+		return tileX * tileSize;
 	}
 	protected int getOffsettedX(Point tileLocation){
 		return getOffsettedX(tileLocation.x);
 	}
 	protected int getOffsettedY(int tileY){
-		return (tileY + minY) * tileSize;
+		return tileY * tileSize;
 	}
 	protected int getOffsettedY(Point tileLocation){
 		return getOffsettedY(tileLocation.y);
@@ -186,7 +186,7 @@ public class MapView extends JLayeredPane implements Scrollable
 	* @return The Tile's location (in terms of the model, not the view)
 	*/
 	public Point getTileLocation(Point offsettedLocation){
-		return new Point(offsettedLocation.x/tileSize - minX, offsettedLocation.y/tileSize - minY);
+		return new Point(offsettedLocation.x/tileSize, offsettedLocation.y/tileSize);
 	}
 	
 	/**

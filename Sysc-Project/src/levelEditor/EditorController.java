@@ -1,23 +1,18 @@
 package levelEditor;
 
 import java.awt.Point;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.MouseAdapter;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-
-import javax.swing.JDialog;
 
 import gameCore.*;
 
 import graphics2D.MapController;
-import graphics2D.MapView;
 
-class EditorController extends MapController{//MouseAdapter implements ComponentListener {
+class EditorController extends MapController implements ActionListener {
 	
 	LevelEditorView levelEditorFrame;
 	LevelEditor editor;
-	private long lastClickTime;
 	
 	public EditorController(LevelEditor editor, LevelEditorView levelEditorFrame){
 		super(levelEditorFrame.getEditorView());
@@ -28,7 +23,6 @@ class EditorController extends MapController{//MouseAdapter implements Component
 	
 
 	//------------Mouse Events------------//
-	
 	@Override
 	public void mouseClicked(MouseEvent e){
 		Point offsettedLocation = e.getPoint();
@@ -55,6 +49,14 @@ class EditorController extends MapController{//MouseAdapter implements Component
 	
 	private void itemClick(Point offsettedLocation){
 		Tile itemTile = view.getTile(offsettedLocation);	
-		new TileNavigator(levelEditorFrame, itemTile);
+		new TileNavigator(levelEditorFrame, editor, itemTile);
 	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand().equals("Help")){
+			new HelpFrame();
+		}
+	}
+	
 }

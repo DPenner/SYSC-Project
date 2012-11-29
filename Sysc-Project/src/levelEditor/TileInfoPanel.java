@@ -26,43 +26,80 @@ import javax.swing.*;
 
 class TileInfoPanel extends JPanel implements Scrollable
 {
-	List<SingleObjectInfo> itemInfos;
-	SingleObjectInfo selectedInfo;
+	List<TileObjectPanel> itemInfos;
+	TileObjectPanel selectedInfo;
+	boolean isDirty;
 	
 	protected TileInfoPanel(){
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		itemInfos = new ArrayList<SingleObjectInfo>();
+		itemInfos = new ArrayList<TileObjectPanel>();
+		isDirty = false;
 	}
 	
-	protected void add(String type, String[] names, String[] initialValues){
-		SingleObjectInfo newInfo = new SingleObjectInfo(type, names, initialValues);
+	protected void add(TileObjectDisplayData data){
+		TileObjectPanel newInfo = new TileObjectPanel(this, data);
 		this.add(newInfo);
 		itemInfos.add(newInfo);
 		this.setSelectedInfo(newInfo);
+		this.setDirty(true);
 		this.revalidate();
 	}
 	
-	protected void setSelectedInfo(SingleObjectInfo info){
-		clearSelected(); //only one can be selected at a time
+	protected void setSelectedInfo(TileObjectPanel info){
+		unSelect(); //only one can be selected at a time
 		selectedInfo = info;
 		selectedInfo.highlight();
 	}
 	
-	private SingleObjectInfo clearSelected(){
+	private TileObjectPanel unSelect(){
 		if (selectedInfo != null){
 			selectedInfo.unHighlight();
 		}
-		SingleObjectInfo retval = selectedInfo;
+		TileObjectPanel retval = selectedInfo;
 		selectedInfo = null;
 		return retval;
 	}
+	
 	protected void removeSelected(){
-		SingleObjectInfo removed = clearSelected();
+		TileObjectPanel removed = unSelect();
 		itemInfos.remove(removed);
 		this.remove(removed);
+		this.setDirty(true);
+		this.revalidate();
+	}
+	protected void clear(){
+		unSelect();
+		for (TileObjectPanel info : itemInfos){
+			this.remove(info);
+		}
+		itemInfos.clear();
+		this.setDirty(true);
 		this.revalidate();
 	}
 	
+	protected boolean isDirty(){
+		return isDirty;
+	}
+	protected void setDirty(boolean b){
+		isDirty = b;
+	}
+	protected boolean isEmpty(){
+		return itemInfos.isEmpty();
+	}
+	protected boolean hasSelection(){
+		return selectedInfo != null;
+	}
+	
+	protected boolean hasCharacter(){
+		for (TileObjectPanel info : itemInfos){
+			if (info.isCharacterPanel){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	//------------Scrolling support-----------//
 	@Override
 	public Dimension getPreferredScrollableViewportSize() {
 		return getPreferredSize();
@@ -86,88 +123,6 @@ class TileInfoPanel extends JPanel implements Scrollable
 	@Override
 	public int getScrollableUnitIncrement(Rectangle arg0, int arg1, int arg2) {
 		return 1;
-	}
-	
-	/**
-	 * This private nested class helps the TileInfoPanel by handling the display for a single item related a tile
-	 * @author DarrellPenner
-	 *
-	 */
-	private static class SingleObjectInfo extends JPanel implements MouseListener {
-		
-		private JTextField[] textBoxes;
-		private JPanel mainPanel;
-		private JPanel typePanel;
-		public static final Color HIGH_LIGHT_COLOR = Color.decode("0x2277AA");
-		public static final Color DEFAULT_COLOR = Color.LIGHT_GRAY;
-		
-		SingleObjectInfo(String type, String[] labels, String[] defaultValues){
-			if (labels.length != defaultValues.length){
-				throw new IllegalArgumentException("Labels and default values are meant to be parallel arrays");
-			}
-			int numEntries = labels.length;
-			
-			//main panel set up
-			mainPanel = new JPanel();
-			mainPanel.setLayout(new GridLayout(0, 2));
-			
-			textBoxes = new JTextField[numEntries];
-			
-			for (int i = 0; i < numEntries; i++){
-				textBoxes[i] = new JTextField(defaultValues[i]);		
-				mainPanel.add(new JLabel(labels[i]));
-				mainPanel.add(textBoxes[i]);
-				textBoxes[i].addMouseListener(this);	
-			}
-			
-			//typePanel setup
-			typePanel = new JPanel();
-			typePanel.add(new JLabel(type));
-			
-			this.setLayout(new BorderLayout());
-			
-			this.add(typePanel, BorderLayout.NORTH);
-			this.add(mainPanel, BorderLayout.CENTER);
-			
-			this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-			this.setPreferredSize(new Dimension(200, 50*numEntries + typePanel.getHeight()));
-			this.addMouseListener(this);
-		}
-		
-		protected void highlight(){
-			mainPanel.setBackground(HIGH_LIGHT_COLOR);
-			typePanel.setBackground(HIGH_LIGHT_COLOR);
-		}
-		protected void unHighlight(){
-			mainPanel.setBackground(DEFAULT_COLOR);
-			typePanel.setBackground(DEFAULT_COLOR);
-		}
-		
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			//A bit of an ugly solution: Swing design has it such that a mouse click event is consumed
-			//by only one component. Clicking on a text box consumed this click, so to get the entire
-			//panel to become selected, this panel had to listen to the click and tell the parent to consider
-			//this panel selected
-			((TileInfoPanel) this.getParent()).setSelectedInfo(this);
-		}
-
-		@Override
-		public void mouseEntered(MouseEvent e) {	
-		}
-
-		@Override
-		public void mouseExited(MouseEvent e) {
-		}
-
-		@Override
-		public void mousePressed(MouseEvent e) {
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent e) {
-		}
-		
 	}
 
 	

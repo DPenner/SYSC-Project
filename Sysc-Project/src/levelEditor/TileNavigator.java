@@ -1,64 +1,69 @@
 package levelEditor;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.util.AbstractList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
 
 import javax.swing.*;
 
 import gameCore.*;
 
+/**
+ * TileNavigator helps edit a specific Tile
+ * 
+ * @author Group D
+ * @author Main Author: Darrell Penner
+ * 
+ * Group D Members
+ * ---------------
+ * Karen Madore
+ * Trang Pham
+ * Darrell Penner
+ * 
+ *
+ * @version 1.0
+ *
+ */
 
 class TileNavigator extends JDialog {
-	private String type = "Item";
-	private String names[] = {"Name: ", "Weight: "};
-	private String initialValues[] = {"New Item", "0"};
+	//extends JDialog so that it can be modal (ie blocking) -> once opened, this frame must be dealt with
 
 	private TileInfoPanel itemInfos;
-	private JButton addItemButton;
-	private JButton removeButton;
-	private JButton saveButton;
-	private JButton cancelButton;
 	
-	public TileNavigator(Frame owner, Tile tile){
+	public TileNavigator(Frame owner, LevelEditor editor, Tile tile){
 		super(owner, "Items on the tile", true);
 		
 		this.setLayout(new BorderLayout());
 		itemInfos = new TileInfoPanel();
 		JScrollPane scrollPane = new JScrollPane(itemInfos);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		
 		this.add(scrollPane, BorderLayout.CENTER);
+		this.setSize(800, 500);
+		NavigatorController nc = new NavigatorController(editor, this, tile);
 		
-		addItemButton = new JButton("Add Item");
-		//addWeaponButton = new JButton("Add Weapon");
-		removeButton = new JButton("Remove Selected");
-		saveButton = new JButton("Save Tile");
-		cancelButton = new JButton("Cancel");
-		
-		addItemButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				itemInfos.add(type, names, initialValues);
-			}
-		});
-		
-		removeButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				itemInfos.removeSelected();
-			}
-		});
-		
+		//buttons
 		JPanel buttonPane = new JPanel();
 		buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.PAGE_AXIS));
-		buttonPane.add(addItemButton);
-		buttonPane.add(removeButton);
-		buttonPane.add(saveButton);
-		buttonPane.add(cancelButton);
 		buttonPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		this.add(buttonPane, BorderLayout.EAST);
 		
-		this.setSize(800, 500);
+		for (NavigatorEditingButton neb : NavigatorEditingButton.values()){
+			JButton button = new JButton(neb.toString());
+			nc.addButton(button);
+			buttonPane.add(button);
+		}
+		
+		JScrollPane buttonScroll = new JScrollPane(buttonPane);
+		buttonScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		buttonScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		this.add(buttonScroll, BorderLayout.EAST);
+		
 		this.setVisible(true);
+	}
+	
+	protected TileInfoPanel getTileInfoPanel(){
+		return itemInfos;
 	}
 }
