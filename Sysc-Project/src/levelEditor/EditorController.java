@@ -10,22 +10,20 @@ import javax.swing.JDialog;
 
 import gameCore.*;
 
+import graphics2D.MapController;
 import graphics2D.MapView;
 
-class EditorController extends MouseAdapter implements ComponentListener {
+class EditorController extends MapController{//MouseAdapter implements ComponentListener {
 	
 	LevelEditorView levelEditorFrame;
-	MapView editorView;
-	ModeSwitcher switcher;
 	LevelEditor editor;
+	private long lastClickTime;
 	
 	public EditorController(LevelEditor editor, LevelEditorView levelEditorFrame){
+		super(levelEditorFrame.getEditorView());
 		this.levelEditorFrame = levelEditorFrame;
-		this.editorView = levelEditorFrame.getEditorView();
-		this.switcher = levelEditorFrame.getModeSwitcher();
+		this.view = levelEditorFrame.getEditorView();
 		this.editor = editor;
-		editorView.addMouseListener(this);
-		editorView.addComponentListener(this);
 	}
 	
 
@@ -33,146 +31,30 @@ class EditorController extends MouseAdapter implements ComponentListener {
 	
 	@Override
 	public void mouseClicked(MouseEvent e){
+		Point offsettedLocation = e.getPoint();
 		if (e.getButton() == MouseEvent.BUTTON1){
-			processClick(switcher.getMode(), e.getPoint());
-		}
-	}
-	
-	private void processClick(Mode mode, Point offsettedLocation){
-		boolean objectExists = hasObject(mode, offsettedLocation);
-		boolean tileExists = hasObject(Mode.TILE, offsettedLocation);
-		
-		switch (mode){
-		case TILE:
-			tileClick(offsettedLocation, objectExists);
-			break;
-		case EDGE:
-			break;
-		case EXIT:
-			break;
-		case ITEM:
+			boolean tileExists = view.hasTile(offsettedLocation);
+			Point tileLocation = view.getTileLocation(offsettedLocation);
+			
 			if (tileExists){
-				itemClick(offsettedLocation, objectExists);
+				Tile removingTile = editor.getTile(tileLocation);
+				editor.removeTile(removingTile);
+				view.removeTile(removingTile);
 			}
-			break;
-		case MONSTER:
-			if (tileExists){
-				monsterClick(offsettedLocation, objectExists);
+			else { //add tile
+				Tile newTile = new Tile(tileLocation, new Room());
+				newTile.setVisited();
+				editor.addTile(newTile);
+				view.addTile(newTile);
 			}
-			break;
-		case PLAYER:
-			if (tileExists){
-				playerClick(offsettedLocation, objectExists);
-			}
-			break;
-		case WEAPON:
-			break;
-		default:
-			break;
-		
+		}
+		else {
+			itemClick(offsettedLocation);
 		}
 	}
 	
-	private void tileClick(Point offsettedLocation, boolean removeObject){
-		Point tileLocation = editorView.getTileLocation(offsettedLocation);
-		
-		if (removeObject){
-			Tile removingTile = editor.getTile(tileLocation);
-			editor.removeTile(removingTile);
-			editorView.removeTile(removingTile);
-		}
-		else { //add tile
-			Tile newTile = new Tile(tileLocation, new Room());
-			editor.addTile(newTile);
-			editorView.addTile(newTile);
-		}
-	}
-	
-	private void playerClick(Point offsettedLocation, boolean removeObject){
-		editor.removePlayer();
-
-		if (!removeObject) {
-			Tile playerTile = editorView.getTile(offsettedLocation);
-			editor.addPlayer("Babak", 10, 10, 10, playerTile);
-		}
-	}
-	
-	private void monsterClick(Point offsettedLocation, boolean removeObject){
-		Tile monsterTile = editorView.getTile(offsettedLocation);
-		
-		if (removeObject){
-			editor.removeMonster(monsterTile);
-		}
-		if (!removeObject){
-			editor.addMonster("Babak", 10, 10, monsterTile);
-		}
-	}
-	
-	private void itemClick(Point offsettedLocation, boolean removeObject){
-		Tile itemTile = editorView.getTile(offsettedLocation);	
+	private void itemClick(Point offsettedLocation){
+		Tile itemTile = view.getTile(offsettedLocation);	
 		new TileNavigator(levelEditorFrame, itemTile);
-	}
-	
-	private boolean hasObject(Mode mode, Point offsettedLocation){
-		switch (mode){
-		case TILE:
-			return editorView.hasTile(offsettedLocation);
-		case EDGE:
-			break;
-		case EXIT:
-			break;
-		case ITEM:
-			return hasObject(Mode.TILE, offsettedLocation)
-					&& editorView.getTile(offsettedLocation).hasItems();
-		case MONSTER:
-			return hasObject(Mode.TILE, offsettedLocation)
-					&& editorView.getTile(offsettedLocation).getCharacter() instanceof Monster;
-		case PLAYER:
-			return hasObject(Mode.TILE, offsettedLocation)
-					&& editorView.getTile(offsettedLocation).getCharacter() instanceof Player;
-		case WEAPON:
-			if (!hasObject(Mode.TILE, offsettedLocation)) return false;
-			Inventory inv = editorView.getTile(offsettedLocation).getInventory();
-			for (int i = 0; i < inv.size(); i++){
-				if (inv.getItem(i) instanceof Weapon){
-					return true;
-				}
-			}
-			return false;
-		default:
-			break;
-		}
-		return false;
-	}
-
-	
-	//-----------Component Listeners------------//
-	
-	/**
-	 * Empty implementation
-	 */
-	@Override
-	public void componentHidden(ComponentEvent e) {
-	}
-	/**
-	 * Empty implementation
-	 */
-	@Override
-	public void componentMoved(ComponentEvent e) {		
-	}
-
-	/**
-	 * Ensures that the MapView displays all in its new size
-	 */
-	@Override
-	public void componentResized(ComponentEvent e) {
-		editorView.setPanelBounds();
-	}
-	
-	/**
-	 * Empty implementation
-	 */
-	@Override
-	public void componentShown(ComponentEvent e) {	
 	}
 }

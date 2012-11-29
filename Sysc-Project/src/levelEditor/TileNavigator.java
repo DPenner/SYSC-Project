@@ -17,7 +17,7 @@ class TileNavigator extends JDialog {
 	private String initialValues[] = {"New Item", "0"};
 
 	private TileInfoPanel itemInfos;
-	private JButton addButton;
+	private JButton addItemButton;
 	private JButton removeButton;
 	private JButton saveButton;
 	private JButton cancelButton;
@@ -31,12 +31,13 @@ class TileNavigator extends JDialog {
 		
 		this.add(scrollPane, BorderLayout.CENTER);
 		
-		addButton = new JButton("Add Item");
-		removeButton = new JButton("Remove Item");
-		saveButton = new JButton("Save");
+		addItemButton = new JButton("Add Item");
+		//addWeaponButton = new JButton("Add Weapon");
+		removeButton = new JButton("Remove Selected");
+		saveButton = new JButton("Save Tile");
 		cancelButton = new JButton("Cancel");
 		
-		addButton.addActionListener(new ActionListener(){
+		addItemButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				itemInfos.add(type, names, initialValues);
 			}
@@ -50,7 +51,7 @@ class TileNavigator extends JDialog {
 		
 		JPanel buttonPane = new JPanel();
 		buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.PAGE_AXIS));
-		buttonPane.add(addButton);
+		buttonPane.add(addItemButton);
 		buttonPane.add(removeButton);
 		buttonPane.add(saveButton);
 		buttonPane.add(cancelButton);
