@@ -110,7 +110,7 @@ class EditorController extends MouseAdapter implements ComponentListener {
 	
 	private void itemClick(Point offsettedLocation, boolean removeObject){
 		Tile itemTile = editorView.getTile(offsettedLocation);	
-		new ItemDialog(levelEditorFrame, itemTile);
+		new TileNavigator(levelEditorFrame, itemTile);
 	}
 	
 	private boolean hasObject(Mode mode, Point offsettedLocation){

@@ -1,5 +1,6 @@
 package levelEditor;
 
+import java.awt.BorderLayout;
 import java.awt.event.KeyEvent;
 
 import graphics2D.MapView;
@@ -14,6 +15,7 @@ public class LevelEditorView extends JFrame{
 	public LevelEditorView(LevelEditor editor){
 		super("Level Editor");
 
+		this.setLayout(new BorderLayout());
 		this.setSize(600, 600);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -25,10 +27,15 @@ public class LevelEditorView extends JFrame{
 		this.setJMenuBar(menuBar);
 		
 		editorView = new MapView();
-		
 		new EditorController(editor, this);
 		
-		this.add(editorView);	
+		JScrollPane mapScroller = new JScrollPane();
+		mapScroller.getViewport().setLayout(new BorderLayout());
+		mapScroller.getViewport().add(editorView, BorderLayout.CENTER);
+
+		this.add(mapScroller);
+		
+		//this.add(mapScroller);	
 		this.setVisible(true);
 	}
 	
