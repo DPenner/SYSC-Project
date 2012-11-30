@@ -1,0 +1,69 @@
+package levelEditor;
+
+import java.awt.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+
+import javax.swing.*;
+
+import gameCore.*;
+
+/**
+ * TileNavigator helps edit a specific Tile
+ * 
+ * @author Group D
+ * @author Main Author: Darrell Penner
+ * 
+ * Group D Members
+ * ---------------
+ * Karen Madore
+ * Trang Pham
+ * Darrell Penner
+ * 
+ *
+ * @version 1.0
+ *
+ */
+
+class TileNavigator extends JDialog {
+	//extends JDialog so that it can be modal (ie blocking) -> once opened, this frame must be dealt with
+
+	private TileInfoPanel itemInfos;
+	
+	public TileNavigator(Frame owner, LevelEditor editor, Tile tile){
+		super(owner, "Items on the tile", true);
+		
+		this.setLayout(new BorderLayout());
+		itemInfos = new TileInfoPanel();
+		JScrollPane scrollPane = new JScrollPane(itemInfos);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		
+		this.add(scrollPane, BorderLayout.CENTER);
+		this.setSize(800, 500);
+		NavigatorController nc = new NavigatorController(editor, this, tile);
+		
+		//buttons
+		JPanel buttonPane = new JPanel();
+		buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.PAGE_AXIS));
+		buttonPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		
+		for (NavigatorEditingButton neb : NavigatorEditingButton.values()){
+			JButton button = new JButton(neb.toString());
+			nc.addButton(button);
+			buttonPane.add(button);
+		}
+		
+		JScrollPane buttonScroll = new JScrollPane(buttonPane);
+		buttonScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		buttonScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		this.add(buttonScroll, BorderLayout.EAST);
+		
+		this.setVisible(true);
+	}
+	
+	protected TileInfoPanel getTileInfoPanel(){
+		return itemInfos;
+	}
+}

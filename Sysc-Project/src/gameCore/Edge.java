@@ -186,4 +186,11 @@ public class Edge extends LayoutObject {
 		return tile1.isVisited() || tile2.isVisited();
 	}
 	
+	/**
+	 * Checks if the edge has only one Tile associated with it
+	 * @return True if it is one-sided, false otherwise
+	 */
+	public final boolean isOneSided(){
+		return tile1 == null || tile2 == null;
+	}
 }

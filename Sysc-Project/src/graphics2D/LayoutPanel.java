@@ -102,7 +102,7 @@ abstract class LayoutPanel<T extends LayoutObject> extends JPanel implements Obs
 	    @Override
 		public void run() {
 	        T newLayoutObject = buffer.remove();
-	       	layoutObjects.add(newLayoutObject);		
+	       	layoutObjects.add(newLayoutObject);
 	   		repaint(getRepaintRectangle(newLayoutObject));
 	    	}
 	    });
