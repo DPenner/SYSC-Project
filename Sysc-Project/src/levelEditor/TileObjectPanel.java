@@ -31,11 +31,12 @@ class TileObjectPanel extends JPanel implements MouseListener {
 	private JPanel typePanel;
 	public static final Color HIGH_LIGHT_COLOR = Color.decode("0x2277AA");
 	public static final Color DEFAULT_COLOR = Color.LIGHT_GRAY;
-	boolean isCharacterPanel;
 	TileInfoPanel parent;
+	TileObjectDisplayData displayData;
 	
 	TileObjectPanel(TileInfoPanel parentPanel, TileObjectDisplayData data){	
 		this.parent = parentPanel;
+		this.displayData = data;
 		
 		//main panel set up
 		mainPanel = new JPanel();
@@ -72,7 +73,6 @@ class TileObjectPanel extends JPanel implements MouseListener {
 		typePanel.add(typeLabel);
 		
 		//this panel set up
-		isCharacterPanel = data.isCharacterData;
 		this.setLayout(new BorderLayout());
 		
 		this.add(typePanel, BorderLayout.NORTH);
@@ -90,6 +90,10 @@ class TileObjectPanel extends JPanel implements MouseListener {
 	protected void unHighlight(){
 		mainPanel.setBackground(DEFAULT_COLOR);
 		typePanel.setBackground(DEFAULT_COLOR);
+	}
+	
+	protected TileObjectDisplayData getDisplayData(){
+		return displayData;
 	}
 	
 	@Override

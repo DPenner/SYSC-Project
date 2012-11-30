@@ -54,7 +54,7 @@ class EditorController extends MapController implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals("Help")){
+		if (e.getActionCommand().equals(LevelEditorView.HELP)){
 			new HelpFrame();
 		}
 	}

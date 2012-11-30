@@ -311,4 +311,8 @@ public class Player extends Character
 		return pListeners.size();
 	}
 	
+	public int getStamina(){
+		return stamina;
+	}
+	
 }

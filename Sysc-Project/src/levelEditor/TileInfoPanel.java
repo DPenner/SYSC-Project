@@ -1,11 +1,16 @@
 package levelEditor;
 
+import gameCore.Direction;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.*;
+import gameCore.*;
 
 /**
  * TileInfoPanel displays all things editable about a given Tile
@@ -28,21 +33,70 @@ class TileInfoPanel extends JPanel implements Scrollable
 {
 	List<TileObjectPanel> itemInfos;
 	TileObjectPanel selectedInfo;
+	TileObjectDisplayData characterData;
 	boolean isDirty;
+	Map<Direction, TileObjectDisplayData> existingDirections;
 	
 	protected TileInfoPanel(){
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		itemInfos = new ArrayList<TileObjectPanel>();
+		existingDirections = new HashMap<Direction, TileObjectDisplayData>();
+		characterData = null;
 		isDirty = false;
 	}
 	
-	protected void add(TileObjectDisplayData data){
+	private void add(TileObjectDisplayData data){
 		TileObjectPanel newInfo = new TileObjectPanel(this, data);
 		this.add(newInfo);
 		itemInfos.add(newInfo);
 		this.setSelectedInfo(newInfo);
 		this.setDirty(true);
 		this.revalidate();
+	}
+	
+	private void addItem(Item i){
+		add(TileObjectDisplayData.getItemDisplayData(i));
+	}
+	protected void addItem(){
+		addItem(null);
+	}
+	
+	private void addWeapon(Weapon w){
+		add(TileObjectDisplayData.getWeaponDisplayData(w));
+	}
+	protected void addWeapon(){
+		addWeapon(null);
+	}
+	
+	private void addMonster(Monster m){
+		characterData = TileObjectDisplayData.getMonsterDisplayData(m);
+		add(characterData);
+	}
+	protected void addMonster(){
+		addMonster(null);
+	}
+	
+	private void addPlayer(Player p){
+		characterData = TileObjectDisplayData.getPlayerDisplayData(p);
+		add(characterData);
+	}
+	protected void addPlayer(){
+		addPlayer(null);
+	}
+	
+	protected void addWall(Direction d){
+		TileObjectDisplayData wallData = TileObjectDisplayData.getWallDisplayData(d);
+		existingDirections.put(d, wallData);
+		add(wallData);
+	}
+	
+	private void addDoor(Exit door, Direction d){
+		TileObjectDisplayData doorData = TileObjectDisplayData.getDoorDisplayData(door, d);
+		existingDirections.put(d, doorData);
+		add(doorData);
+	}
+	protected void addDoor(Direction d){
+		addDoor(null, d);
 	}
 	
 	protected void setSelectedInfo(TileObjectPanel info){
@@ -61,18 +115,40 @@ class TileInfoPanel extends JPanel implements Scrollable
 	}
 	
 	protected void removeSelected(){
-		TileObjectPanel removed = unSelect();
-		itemInfos.remove(removed);
-		this.remove(removed);
-		this.setDirty(true);
-		this.revalidate();
+		if (hasSelection()){
+			TileObjectPanel removed = unSelect();
+			itemInfos.remove(removed);
+			this.remove(removed);
+			this.setDirty(true);
+			
+			TileObjectDisplayData removedData = removed.getDisplayData();
+			if (characterData == removedData){
+				characterData = null;
+			}
+			
+			Direction removeDirection = null;
+			for (Direction d : existingDirections.keySet()){
+				if (existingDirections.get(d) == removedData){
+					removeDirection = d;
+				}
+			}
+			if (removeDirection != null){
+				existingDirections.remove(removeDirection);
+			}		
+			
+			this.revalidate();
+		}
 	}
+	
+	
 	protected void clear(){
 		unSelect();
 		for (TileObjectPanel info : itemInfos){
 			this.remove(info);
 		}
 		itemInfos.clear();
+		characterData = null;
+		existingDirections.clear();
 		this.setDirty(true);
 		this.revalidate();
 	}
@@ -91,12 +167,10 @@ class TileInfoPanel extends JPanel implements Scrollable
 	}
 	
 	protected boolean hasCharacter(){
-		for (TileObjectPanel info : itemInfos){
-			if (info.isCharacterPanel){
-				return true;
-			}
-		}
-		return false;
+		return characterData != null;
+	}
+	protected boolean hasEdge(Direction d){
+		return existingDirections.containsKey(d);
 	}
 	
 	//------------Scrolling support-----------//

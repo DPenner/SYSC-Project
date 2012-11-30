@@ -31,9 +31,10 @@ class TileNavigator extends JDialog {
 	//extends JDialog so that it can be modal (ie blocking) -> once opened, this frame must be dealt with
 
 	private TileInfoPanel itemInfos;
+	private JComboBox directionBox;
 	
 	public TileNavigator(Frame owner, LevelEditor editor, Tile tile){
-		super(owner, "Items on the tile", true);
+		super(owner, "Tile Navigator", true);
 		
 		this.setLayout(new BorderLayout());
 		itemInfos = new TileInfoPanel();
@@ -44,11 +45,16 @@ class TileNavigator extends JDialog {
 		this.setSize(800, 500);
 		NavigatorController nc = new NavigatorController(editor, this, tile);
 		
-		//buttons
 		JPanel buttonPane = new JPanel();
 		buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.PAGE_AXIS));
 		buttonPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		
+		//combo-box
+		directionBox = new JComboBox(Direction.values());
+		buttonPane.add(directionBox);
+		directionBox.addActionListener(nc);
+		
+		//buttons
 		for (NavigatorEditingButton neb : NavigatorEditingButton.values()){
 			JButton button = new JButton(neb.toString());
 			nc.addButton(button);
@@ -65,5 +71,9 @@ class TileNavigator extends JDialog {
 	
 	protected TileInfoPanel getTileInfoPanel(){
 		return itemInfos;
+	}
+	
+	protected Direction getSelectedDirection(){
+		return (Direction) directionBox.getSelectedItem();
 	}
 }

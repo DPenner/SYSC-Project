@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 
 class NavigatorController implements ActionListener {
 
@@ -29,39 +30,48 @@ class NavigatorController implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		switch (NavigatorEditingButton.getNavigatorEditingButton(e.getActionCommand())){
-		case ADD_ITEM:
-			infoPanel.add(TileObjectDisplayData.getItemDisplayData());
-			break;
-		case ADD_WEAPON:
-			infoPanel.add(TileObjectDisplayData.getWeaponDisplayData());
-			break;
-		case ADD_MONSTER:
-			infoPanel.add(TileObjectDisplayData.getMonsterDisplayData());
-			break;
-		case ADD_PLAYER:
-			infoPanel.add(TileObjectDisplayData.getPlayerDisplayData());
-			break;
-		case ADD_WALL:
-			infoPanel.add(TileObjectDisplayData.getWallDisplayData(Direction.NORTH)); //TEMP
-			break;
-		case ADD_DOOR:
-			infoPanel.add(TileObjectDisplayData.getDoorDisplayData(Direction.NORTH));
-			break;
-		case RESET_TILE:
-			break;
-		case REMOVE_SELECTION:
-			infoPanel.removeSelected();
-			break;
-		case REMOVE_ALL:
-			infoPanel.clear();
-			break;
-		case SAVE_TILE:
-			break;
-		case CLOSE:
-			navigator.dispose();
-			break;
+		if (NavigatorEditingButton.isNavigatorEditingbutton(e.getActionCommand())){
+			switch (NavigatorEditingButton.getNavigatorEditingButton(e.getActionCommand())){
+			case ADD_ITEM:
+				infoPanel.addItem();
+				break;
+			case ADD_WEAPON:
+				infoPanel.addWeapon();
+				break;
+			case ADD_MONSTER:
+				infoPanel.addMonster();
+				break;
+			case ADD_PLAYER:
+				infoPanel.addPlayer();
+				break;
+			case ADD_WALL:
+				infoPanel.addWall(navigator.getSelectedDirection());
+				break;
+			case ADD_DOOR:
+				infoPanel.addDoor(navigator.getSelectedDirection()); 
+				break;
+			case RESET_TILE:
+				break;
+			case REMOVE_SELECTION:
+				infoPanel.removeSelected();
+				break;
+			case REMOVE_ALL:
+				infoPanel.clear();
+				break;
+			case SAVE_TILE:
+				break;
+			case CLOSE:
+				if (infoPanel.isDirty()){
+					if (JOptionPane.showConfirmDialog(navigator, "There are unsaved changes to the tile, discard them?",
+	                    "Unsaved changes", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+						navigator.dispose();
+					}
+				}
+				else navigator.dispose();
+				break;
+			}
 		}
+		
 		refreshButtons();
 	}
 	
@@ -73,11 +83,17 @@ class NavigatorController implements ActionListener {
 	
 	private void refreshButtons(){
 		boolean hasCharacter = infoPanel.hasCharacter();
+		
 		for (JButton button : buttons){
 			switch (NavigatorEditingButton.getNavigatorEditingButton(button.getActionCommand())){
+			case ADD_WALL:
 			case ADD_DOOR:
+				button.setEnabled(!infoPanel.hasEdge(navigator.getSelectedDirection()));
 				break;
+			case CLOSE:
+			case ADD_WEAPON:
 			case ADD_ITEM:
+			case REMOVE_SELECTION:
 				button.setEnabled(true);
 				break;
 			case ADD_MONSTER:
@@ -85,25 +101,12 @@ class NavigatorController implements ActionListener {
 				break;
 			case ADD_PLAYER:
 				boolean hasPlayerElseWhere = editor.hasPlayer() && !(activeTile.getCharacter() instanceof Player);
-				button.setEnabled(!hasCharacter || !hasPlayerElseWhere);
-				break;
-			case ADD_WALL:
-				break;
-			case ADD_WEAPON:
-				button.setEnabled(true);
-				break;
-			case CLOSE:
-				button.setEnabled(true);
+				button.setEnabled(!hasCharacter && !hasPlayerElseWhere);
 				break;
 			case REMOVE_ALL:
 				button.setEnabled(!infoPanel.isEmpty());
 				break;
-			case REMOVE_SELECTION:
-				button.setEnabled(infoPanel.hasSelection());
-				break;
 			case RESET_TILE:
-				button.setEnabled(infoPanel.isDirty());
-				break;
 			case SAVE_TILE:
 				button.setEnabled(infoPanel.isDirty());
 				break;

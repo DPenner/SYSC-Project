@@ -23,6 +23,14 @@ enum NavigatorEditingButton {
 		return name;
 	}
 	
+	public static boolean isNavigatorEditingbutton(String name){
+		for (NavigatorEditingButton neb : NavigatorEditingButton.values()){
+			if (neb.toString().equals(name)){
+				return true;
+			}
+		}
+		return false;
+	}
 	public static NavigatorEditingButton getNavigatorEditingButton(String name){
 		for (NavigatorEditingButton neb : NavigatorEditingButton.values()){
 			if (neb.toString().equals(name)){

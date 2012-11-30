@@ -45,6 +45,8 @@ public class LevelEditorView extends JFrame {
 		save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.VK_CONTROL));
 		help.setActionCommand(HELP);
 		save.setActionCommand(SAVE);
+		help.addActionListener(controller);
+		save.addActionListener(controller);
 		
 		fileMenu.add(help);		
 		fileMenu.add(save);
