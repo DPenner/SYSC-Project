@@ -33,14 +33,18 @@ class TileInfoPanel extends JPanel implements Scrollable
 {
 	List<TileObjectPanel> itemInfos;
 	TileObjectPanel selectedInfo;
+	
+	
 	TileObjectDisplayData characterData;
+	Map<Direction, TileObjectDisplayData> edgeData;
+	List<TileObjectDisplayData> itemData;
+	
 	boolean isDirty;
-	Map<Direction, TileObjectDisplayData> existingDirections;
 	
 	protected TileInfoPanel(){
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		itemInfos = new ArrayList<TileObjectPanel>();
-		existingDirections = new HashMap<Direction, TileObjectDisplayData>();
+		edgeData = new HashMap<Direction, TileObjectDisplayData>();
 		characterData = null;
 		isDirty = false;
 	}
@@ -86,13 +90,13 @@ class TileInfoPanel extends JPanel implements Scrollable
 	
 	protected void addWall(Direction d){
 		TileObjectDisplayData wallData = TileObjectDisplayData.getWallDisplayData(d);
-		existingDirections.put(d, wallData);
+		edgeData.put(d, wallData);
 		add(wallData);
 	}
 	
 	private void addDoor(Exit door, Direction d){
 		TileObjectDisplayData doorData = TileObjectDisplayData.getDoorDisplayData(door, d);
-		existingDirections.put(d, doorData);
+		edgeData.put(d, doorData);
 		add(doorData);
 	}
 	protected void addDoor(Direction d){
@@ -127,13 +131,13 @@ class TileInfoPanel extends JPanel implements Scrollable
 			}
 			
 			Direction removeDirection = null;
-			for (Direction d : existingDirections.keySet()){
-				if (existingDirections.get(d) == removedData){
+			for (Direction d : edgeData.keySet()){
+				if (edgeData.get(d) == removedData){
 					removeDirection = d;
 				}
 			}
 			if (removeDirection != null){
-				existingDirections.remove(removeDirection);
+				edgeData.remove(removeDirection);
 			}		
 			
 			this.revalidate();
@@ -148,7 +152,7 @@ class TileInfoPanel extends JPanel implements Scrollable
 		}
 		itemInfos.clear();
 		characterData = null;
-		existingDirections.clear();
+		edgeData.clear();
 		this.setDirty(true);
 		this.revalidate();
 	}
@@ -170,7 +174,7 @@ class TileInfoPanel extends JPanel implements Scrollable
 		return characterData != null;
 	}
 	protected boolean hasEdge(Direction d){
-		return existingDirections.containsKey(d);
+		return edgeData.containsKey(d);
 	}
 	
 	//------------Scrolling support-----------//

@@ -11,7 +11,7 @@ import javax.swing.*;
 import gameCore.*;
 
 /**
- * TileNavigator helps edit a specific Tile
+ * TileNavigator helps edit a specific Tile including the Edges and contents.
  * 
  * @author Group D
  * @author Main Author: Darrell Penner
@@ -57,6 +57,7 @@ class TileNavigator extends JDialog {
 		//buttons
 		for (NavigatorEditingButton neb : NavigatorEditingButton.values()){
 			JButton button = new JButton(neb.toString());
+			button.setToolTipText(neb.getToolTip());
 			nc.addButton(button);
 			buttonPane.add(button);
 		}

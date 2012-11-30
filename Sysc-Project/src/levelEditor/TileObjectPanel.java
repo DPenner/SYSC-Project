@@ -79,7 +79,7 @@ class TileObjectPanel extends JPanel implements MouseListener {
 		this.add(mainPanel, BorderLayout.CENTER);
 		
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		mainPanel.setPreferredSize(new Dimension(0, 40*data.size() + typePanel.getHeight()));
+		mainPanel.setPreferredSize(new Dimension(0, 30*data.size() + typePanel.getHeight()));
 		this.addMouseListener(this);
 	}
 	
