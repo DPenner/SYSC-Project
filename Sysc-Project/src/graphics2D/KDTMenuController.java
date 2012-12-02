@@ -70,10 +70,11 @@ public class KDTMenuController implements ActionListener {
 		}		
 		else if (command.equals("Undo"))
 		{
+			if(!p.isDead())
 			c.execUndo();
 		}
 		else if (command.equals("Redo"))
-		{
+		{	if(!p.isDead())
 			c.execRedo();
 		}
 		
@@ -113,4 +114,3 @@ public class KDTMenuController implements ActionListener {
 		System.exit(0);
 	}
 }
-

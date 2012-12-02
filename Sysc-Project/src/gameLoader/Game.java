@@ -63,7 +63,7 @@ public class Game extends TextOutputPanelObservable
     	Serialize s = new Serialize(player, level);
 		if(s.loadFromFile())
 		{
-			new KDTView(player, level, new CommandController(player));
+			new KDTView(s.getP(), s.getL(), new CommandController(s.getP()));
     		printWelcome(); 
 		}
     }

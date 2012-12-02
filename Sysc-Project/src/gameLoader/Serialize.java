@@ -158,7 +158,7 @@ public class Serialize {
 			writeSuccess = write_serialize(fileName);
 			
 			if (writeSuccess) {
-				String message = "Game state successfully saved. Exiting game.";
+				String message = "Game state successfully saved.";
 				JOptionPane.showMessageDialog(null, message, "Game State", JOptionPane.INFORMATION_MESSAGE);
 			}else {
 				String message = "Game state NOT successfully saved.";
