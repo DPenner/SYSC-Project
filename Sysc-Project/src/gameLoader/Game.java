@@ -2,8 +2,18 @@ package gameLoader;
 
 import java.awt.KeyboardFocusManager;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
+import levelEditor.LevelEditor;
+import levelEditor.LevelEditorView;
+
 import commands.CommandController;
-import graphics2D.KDTMouseController;
+import commands.KeyCommandController;
+
+import java.io.File;
+
+import javax.swing.JFileChooser;
 import gameCore.Player;
 import graphics2D.KDTView;
 import graphics2D.TextOutputPanelObservable;
@@ -29,31 +39,59 @@ import graphics2D.TextOutputPanelObservable;
 
 public class Game extends TextOutputPanelObservable
 {
+	private static final int MODE_OPEN = 0;
+	private static final int MODE_SAVE = 1;
+	
     private Player player;
     private Level level;
 
-    /**
-     *  Main play routine.  Loops until end of play.
-     */
-    public void play() 
+    private void play() 
     {   
         if(!loadLvl("lvl0.xml"))
         {
         	printMessage("Unable to load the game.");
         }
         else
-        {
-    		KeyDispatcherController.initializeKeyDispatchController(player);
-    		
-    		KDTView kdtView = new KDTView(player, level, KeyDispatcherController.getCommandController());
-    		    		
-    		//KDTMouseController kdtMC= new KDTMouseController(KeyDispatcherController.getCommandController(), kdtView);
-    			
-            
-         	printWelcome(); 
+        {	
+    		new KDTView(player, level, new CommandController(player));
+    		printWelcome(); 
         }
     }
+    
+    private void playSaved()
+    {
+    	Serialize s = new Serialize(player, level);
+		if(s.loadFromFile())
+		{
+			new KDTView(s.getP(), s.getL(), new CommandController(s.getP()));
+    		printWelcome(); 
+		}
+    }
 
+    public void selectMode()
+    {
+		String[] modes = {"Play New Game", "Load Saved Game/Level", "Open Level Creator"};
+		String mode =  (String)JOptionPane.showInputDialog(
+		           			null,
+		                    "Select mode:\n",
+		                    "Kraft Dinner Table Game",
+		                    JOptionPane.QUESTION_MESSAGE,
+		                    null,
+		                    modes,
+		                    modes[0]);
+		if(mode.equals("Play New Game"))
+		{
+			play();
+		}
+		else if(mode.equals("Load Saved Game/Level"))
+		{
+			playSaved();
+		}
+		else
+		{
+			new LevelEditorView(new LevelEditor());
+		}
+    }
     /**
      * Print out the opening message for the player.
      */
@@ -104,7 +142,7 @@ public class Game extends TextOutputPanelObservable
     */
     public static class KeyDispatcherController
     {
-        private static CommandController keyEventDispatcher;
+        private static KeyCommandController keyEventDispatcher;
         /**
          * initialize the KeyEventDispatcher
          * @param player the current player
@@ -113,7 +151,7 @@ public class Game extends TextOutputPanelObservable
         {
 	    	//Sets it so that all keyboard events go to the CommandController
 			KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-	        keyEventDispatcher = new CommandController(player);
+	        keyEventDispatcher = new KeyCommandController(player);
 			manager.addKeyEventDispatcher(keyEventDispatcher);
         }
         
@@ -129,7 +167,7 @@ public class Game extends TextOutputPanelObservable
         /**
          * Return instance of the CommandController so that the KDTMouseController can issue commands as well
          */
-        public static CommandController getCommandController() {
+        public static KeyCommandController getCommandController() {
         	return keyEventDispatcher;
         }
     }
@@ -138,7 +176,7 @@ public class Game extends TextOutputPanelObservable
     public static void main(String args[])
     {
     	Game g = new Game();
-    	g.play();
+    	g.selectMode();
     }
     
 }

@@ -15,14 +15,19 @@ package commands;
 * @version 2.0
 *
 */
+import java.io.Serializable;
+
 import javax.swing.JOptionPane;
 
-public class DropCommand extends Command{
+public class DropCommand extends Command implements Serializable  {
+	
+	private static final long serialVersionUID = 1L;
+	
 	private String itemName;
 	
 	@Override
 	public boolean execute() {
-		String[] itemnames = CommandController.getPlayer().viewInventory().split(", ");
+		String[] itemnames = KeyCommandController.getPlayer().viewInventory().split(", ");
 		
 		itemName =  (String)JOptionPane.showInputDialog(
 		           			null,
@@ -48,7 +53,7 @@ public class DropCommand extends Command{
 	 * @return true if the item was successfully dropped
 	 */
 	public boolean drop(String itemname) {
-		if(!CommandController.getPlayer().drop(itemname))
+		if(!KeyCommandController.getPlayer().drop(itemname))
         {
         	printMessage("Item is not in your inventory. Can't drop what you don't have.");
         	return false;

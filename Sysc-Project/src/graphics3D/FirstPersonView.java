@@ -2,6 +2,8 @@ package graphics3D;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.event.MouseListener;
+import java.io.Serializable;
 
 import gameCore.Direction;
 import gameCore.Edge;
@@ -31,7 +33,8 @@ import javax.swing.JScrollPane;
  *
  */
 @SuppressWarnings("serial")
-public class FirstPersonView extends JScrollPane implements PlayerListener{
+public class FirstPersonView extends JScrollPane implements PlayerListener, Serializable  {
+	private static final long serialVersionUID = 1L;
 	protected static final int OUTER_BOX = 300;
 	protected static final int INNER_BOX = 180;
 	protected static final int BACKDIR_HEIGHT = 20;
@@ -115,7 +118,21 @@ public class FirstPersonView extends JScrollPane implements PlayerListener{
 
 	@Override
 	public void statsChanged(PlayerEvent e) {
+		if(e.getPlayer().isDead())
+		{
+			MouseListener[] mlis = this.getMouseListeners();
+			for(MouseListener m: mlis)
+			{
+				this.removeMouseListener(m);
+			}
+		}
+	}
+
+	@Override
+	public void playerRestored(PlayerEvent e) {
 		// TODO Auto-generated method stub
-		
+		Tile newPosition = e.getPlayer().getPosition();
+		backgroundLayer.draw(newPosition, DEFAULT_BACKDIR);
+		foregroundLayer.draw(newPosition, DEFAULT_BACKDIR);
 	}
 }

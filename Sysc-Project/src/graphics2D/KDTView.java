@@ -3,6 +3,7 @@ package graphics2D;
 import gameCore.Inventory;
 import gameCore.Player;
 import gameLoader.Level;
+import gameLoader.Serialize;
 import graphics3D.FirstPersonView;
 
 import java.awt.BorderLayout;
@@ -10,7 +11,10 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.io.IOException;
+
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -135,9 +139,13 @@ public class KDTView {
 	 */
 	private void addMenusToFrame() {
 		
-		KDTMenuController kdtMenuController=new KDTMenuController(f, kdtCC);	
+		KDTMenuController kdtMenuController=new KDTMenuController(f, player, level, kdtCC);	
 		//--------- MENUS ---------
 		JMenu file=new JMenu("File");
+		
+		JMenuItem save = new JMenuItem("Save");
+		save.setToolTipText("Save state of the game");
+		save.addActionListener(kdtMenuController);
 		
 		JMenuItem exit = new JMenuItem("Exit");
 		exit.setToolTipText("Exit Kraft Dinner Table Maze");
@@ -155,7 +163,8 @@ public class KDTView {
 		JMenuItem help = new JMenuItem("Help");
 		help.setToolTipText("View help manual");
 		help.addActionListener(kdtMenuController);
-			
+		
+		file.add(save);
 		file.add(help);
 		file.add(exit);
 		
@@ -168,5 +177,6 @@ public class KDTView {
 		
 		f.setJMenuBar(mainBar);
 	}
-			
+	
+	
 }

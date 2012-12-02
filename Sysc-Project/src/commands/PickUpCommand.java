@@ -15,9 +15,13 @@ package commands;
 * @version 2.0
 *
 */
+import java.io.Serializable;
+
 import javax.swing.JOptionPane;
 
-public class PickUpCommand extends Command{
+public class PickUpCommand extends Command implements Serializable  {
+	private static final long serialVersionUID = 1L;
+	
 	private String itemName;
 	@Override
 	public boolean execute() {
