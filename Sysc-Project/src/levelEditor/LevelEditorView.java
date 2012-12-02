@@ -3,6 +3,7 @@ package levelEditor;
 import java.awt.BorderLayout;
 import java.awt.event.KeyEvent;
 
+import gameLoader.Level;
 import graphics2D.MapView;
 
 import javax.swing.*;
@@ -16,6 +17,8 @@ public class LevelEditorView extends JFrame {
 	
 	public LevelEditorView(LevelEditor editor){
 		super("Level Editor");
+		
+		this.level = new Level();
 
 		this.setLayout(new BorderLayout());
 		this.setSize(600, 600);

@@ -41,6 +41,18 @@ public class Serialize {
 		this.p=p;
 	}
 	
+	public Player getP() {
+		return p;
+	}
+
+	public Level getL() {
+		return l;
+	}
+
+	public CommandController getCc() {
+		return cc;
+	}
+	
 	public boolean write_serialize(String fileName){
 		boolean writeSuccessful = false;
 		FileOutputStream oStream = null;

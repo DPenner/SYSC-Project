@@ -2,8 +2,16 @@ package gameLoader;
 
 import java.awt.KeyboardFocusManager;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
+import levelEditor.LevelEditor;
+import levelEditor.LevelEditorView;
+
 import commands.CommandController;
-import graphics2D.KDTMouseController;
+import java.io.File;
+
+import javax.swing.JFileChooser;
 import gameCore.Player;
 import graphics2D.KDTView;
 import graphics2D.TextOutputPanelObservable;
@@ -29,13 +37,13 @@ import graphics2D.TextOutputPanelObservable;
 
 public class Game extends TextOutputPanelObservable
 {
+	private static final int MODE_OPEN = 0;
+	private static final int MODE_SAVE = 1;
+	
     private Player player;
     private Level level;
 
-    /**
-     *  Main play routine.  Loops until end of play.
-     */
-    public void play() 
+    private void play() 
     {   
         if(!loadLvl("lvl0.xml"))
         {
@@ -43,17 +51,92 @@ public class Game extends TextOutputPanelObservable
         }
         else
         {
-    		KeyDispatcherController.initializeKeyDispatchController(player);
-    		
-    		KDTView kdtView = new KDTView(player, level, KeyDispatcherController.getCommandController());
-    		    		
-    		//KDTMouseController kdtMC= new KDTMouseController(KeyDispatcherController.getCommandController(), kdtView);
-    			
-            
-         	printWelcome(); 
+    		KeyDispatcherController.initializeKeyDispatchController(player);	
+    		new KDTView(player, level, KeyDispatcherController.getCommandController());
+    		printWelcome(); 
         }
     }
+    
+    private void playSaved()
+    {
+    	CommandController c = null;
+    	
+    	Serialize s = new Serialize(player, level, c);
+		boolean readSuccessful;
+		
+		String fileName = selectFile(MODE_OPEN);
+		if(fileName != null) {
+			readSuccessful = s.read_serialize(fileName);
+			if(readSuccessful) {
+				String message = "Game state successfully restored.";
+				JOptionPane.showMessageDialog(null, message, "Game State", JOptionPane.INFORMATION_MESSAGE);
+				KeyDispatcherController.initializeKeyDispatchController(s.getP());	
+	    		new KDTView(s.getP(), s.getL(), KeyDispatcherController.getCommandController());
+	    		printWelcome(); 
+			}else {
+				String message = "Game state NOT successfully restored.";
+				JOptionPane.showMessageDialog(null, message, "Game State", JOptionPane.INFORMATION_MESSAGE);
+			}
+		}
+    }
+    
+    private String selectFile(int mode) {
+		
+		String returnVal = null;
+		int ret = 0;
+		
+		final JFileChooser fc = new JFileChooser();
+		
+		//show open or save dialog
+		fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+		
+		if(mode == MODE_OPEN) 
+		{
+			ret = fc.showOpenDialog(new JFrame());
+		}
+		else if (mode == MODE_SAVE) 
+		{
+			ret = fc.showSaveDialog(new JFrame());
+		}
+		
+		if (ret == JFileChooser.CANCEL_OPTION) 
+		{
+			returnVal = null;
+		}
+		else if(ret == JFileChooser.APPROVE_OPTION) 
+		{
+			File file=fc.getSelectedFile();
+			
+			returnVal=file.getPath();
+		}
+		
+		return returnVal;
+	}
 
+    public void selectMode()
+    {
+		String[] modes = {"Play New Game", "Load Saved Game/Level", "Open Level Creator"};
+		String mode =  (String)JOptionPane.showInputDialog(
+		           			null,
+		                    "Select mode:\n",
+		                    "Kraft Dinner Table Game",
+		                    JOptionPane.QUESTION_MESSAGE,
+		                    null,
+		                    modes,
+		                    modes[0]);
+		if(mode.equals("Play New Game"))
+		{
+			play();
+		}
+		else if(mode.equals("Load Saved Game/Level"))
+		{
+			playSaved();
+		}
+		else
+		{
+			new LevelEditorView(new LevelEditor());
+		}
+    }
     /**
      * Print out the opening message for the player.
      */
@@ -138,7 +221,7 @@ public class Game extends TextOutputPanelObservable
     public static void main(String args[])
     {
     	Game g = new Game();
-    	g.play();
+    	g.selectMode();
     }
     
 }
