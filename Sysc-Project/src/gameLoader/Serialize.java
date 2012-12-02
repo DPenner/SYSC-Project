@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
 
-import commands.CommandController;
+import commands.KeyCommandController;
 /**
  *  Save and restore state of the game using serialization
  *  
@@ -33,9 +33,9 @@ import commands.CommandController;
 public class Serialize {
 	private Player p;
 	private Level l;
-	private CommandController cc;
+	private KeyCommandController cc;
 	
-	public Serialize(Player p, Level l, CommandController cc){
+	public Serialize(Player p, Level l, KeyCommandController cc){
 		this.cc=cc;
 		this.l=l;
 		this.p=p;
@@ -49,7 +49,7 @@ public class Serialize {
 		return l;
 	}
 
-	public CommandController getCc() {
+	public KeyCommandController getCc() {
 		return cc;
 	}
 	
@@ -112,9 +112,9 @@ public class Serialize {
 					{
 						this.l = (Level) objectIN;
 					} 
-					else if(objectIN instanceof CommandController ) 
+					else if(objectIN instanceof KeyCommandController ) 
 					{
-						this.cc = (CommandController) objectIN;
+						this.cc = (KeyCommandController) objectIN;
 					}
 					else
 					{	//got some other class 

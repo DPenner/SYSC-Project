@@ -75,47 +75,7 @@ public class LevelEditor {
 			l.setTile(t.getLocation().x, t.getLocation().y, t);
 		}
 		
-		Serialize s = new Serialize((Player) playerTile.getCharacter(), l, null);
-		boolean writeSuccess;
-		String fileName = selectFile(MODE_SAVE);
-		if(fileName !=null) {
-			writeSuccess = s.write_serialize(fileName);
-			
-			if (writeSuccess) {
-				String message = "Game state successfully saved. Exiting game.";
-				JOptionPane.showMessageDialog(null, message, "Game State", JOptionPane.INFORMATION_MESSAGE);
-				closeFrameAndExit();
-			}else {
-				String message = "Game state NOT successfully saved.";
-				JOptionPane.showMessageDialog(null, message, "Game State", JOptionPane.INFORMATION_MESSAGE);
-			}
-		}
-	}
-	private String selectFile(int mode) {
-		
-		String returnVal = null;
-		int ret = 0;
-		
-		final JFileChooser fc = new JFileChooser();
-		
-		//show open or save dialog
-		fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-
-		if (ret == JFileChooser.CANCEL_OPTION) 
-		{
-			returnVal = null;
-		}
-		else if(ret == JFileChooser.APPROVE_OPTION) 
-		{
-			File file=fc.getSelectedFile();
-			
-			returnVal=file.getPath();
-		}
-		else
-		{
-			ret = fc.showSaveDialog(new JFrame());
-		}
-		
-		return returnVal;
+		Serialize s = new Serialize((Player) playerTile.getCharacter(), l);
+		s.saveToFile();
 	}
 }

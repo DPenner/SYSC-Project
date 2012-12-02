@@ -9,6 +9,8 @@ import levelEditor.LevelEditor;
 import levelEditor.LevelEditorView;
 
 import commands.CommandController;
+import commands.KeyCommandController;
+
 import java.io.File;
 
 import javax.swing.JFileChooser;
@@ -50,68 +52,21 @@ public class Game extends TextOutputPanelObservable
         	printMessage("Unable to load the game.");
         }
         else
-        {
-    		KeyDispatcherController.initializeKeyDispatchController(player);	
-    		new KDTView(player, level, KeyDispatcherController.getCommandController());
+        {	
+    		new KDTView(player, level, new CommandController(player));
     		printWelcome(); 
         }
     }
     
     private void playSaved()
     {
-    	CommandController c = null;
-    	
-    	Serialize s = new Serialize(player, level, c);
-		boolean readSuccessful;
-		
-		String fileName = selectFile(MODE_OPEN);
-		if(fileName != null) {
-			readSuccessful = s.read_serialize(fileName);
-			if(readSuccessful) {
-				String message = "Game state successfully restored.";
-				JOptionPane.showMessageDialog(null, message, "Game State", JOptionPane.INFORMATION_MESSAGE);
-				KeyDispatcherController.initializeKeyDispatchController(s.getP());	
-	    		new KDTView(s.getP(), s.getL(), KeyDispatcherController.getCommandController());
-	    		printWelcome(); 
-			}else {
-				String message = "Game state NOT successfully restored.";
-				JOptionPane.showMessageDialog(null, message, "Game State", JOptionPane.INFORMATION_MESSAGE);
-			}
+    	Serialize s = new Serialize(player, level);
+		if(s.loadFromFile())
+		{
+			new KDTView(player, level, new CommandController(player));
+    		printWelcome(); 
 		}
     }
-    
-    private String selectFile(int mode) {
-		
-		String returnVal = null;
-		int ret = 0;
-		
-		final JFileChooser fc = new JFileChooser();
-		
-		//show open or save dialog
-		fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-		
-		if(mode == MODE_OPEN) 
-		{
-			ret = fc.showOpenDialog(new JFrame());
-		}
-		else if (mode == MODE_SAVE) 
-		{
-			ret = fc.showSaveDialog(new JFrame());
-		}
-		
-		if (ret == JFileChooser.CANCEL_OPTION) 
-		{
-			returnVal = null;
-		}
-		else if(ret == JFileChooser.APPROVE_OPTION) 
-		{
-			File file=fc.getSelectedFile();
-			
-			returnVal=file.getPath();
-		}
-		
-		return returnVal;
-	}
 
     public void selectMode()
     {
@@ -187,7 +142,7 @@ public class Game extends TextOutputPanelObservable
     */
     public static class KeyDispatcherController
     {
-        private static CommandController keyEventDispatcher;
+        private static KeyCommandController keyEventDispatcher;
         /**
          * initialize the KeyEventDispatcher
          * @param player the current player
@@ -196,7 +151,7 @@ public class Game extends TextOutputPanelObservable
         {
 	    	//Sets it so that all keyboard events go to the CommandController
 			KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-	        keyEventDispatcher = new CommandController(player);
+	        keyEventDispatcher = new KeyCommandController(player);
 			manager.addKeyEventDispatcher(keyEventDispatcher);
         }
         
@@ -212,7 +167,7 @@ public class Game extends TextOutputPanelObservable
         /**
          * Return instance of the CommandController so that the KDTMouseController can issue commands as well
          */
-        public static CommandController getCommandController() {
+        public static KeyCommandController getCommandController() {
         	return keyEventDispatcher;
         }
     }
