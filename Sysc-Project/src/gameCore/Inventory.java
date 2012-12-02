@@ -4,23 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-/**
- * Inventory is a collection of Items.  Items can be Weapons in this first revision.
- * 
- * @author Group D
- * @author Main author: Karen Madore
- * 
- * Group D Members
- * ---------------
- * Karen Madore
- * Trang Pham
- * Darrell Penner
- * 
- *
- * @version 1.0
- */
 
-public class Inventory implements Serializable  {
+
+public class Inventory implements Iterable<Item>, Serializable   {
 	private static final long serialVersionUID = 1L;
 
 	//------------Fields------------//
@@ -119,3 +105,4 @@ public class Inventory implements Serializable  {
 		return items.listIterator();
 	}
 }
+
