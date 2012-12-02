@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.Observable;
  
 /**
  * EdgePanel is a specialized panel that displays Edges for its parent MapView
@@ -30,9 +31,6 @@ class EdgePanel extends LayoutPanel<Edge>{
 
 	private static final Color DEFAULT_EDGE_COLOR = Color.decode("0x606060");
 	private static final Color DEFAULT_EXIT_COLOR = Color.decode("0x964B00");
-	
-	//private int edgeLength;
-	//private int tileSize;
 	
 	/**
 	 * Constructs an EdgePanel to display edges for the given mapView
@@ -120,5 +118,20 @@ class EdgePanel extends LayoutPanel<Edge>{
 	@Override
 	protected Rectangle getRepaintRectangle(Edge edge){
 		return getEdgeRectangle(edge, true);
+	}
+	
+	/**
+	 * Overrides so that edges that become stranded are removed. Calls super method after this check.
+	 */
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		if (!(arg0 instanceof Edge)){
+			throw new IllegalArgumentException("Edge panel was observing a non-Edge object.");
+		}
+		Edge e = (Edge) arg0;
+		if (e.isStranded()){
+			this.removeLayoutObject(e);
+		}
+		super.update(arg0, arg1);
 	}
 }

@@ -202,5 +202,16 @@ public class Edge extends LayoutObject implements Serializable {
 		else {
 			tile2 = null;
 		}
+		setChanged();
+		notifyObservers();
+	}
+	
+	/**
+	 * Returns whether an Edge is stranded or not - that is not connected to any Tile.
+	 * This can occur after disconnects.
+	 * @return True if the Edge is stranded, false otherwise
+	 */
+	public boolean isStranded(){
+		return tile1 == null && tile2 == null;
 	}
 }

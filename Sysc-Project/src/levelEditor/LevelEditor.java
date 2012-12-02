@@ -21,6 +21,7 @@ public class LevelEditor extends MapController implements ActionListener {
 	
 	LevelEditorView levelEditorFrame;
 	List<Tile> tiles;
+	List<Edge> edges;
 	Tile playerTile;
 	Room globalRoom; //No time to implement room support, everything goes into a single room
 	
@@ -84,6 +85,9 @@ public class LevelEditor extends MapController implements ActionListener {
 	protected void removeTile(Tile t){
 		tiles.remove(t);
 		view.removeTile(t);
+		for (Direction d : t.getAllDirections()){
+			t.removeEdge(d);
+		}
 	}
 
 	protected void clearTile(Tile t){
@@ -96,12 +100,17 @@ public class LevelEditor extends MapController implements ActionListener {
 		}
 	}
 	
-	protected void addEdge(){
-		
-	}
-	
 	protected boolean hasPlayer(){
 		return playerTile != null;
+	}
+	
+	protected void addEdge(Edge e){
+		view.addEdge(e);
+		//edges.add(e);
+	}
+	protected void removeEdge(Edge e){
+		//edges.remove(e);
+		view.removeEdge(e);
 	}
 	
 	protected void save(){

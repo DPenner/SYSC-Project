@@ -1,7 +1,5 @@
 package levelEditor;
 
-import gameCore.Tile;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -52,6 +50,8 @@ class TileObjectPanel extends JPanel implements MouseListener {
 			mainPanel.add(new JLabel(datum.getName()));
 			mainPanel.add(textBox);
 			textBox.addMouseListener(this);	
+			
+			//This bit listens to the textbox having its input changed
 			textBox.getDocument().addDocumentListener(new DocumentListener(){
 				public void changedUpdate(DocumentEvent arg0) {
 				}

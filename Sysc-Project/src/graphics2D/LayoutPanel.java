@@ -122,8 +122,9 @@ abstract class LayoutPanel<T extends LayoutObject> extends JPanel implements Obs
 		SwingUtilities.invokeLater(new Runnable(){
 			public void run(){
 				T newLayoutObject = removeBuffer.remove();
-				layoutObjects.remove(newLayoutObject);
-				repaint(getRepaintRectangle(newLayoutObject));
+				if (layoutObjects.remove(newLayoutObject)){
+					repaint(getRepaintRectangle(newLayoutObject));
+				}
 			}
 		});
 	}
