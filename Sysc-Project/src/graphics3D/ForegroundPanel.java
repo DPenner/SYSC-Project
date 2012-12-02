@@ -8,11 +8,13 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.io.Serializable;
 
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
-public class ForegroundPanel extends JPanel{
+public class ForegroundPanel extends JPanel implements Serializable  {
+	private static final long serialVersionUID = 1L;
 	
 	private static final Color ITEM_COLOR = Color.decode("0x964B00");
 	private static final Color ITEM_DECORATION_COLOR = Color.GRAY;

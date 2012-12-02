@@ -1,5 +1,6 @@
 package gameCore;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -19,7 +20,9 @@ import java.util.List;
  * @version 1.0
  */
 
-public class Inventory implements Iterable<Item>{
+public class Inventory implements Serializable  {
+	private static final long serialVersionUID = 1L;
+
 	//------------Fields------------//
 	private List<Item> items;
 	

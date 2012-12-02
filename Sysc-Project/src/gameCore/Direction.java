@@ -1,8 +1,10 @@
 package gameCore;
 
-public enum Direction {
+import java.io.Serializable;
+
+public enum Direction implements Serializable   {
 	NORTH("north"), EAST("east"), SOUTH("south"), WEST("west");
-	
+	private static final long serialVersionUID = 1L;
     // The direction string.
     private String direction;
     
@@ -11,6 +13,7 @@ public enum Direction {
      * @param commandString The command string.
      */
     Direction(String direction)
+    
     {
         this.direction = direction;
     }

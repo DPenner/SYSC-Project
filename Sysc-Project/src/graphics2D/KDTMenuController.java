@@ -1,8 +1,15 @@
 package graphics2D;
 
+import gameCore.Player;
+import gameLoader.Level;
+import gameLoader.Serialize;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -23,16 +30,25 @@ import commands.CommandController;
  * @version 1.0
  */
 public class KDTMenuController implements ActionListener {
+	private static final int MODE_OPEN = 0;
+	private static final int MODE_SAVE = 1;
+	
 	private JFrame f;
 	private CommandController c;
+	private Player p;
+	private Level l;
 	
 	/**
 	 * Constructor for KDTMenuController
 	 * @param f - handle to the frame 
 	 */
-	public KDTMenuController(JFrame f, CommandController c){
+	public KDTMenuController(JFrame f, Player p, Level l, CommandController c){
 		this.f = f;
 		this.c = c;
+		this.p = p;
+		this.l = l;
+		this.c = c;
+				
 	}
 	
 	/**
@@ -46,16 +62,19 @@ public class KDTMenuController implements ActionListener {
 		
 		if(command.equals("Exit"))
 		{
-			JFrame optionFrame= new JFrame("");
-			int confirmExit = JOptionPane.showConfirmDialog(optionFrame, "Are you sure you want to exit?", "Confirm Exit", JOptionPane.YES_NO_OPTION);
-			
-			if(confirmExit==JOptionPane.YES_OPTION){
-				f.dispose();
-				
-				System.exit(0);	
-			}
+			exitApplication();
 		
 		}
+		else if (command.equals("Save"))
+		{
+			saveGameState();
+			
+		}
+		else if (command.equals("Restore"))
+		{
+			restoreGameState();
+					
+		}		
 		else if (command.equals("Undo"))
 		{
 			c.execUndo();
@@ -83,4 +102,95 @@ public class KDTMenuController implements ActionListener {
 	
 	}
 
+	/**
+	 * Exit the application
+	 */
+	private void exitApplication() {
+		JFrame optionFrame= new JFrame("");
+		int confirmExit = JOptionPane.showConfirmDialog(optionFrame, "Are you sure you want to exit?", "Confirm Exit", JOptionPane.YES_NO_OPTION);
+		
+		if(confirmExit==JOptionPane.YES_OPTION){
+			closeFrameAndExit();	
+		}
+	}
+
+	/**
+	 * Close the frame and Exit
+	 */
+	private void closeFrameAndExit() {
+		f.dispose();
+		
+		System.exit(0);
+	}
+	
+	private void saveGameState() {
+		Serialize s = new Serialize(p, l, c);
+		boolean writeSuccess;
+		String fileName = selectFile(MODE_SAVE);
+		if(fileName !=null) {
+			writeSuccess = s.write_serialize(fileName);
+			
+			if (writeSuccess) {
+				String message = "Game state successfully saved. Exiting game.";
+				JOptionPane.showMessageDialog(null, message, "Game State", JOptionPane.INFORMATION_MESSAGE);
+				closeFrameAndExit();
+			}else {
+				String message = "Game state NOT successfully saved.";
+				JOptionPane.showMessageDialog(null, message, "Game State", JOptionPane.INFORMATION_MESSAGE);
+			}
+		}
+	}
+	
+	private void restoreGameState() {
+		Serialize s = new Serialize(p, l, c);
+		boolean readSuccessful;
+		
+		String fileName = selectFile(MODE_OPEN);
+		if(fileName != null) {
+			readSuccessful = s.read_serialize(fileName);
+			if(readSuccessful) {
+				String message = "Game state successfully restored.";
+				JOptionPane.showMessageDialog(null, message, "Game State", JOptionPane.INFORMATION_MESSAGE);
+				p.notifyPlayerRestored();
+			}else {
+				String message = "Game state NOT successfully restored.";
+				JOptionPane.showMessageDialog(null, message, "Game State", JOptionPane.INFORMATION_MESSAGE);
+			}
+		}
+	}
+
+	private String selectFile(int mode) {
+		
+		String returnVal = null;
+		int ret = 0;
+		
+		final JFileChooser fc = new JFileChooser();
+		
+		//show open or save dialog
+		fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+		
+		if(mode == MODE_OPEN) 
+		{
+			ret = fc.showOpenDialog(f.getJMenuBar());
+		}
+		else if (mode == MODE_SAVE) 
+		{
+			ret = fc.showSaveDialog(f.getJMenuBar());
+		}
+		
+		if (ret == JFileChooser.CANCEL_OPTION) 
+		{
+			returnVal = null;
+		}
+		else if(ret == JFileChooser.APPROVE_OPTION) 
+		{
+			File file=fc.getSelectedFile();
+			
+			returnVal=file.getPath();
+		}
+		
+		return returnVal;
+	}
 }
+
+

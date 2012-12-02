@@ -15,9 +15,13 @@ package commands;
 * @version 1.0
 *
 */
+import java.io.Serializable;
+
 import graphics2D.TextOutputPanelObservable;
 
-public abstract class Command extends TextOutputPanelObservable {
+public abstract class Command extends TextOutputPanelObservable implements Serializable  {
+
+	private static final long serialVersionUID = 1L;  
 	/**
 	 * Executes the command
 	 * @return true if the command can be undone

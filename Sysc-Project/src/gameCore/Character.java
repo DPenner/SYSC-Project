@@ -1,5 +1,7 @@
 package gameCore;
 
+import java.io.Serializable;
+
 /**
  * A Character is a superclass for all of the animated creatures inside the game.
  * Player, and Monsters (subclass of NPC) are subclasses of character.
@@ -16,7 +18,8 @@ package gameCore;
  *
  * @version 1.0
  */
-public class Character  {
+public class Character implements Serializable  {
+	private static final long serialVersionUID = 1L;
 	//------------Fields------------//
 	protected Inventory inventory;
 	protected int health;

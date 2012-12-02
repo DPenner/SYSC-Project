@@ -1,6 +1,7 @@
 package gameCore;
 
 import java.awt.Point;
+import java.io.Serializable;
 
 /**
  * An edge exists between 2 tiles, or a tile and the boundary of a level.
@@ -19,7 +20,8 @@ import java.awt.Point;
  *
  */
 
-public class Edge extends LayoutObject {
+public class Edge extends LayoutObject implements Serializable {
+	private static final long serialVersionUID = 1L;
 	
 	protected Tile tile1;
 	protected Tile tile2;
