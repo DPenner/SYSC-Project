@@ -147,10 +147,6 @@ public class KDTView {
 		save.setToolTipText("Save state of the game");
 		save.addActionListener(kdtMenuController);
 		
-		JMenuItem restore = new JMenuItem("Restore");
-		restore.setToolTipText("Restore state of the game");
-		restore.addActionListener(kdtMenuController);
-		
 		JMenuItem exit = new JMenuItem("Exit");
 		exit.setToolTipText("Exit Kraft Dinner Table Maze");
 		exit.addActionListener(kdtMenuController);
@@ -169,7 +165,6 @@ public class KDTView {
 		help.addActionListener(kdtMenuController);
 		
 		file.add(save);
-		file.add(restore);
 		file.add(help);
 		file.add(exit);
 		

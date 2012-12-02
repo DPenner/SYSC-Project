@@ -2,6 +2,7 @@ package graphics3D;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.event.MouseListener;
 import java.io.Serializable;
 
 import gameCore.Direction;
@@ -117,8 +118,14 @@ public class FirstPersonView extends JScrollPane implements PlayerListener, Seri
 
 	@Override
 	public void statsChanged(PlayerEvent e) {
-		// TODO Auto-generated method stub
-		
+		if(e.getPlayer().isDead())
+		{
+			MouseListener[] mlis = this.getMouseListeners();
+			for(MouseListener m: mlis)
+			{
+				this.removeMouseListener(m);
+			}
+		}
 	}
 
 	@Override
