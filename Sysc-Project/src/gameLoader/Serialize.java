@@ -16,7 +16,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import commands.CommandController;
+import commands.KeyCommandController;
 /**
  *  Save and restore state of the game using serialization
  *  
@@ -39,15 +39,20 @@ public class Serialize {
 	
 	private Player p;
 	private Level l;
-	
-	//private CommandController cc;
-	
+
 	public Serialize(Player p, Level l){
-		//this.cc=cc;
 		this.l=l;
 		this.p=p;
 	}
 	
+	public Player getP() {
+		return p;
+	}
+
+	public Level getL() {
+		return l;
+	}
+
 	
 	public boolean write_serialize(String fileName){
 		boolean writeSuccessful = false;
@@ -108,10 +113,13 @@ public class Serialize {
 					{
 						this.l = (Level) objectIN;
 					} 
+
 					//else if(objectIN instanceof CommandController ) 
 					//{
 					//	this.cc = (CommandController) objectIN;
 					//}
+
+					
 					else
 					{	//got some other class 
 						System.out.println("Got another class " + objectIN.toString());
@@ -143,9 +151,25 @@ public class Serialize {
 		return readSuccessful;
 	}
 	
-	public void restoreGameState() {
-		//Serialize s = new Serialize(p, l);
-		boolean readSuccessful;
+	public void saveToFile() {
+		boolean writeSuccess;
+		String fileName = selectFile(MODE_SAVE);
+		if(fileName !=null) {
+			writeSuccess = write_serialize(fileName);
+			
+			if (writeSuccess) {
+				String message = "Game state successfully saved. Exiting game.";
+				JOptionPane.showMessageDialog(null, message, "Game State", JOptionPane.INFORMATION_MESSAGE);
+			}else {
+				String message = "Game state NOT successfully saved.";
+				JOptionPane.showMessageDialog(null, message, "Game State", JOptionPane.INFORMATION_MESSAGE);
+			}
+		}
+	}
+	
+
+	public boolean loadFromFile() {
+		boolean readSuccessful =false;
 		
 		String fileName = selectFile(MODE_OPEN);
 		if(fileName != null) {
@@ -159,6 +183,7 @@ public class Serialize {
 				JOptionPane.showMessageDialog(null, message, "Game State", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
+		return readSuccessful;
 	}
 	
 	public String selectFile(int mode) {

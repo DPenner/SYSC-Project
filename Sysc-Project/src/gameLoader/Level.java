@@ -194,8 +194,13 @@ public class Level implements Serializable  {
 		if(elevator != null) 
 		{
 			this.elevator = elevator;
-			player = new Player("Babak", 10, 2, 1, tileInElevator);
+			if(player == null) player = new Player("Babak", 10, 2, 1, tileInElevator);
 		}
+	}
+	
+	public void setPlayer(Player p)
+	{
+		player = p;
 	}
 	
 	/**

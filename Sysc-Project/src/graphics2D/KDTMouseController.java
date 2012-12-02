@@ -2,19 +2,11 @@ package graphics2D;
 
 import gameCore.Direction;
 import graphics3D.FirstPersonView;
-import commands.GoCommand;
 import commands.CommandController;
-import commands.GoCommand;
-import commands.DropCommand;
-import commands.PickUpCommand;
-//import graphics3D.*;
 
-
-import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import commands.GoCommand;
 
 /**
  * KDTMouseController is a MouseListener for Handling Mouse Events for the KDTView
@@ -34,7 +26,7 @@ import commands.GoCommand;
 public class KDTMouseController implements MouseListener {
 	//------------Fields------------//
 	private static final int RIGHTCLICK = 3;
-	private static final int LEFTCLICK = 1;
+	
 	FirstPersonView view;
 	CommandController kdtCC;
 	//------------Constructors------------//

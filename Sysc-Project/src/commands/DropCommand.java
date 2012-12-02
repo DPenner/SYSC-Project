@@ -27,7 +27,7 @@ public class DropCommand extends Command implements Serializable  {
 	
 	@Override
 	public boolean execute() {
-		String[] itemnames = CommandController.getPlayer().viewInventory().split(", ");
+		String[] itemnames = KeyCommandController.getPlayer().viewInventory().split(", ");
 		
 		itemName =  (String)JOptionPane.showInputDialog(
 		           			null,
@@ -53,7 +53,7 @@ public class DropCommand extends Command implements Serializable  {
 	 * @return true if the item was successfully dropped
 	 */
 	public boolean drop(String itemname) {
-		if(!CommandController.getPlayer().drop(itemname))
+		if(!KeyCommandController.getPlayer().drop(itemname))
         {
         	printMessage("Item is not in your inventory. Can't drop what you don't have.");
         	return false;

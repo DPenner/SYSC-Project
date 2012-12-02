@@ -46,9 +46,7 @@ public class KDTMenuController implements ActionListener {
 		this.f = f;
 		this.c = c;
 		this.p = p;
-		this.l = l;
-		this.c = c;
-				
+		this.l = l;			
 	}
 	
 	/**
@@ -67,14 +65,9 @@ public class KDTMenuController implements ActionListener {
 		}
 		else if (command.equals("Save"))
 		{
-			saveGameState();
-			
-		}
-		//else if (command.equals("Restore"))
-		//{
-		//	restoreGameState();
-					
-		//}		
+			Serialize s = new Serialize(p, l);
+			s.saveToFile();
+		}		
 		else if (command.equals("Undo"))
 		{
 			c.execUndo();
@@ -86,16 +79,13 @@ public class KDTMenuController implements ActionListener {
 		
 		else if (command.equals("Help"))
 		{
-			String message = "Press keyboard buttons to perform actions.\n\n"
-					+ "Up Arrow \t- moves the player north one unit\n"
-					+ "Down Arrow \t- moves the player south one unit\n"
-					+ "Right Arrow \t- moves the player east one unit\n"
-					+ "Left Arrow \t- moves the player west one unit\n\n"
-					+ "S \t\t- searches the current tile that player is on and prints a list of items to the console\n"
-					+ "P \t\t- opens dialog with list of items on ground and lets you select which one to pick up\n"
-					+ "D \t\t- opens dialog with list of player's inventory items and lets you select which one to drop\n\n"
-					+ "U \t\t- undos the last command\n"
-					+ "R \t\t- redo the last undid command\n";
+			String message = "Click to perform actions.\n\n"
+					+ "Click the north wall to move north\n"
+					+ "Click the west wall to move west\n"
+					+ "Click the east wall to move east\n"
+					+ "Click the blue triangle to move south\n\n"
+					+ "Click on item chest \t\t- opens dialog with list of items on ground and lets you select which one to pick up\n"
+					+ "Right Click \t\t- opens dialog with list of player's inventory items and lets you select which one to drop\n\n";
 					
 			JOptionPane.showMessageDialog(null, message, "Help", JOptionPane.INFORMATION_MESSAGE);
 		}
@@ -122,28 +112,5 @@ public class KDTMenuController implements ActionListener {
 		
 		System.exit(0);
 	}
-	
-	private void saveGameState() {
-		Serialize s = new Serialize(p, l);
-		boolean writeSuccess;
-		String fileName = s.selectFile(MODE_SAVE);
-		if(fileName !=null) {
-			writeSuccess = s.write_serialize(fileName);
-			
-			if (writeSuccess) {
-				String message = "Game state successfully saved. Exiting game.";
-				JOptionPane.showMessageDialog(null, message, "Game State", JOptionPane.INFORMATION_MESSAGE);
-				closeFrameAndExit();
-			}else {
-				String message = "Game state NOT successfully saved.";
-				JOptionPane.showMessageDialog(null, message, "Game State", JOptionPane.INFORMATION_MESSAGE);
-			}
-		}
-	}
-	
-	
-
-	
 }
-
 

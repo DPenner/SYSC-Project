@@ -158,6 +158,11 @@ public class Tile extends LayoutObject implements Serializable   {
 		return ((Exit)getEdge(direction)).getKeyName();
 	}
 	
+	public Room getRoom()
+	{
+		return containingRoom;
+	}
+	
 	//------------Setters------------//
 	/**
 	 * Sets an edge of a tile.

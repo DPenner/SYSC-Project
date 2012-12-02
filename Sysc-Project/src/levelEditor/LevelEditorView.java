@@ -3,6 +3,7 @@ package levelEditor;
 import java.awt.BorderLayout;
 import java.awt.event.KeyEvent;
 
+import gameLoader.Level;
 import graphics2D.MapView;
 
 import javax.swing.*;
