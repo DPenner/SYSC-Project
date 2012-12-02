@@ -36,6 +36,7 @@ public class CommandController extends TextOutputPanelObservable{
     		printMessage("Successfully undone.");
     	} 		
     }
+    
     protected void redoCommand() {
     	if(undo_index >= undoList.size()) printMessage("Nothing to redo.");
     	else
