@@ -89,7 +89,7 @@ public class Game extends TextOutputPanelObservable
 		}
 		else
 		{
-			new LevelEditorView(new LevelEditor());
+			new LevelEditorView();
 		}
     }
     /**

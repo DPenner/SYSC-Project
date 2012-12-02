@@ -1,6 +1,9 @@
 package levelEditor;
 
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,18 +15,61 @@ import javax.swing.JOptionPane;
 import gameCore.*;
 import gameLoader.Level;
 import gameLoader.Serialize;
+import graphics2D.MapController;
 
-public class LevelEditor {
+public class LevelEditor extends MapController implements ActionListener {
+	
+	LevelEditorView levelEditorFrame;
 	List<Tile> tiles;
 	Tile playerTile;
+	Room globalRoom; //No time to implement room support, everything goes into a single room
 	
-	public LevelEditor(){
+	public LevelEditor(LevelEditorView levelEditorFrame){
+		super(levelEditorFrame.getEditorView());
+		this.levelEditorFrame = levelEditorFrame;
+		this.view = levelEditorFrame.getEditorView();
 		tiles = new ArrayList<Tile>();
+		globalRoom = new Room();
 	}
 	
-	protected void addTile(Tile t){
-		t.setVisited(); //everything is visible in the level editor
-		tiles.add(t);
+
+	//------------Mouse Events------------//
+	@Override
+	public void mouseClicked(MouseEvent e){
+		Point offsettedLocation = e.getPoint();
+		boolean tileExists = view.hasTile(offsettedLocation);
+		if (e.getButton() == MouseEvent.BUTTON1){
+			Point tileLocation = view.getTileLocation(offsettedLocation);
+			
+			if (tileExists){
+				removeTile(view.getTile(offsettedLocation));
+			}
+			else { //add tile
+				addTile(tileLocation);
+			}
+		}
+		else if (tileExists){
+			navigatorClick(offsettedLocation);
+		}
+	}
+	
+	private void navigatorClick(Point offsettedLocation){
+		Tile itemTile = view.getTile(offsettedLocation);	
+		new TileNavigator(levelEditorFrame, this, itemTile);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand().equals(LevelEditorView.HELP)){
+			new HelpFrame();
+		}
+	}
+	
+	protected void addTile(Point tileLocation){
+		Tile newTile = new Tile(tileLocation, globalRoom);
+		newTile.setVisited(); //everything is visible in the level editor
+		view.addTile(newTile);
+		tiles.add(newTile);
 	}
 	
 	protected Tile getTile(Point location){
@@ -37,6 +83,7 @@ public class LevelEditor {
 	
 	protected void removeTile(Tile t){
 		tiles.remove(t);
+		view.removeTile(t);
 	}
 
 	protected void clearTile(Tile t){

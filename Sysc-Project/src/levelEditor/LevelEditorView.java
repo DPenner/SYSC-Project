@@ -13,9 +13,9 @@ public class LevelEditorView extends JFrame {
 	public static final String SAVE = "Save";
 	public static final String HELP = "Help";
 	private MapView editorView;
-	private EditorController controller;
+	private LevelEditor controller;
 	
-	public LevelEditorView(LevelEditor editor){
+	public LevelEditorView(){
 		super("Level Editor");
 
 		this.setLayout(new BorderLayout());
@@ -23,7 +23,7 @@ public class LevelEditorView extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			
 		editorView = new MapView();
-		controller = new EditorController(editor, this);
+		controller = new LevelEditor(this);
 		
 		JMenuBar menuBar = new JMenuBar();	
 		initFileMenu(menuBar);
@@ -62,7 +62,6 @@ public class LevelEditorView extends JFrame {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		new LevelEditorView(new LevelEditor());
+		new LevelEditorView();
 	}
-
 }
