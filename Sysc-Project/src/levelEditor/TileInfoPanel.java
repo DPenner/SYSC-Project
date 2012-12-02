@@ -15,7 +15,8 @@ import javax.swing.*;
 import gameCore.*;
 
 /**
- * TileInfoPanel displays all things editable about a given Tile
+ * TileInfoPanel displays all things editable about a given Tile including its Edges which
+ * are shared with neighbouring Tiles
  * 
  * @author Group D
  * @author Main Author: Darrell Penner
@@ -33,7 +34,7 @@ import gameCore.*;
 
 class TileInfoPanel extends JPanel implements Scrollable
 {
-	private List<TileObjectPanel> itemInfos;
+	private List<TileObjectPanel> tileObjectPanels;
 	private TileObjectPanel selectedInfo;
 	
 	private Tile infoTile;
@@ -49,7 +50,7 @@ class TileInfoPanel extends JPanel implements Scrollable
 	
 	protected TileInfoPanel(Tile infoTile){
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		itemInfos = new ArrayList<TileObjectPanel>();
+		tileObjectPanels = new ArrayList<TileObjectPanel>();
 		edgeData = new HashMap<Direction, TileObjectDisplayData>();
 		itemData = new ArrayList<TileObjectDisplayData>();
 		characterData = null;
@@ -62,7 +63,7 @@ class TileInfoPanel extends JPanel implements Scrollable
 	private void add(TileObjectDisplayData data){
 		TileObjectPanel newInfo = new TileObjectPanel(this, data);
 		this.add(newInfo);
-		itemInfos.add(newInfo);
+		tileObjectPanels.add(newInfo);
 		this.setSelectedInfo(newInfo);
 		this.setDirty(true);
 		this.revalidate();
@@ -135,7 +136,7 @@ class TileInfoPanel extends JPanel implements Scrollable
 	protected void removeSelected(){
 		if (hasSelection()){
 			TileObjectPanel removed = unSelect();
-			itemInfos.remove(removed);
+			tileObjectPanels.remove(removed);
 			this.remove(removed);
 			this.setDirty(true);
 			
@@ -190,12 +191,17 @@ class TileInfoPanel extends JPanel implements Scrollable
 		loadTile(infoTile);
 	}
 	
+	protected void saveTile(){
+		//call factory methods
+		reloadTile();
+	}
+	
 	protected void clear(){
 		unSelect();
-		for (TileObjectPanel info : itemInfos){
+		for (TileObjectPanel info : tileObjectPanels){
 			this.remove(info);
 		}
-		itemInfos.clear();
+		tileObjectPanels.clear();
 		characterData = null;
 		edgeData.clear();
 		this.setDirty(true);
@@ -209,7 +215,7 @@ class TileInfoPanel extends JPanel implements Scrollable
 		isDirty = b;
 	}
 	protected boolean isEmpty(){
-		return itemInfos.isEmpty();
+		return tileObjectPanels.isEmpty();
 	}
 	protected boolean hasSelection(){
 		return selectedInfo != null;

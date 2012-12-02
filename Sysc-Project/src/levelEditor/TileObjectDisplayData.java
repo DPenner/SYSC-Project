@@ -6,6 +6,23 @@ import java.util.List;
 import gameCore.*;
 import gameCore.Character;
 
+/**
+ * Factory Methods helps edit a specific Tile including the Edges and contents.
+ * 
+ * @author Group D
+ * @author Main Author: Darrell Penner
+ * 
+ * Group D Members
+ * ---------------
+ * Karen Madore
+ * Trang Pham
+ * Darrell Penner
+ * 
+ *
+ * @version 1.0
+ *
+ */
+
 class TileObjectDisplayData implements Iterable<TileObjectDisplayData.TileObjectDisplayDatum> {
 	
 	String type;
