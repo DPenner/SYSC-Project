@@ -3,6 +3,7 @@ package gameLoader;
 import gameCore.Player;
 
 import java.io.EOFException;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -12,6 +13,8 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import commands.CommandController;
 /**
@@ -31,15 +34,20 @@ import commands.CommandController;
  */
 
 public class Serialize {
+	public static final int MODE_OPEN = 0;
+	public static final int MODE_SAVE = 1;
+	
 	private Player p;
 	private Level l;
-	private CommandController cc;
 	
-	public Serialize(Player p, Level l, CommandController cc){
-		this.cc=cc;
+	//private CommandController cc;
+	
+	public Serialize(Player p, Level l){
+		//this.cc=cc;
 		this.l=l;
 		this.p=p;
 	}
+	
 	
 	public boolean write_serialize(String fileName){
 		boolean writeSuccessful = false;
@@ -51,7 +59,7 @@ public class Serialize {
 			ObjectOutputStream objStream = new ObjectOutputStream(oStream);
 		
 			objStream.writeObject(p);
-			objStream.writeObject(cc);
+			//objStream.writeObject(cc);
 			
 			objStream.writeObject(l);
 			writeSuccessful=true;
@@ -75,7 +83,7 @@ public class Serialize {
 			
 	}
 	
-	public boolean read_serialize(String fileName) {
+	private boolean read_serialize(String fileName) {
 		boolean readSuccessful = false;
 		FileInputStream iStream = null;
 		boolean EOF = false;
@@ -100,10 +108,10 @@ public class Serialize {
 					{
 						this.l = (Level) objectIN;
 					} 
-					else if(objectIN instanceof CommandController ) 
-					{
-						this.cc = (CommandController) objectIN;
-					}
+					//else if(objectIN instanceof CommandController ) 
+					//{
+					//	this.cc = (CommandController) objectIN;
+					//}
 					else
 					{	//got some other class 
 						System.out.println("Got another class " + objectIN.toString());
@@ -133,5 +141,58 @@ public class Serialize {
 			}
 		}
 		return readSuccessful;
+	}
+	
+	public void restoreGameState() {
+		//Serialize s = new Serialize(p, l);
+		boolean readSuccessful;
+		
+		String fileName = selectFile(MODE_OPEN);
+		if(fileName != null) {
+			readSuccessful = read_serialize(fileName);
+			if(readSuccessful) {
+				String message = "Game state successfully restored.";
+				JOptionPane.showMessageDialog(null, message, "Game State", JOptionPane.INFORMATION_MESSAGE);
+				p.notifyPlayerRestored();
+			}else {
+				String message = "Game state NOT successfully restored.";
+				JOptionPane.showMessageDialog(null, message, "Game State", JOptionPane.INFORMATION_MESSAGE);
+			}
+		}
+	}
+	
+	public String selectFile(int mode) {
+			
+		String returnVal = null;
+		int ret = 0;
+		
+		final JFileChooser fc = new JFileChooser();
+		
+		JFrame frame = new JFrame("FileChooser");
+		
+		//show open or save dialog
+		fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+		
+		if(mode == MODE_OPEN) 
+		{
+			ret = fc.showOpenDialog(frame.getJMenuBar());
+		}
+		else if (mode == MODE_SAVE) 
+		{
+			ret = fc.showSaveDialog(frame.getJMenuBar());
+		}
+		
+		if (ret == JFileChooser.CANCEL_OPTION) 
+		{
+			returnVal = null;
+		}
+		else if(ret == JFileChooser.APPROVE_OPTION) 
+		{
+			File file=fc.getSelectedFile();
+			
+			returnVal=file.getPath();
+		}
+		
+		return returnVal;
 	}
 }

@@ -30,8 +30,8 @@ import commands.CommandController;
  * @version 1.0
  */
 public class KDTMenuController implements ActionListener {
-	private static final int MODE_OPEN = 0;
-	private static final int MODE_SAVE = 1;
+	public static final int MODE_OPEN = 0;
+	public static final int MODE_SAVE = 1;
 	
 	private JFrame f;
 	private CommandController c;
@@ -70,11 +70,11 @@ public class KDTMenuController implements ActionListener {
 			saveGameState();
 			
 		}
-		else if (command.equals("Restore"))
-		{
-			restoreGameState();
+		//else if (command.equals("Restore"))
+		//{
+		//	restoreGameState();
 					
-		}		
+		//}		
 		else if (command.equals("Undo"))
 		{
 			c.execUndo();
@@ -124,9 +124,9 @@ public class KDTMenuController implements ActionListener {
 	}
 	
 	private void saveGameState() {
-		Serialize s = new Serialize(p, l, c);
+		Serialize s = new Serialize(p, l);
 		boolean writeSuccess;
-		String fileName = selectFile(MODE_SAVE);
+		String fileName = s.selectFile(MODE_SAVE);
 		if(fileName !=null) {
 			writeSuccess = s.write_serialize(fileName);
 			
@@ -141,56 +141,9 @@ public class KDTMenuController implements ActionListener {
 		}
 	}
 	
-	private void restoreGameState() {
-		Serialize s = new Serialize(p, l, c);
-		boolean readSuccessful;
-		
-		String fileName = selectFile(MODE_OPEN);
-		if(fileName != null) {
-			readSuccessful = s.read_serialize(fileName);
-			if(readSuccessful) {
-				String message = "Game state successfully restored.";
-				JOptionPane.showMessageDialog(null, message, "Game State", JOptionPane.INFORMATION_MESSAGE);
-				p.notifyPlayerRestored();
-			}else {
-				String message = "Game state NOT successfully restored.";
-				JOptionPane.showMessageDialog(null, message, "Game State", JOptionPane.INFORMATION_MESSAGE);
-			}
-		}
-	}
+	
 
-	private String selectFile(int mode) {
-		
-		String returnVal = null;
-		int ret = 0;
-		
-		final JFileChooser fc = new JFileChooser();
-		
-		//show open or save dialog
-		fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-		
-		if(mode == MODE_OPEN) 
-		{
-			ret = fc.showOpenDialog(f.getJMenuBar());
-		}
-		else if (mode == MODE_SAVE) 
-		{
-			ret = fc.showSaveDialog(f.getJMenuBar());
-		}
-		
-		if (ret == JFileChooser.CANCEL_OPTION) 
-		{
-			returnVal = null;
-		}
-		else if(ret == JFileChooser.APPROVE_OPTION) 
-		{
-			File file=fc.getSelectedFile();
-			
-			returnVal=file.getPath();
-		}
-		
-		return returnVal;
-	}
+	
 }
 
 
