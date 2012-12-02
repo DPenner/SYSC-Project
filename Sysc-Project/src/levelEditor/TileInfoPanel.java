@@ -185,7 +185,7 @@ class TileInfoPanel extends JPanel implements Scrollable
 		}
 	}
 	
-	void reloadTile(){
+	protected void reloadTile(){
 		clear();
 		loadTile(infoTile);
 	}
