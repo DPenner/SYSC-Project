@@ -8,4 +8,5 @@ public interface PlayerListener {
 	public void itemDropped(PlayerEvent e);
 	public void statsChanged(PlayerEvent e);
 	public void positionChanged(PlayerEvent e, Direction backDir);
+	public void playerRestored(PlayerEvent e);
 }

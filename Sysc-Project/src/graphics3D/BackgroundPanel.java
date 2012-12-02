@@ -9,12 +9,13 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.io.Serializable;
 
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
-public class BackgroundPanel extends JPanel{
-
+public class BackgroundPanel extends JPanel implements Serializable  {
+	private static final long serialVersionUID = 1L;
 	private static final Color WALL_COLOR = Color.DARK_GRAY;
 	private static final Color BACKGROUND_COLOR = Color.BLACK;
 	private static final Color CEILING_COLOR = Color.LIGHT_GRAY; 

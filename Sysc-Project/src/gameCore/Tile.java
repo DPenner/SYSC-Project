@@ -1,5 +1,6 @@
 package gameCore;
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -20,8 +21,11 @@ import java.util.*;
  * @version 1.0
  */
 
-public class Tile extends LayoutObject {
-	private static final long serialVersionID = 1;
+public class Tile extends LayoutObject implements Serializable   {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	//------------Fields------------//
 	private Point location;

@@ -15,12 +15,14 @@ package commands;
 * @version 2.0
 *
 */
+import java.io.Serializable;
+
 import gameCore.Direction;
 import gameLoader.EndGameException;
 
 
-public class GoCommand extends Command{
-	private static final long serialVersionID = 1;
+public class GoCommand extends Command implements Serializable  {
+	private static final long serialVersionUID = 1L;
 	
 	private Direction dir;
 	

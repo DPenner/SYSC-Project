@@ -15,11 +15,13 @@ package commands;
 * @version 2.0
 *
 */
+import java.io.Serializable;
+
 import javax.swing.JOptionPane;
 
-public class DropCommand extends Command{
+public class DropCommand extends Command implements Serializable  {
 	
-	private static final long serialVersionID = 1;
+	private static final long serialVersionUID = 1L;
 	
 	private String itemName;
 	

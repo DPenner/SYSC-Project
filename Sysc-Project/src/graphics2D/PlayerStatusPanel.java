@@ -6,6 +6,8 @@ import gameCore.Player;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.io.Serializable;
+
 import javax.swing.JPanel;
 
 /**
@@ -25,7 +27,8 @@ import javax.swing.JPanel;
  */
 
 
-public class PlayerStatusPanel extends JPanel implements PlayerListener{
+public class PlayerStatusPanel extends JPanel implements PlayerListener, Serializable  {
+	private static final long serialVersionUID = 1L;
 	private Player player;
 	
 	private static int TEXT_TAB1=20;
@@ -114,5 +117,10 @@ public class PlayerStatusPanel extends JPanel implements PlayerListener{
 		// TODO Auto-generated method stub
 		
 	}
-
+	
+	@Override
+	public void playerRestored(PlayerEvent e) {
+		this.repaint();
+		
+	}
 }

@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.net.URL;
 
 import javax.swing.DefaultListModel;
@@ -34,8 +35,8 @@ import javax.swing.JPanel;
  * @version 2.0
  */
 
-public class InventoryPanel extends JPanel implements PlayerListener{
-	
+public class InventoryPanel extends JPanel implements PlayerListener, Serializable  {
+	private static final long serialVersionUID = 1L;
 	private Player player;
 	private Inventory inventory;
 	
@@ -106,7 +107,7 @@ public class InventoryPanel extends JPanel implements PlayerListener{
 			g.drawImage(image, xOffset, yOffset, null);
 				
 		} catch (IOException e) {
-			System.out.printf("image does not exist. ");
+			g.drawString(itemName, xOffset, yOffset);
 		}
 		
 	}
@@ -263,6 +264,12 @@ public class InventoryPanel extends JPanel implements PlayerListener{
 	@Override
 	public void positionChanged(PlayerEvent e, Direction backDir) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void playerRestored(PlayerEvent e) {
+		this.repaint();
 		
 	}
 	

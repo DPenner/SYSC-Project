@@ -23,13 +23,14 @@ import graphics2D.TextOutputPanelObservable;
 
 import java.awt.KeyEventDispatcher;
 import java.awt.event.KeyEvent;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CommandController extends TextOutputPanelObservable implements KeyEventDispatcher {
-	private static final long serialVersionID = 1;
+public class CommandController extends TextOutputPanelObservable implements KeyEventDispatcher, Serializable {
+	private static final long serialVersionUID = 1L;
 	
 	private static List<Command> undoList;
 	private static Map<Integer, Command> keyToCommandMap;

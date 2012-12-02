@@ -1,4 +1,7 @@
 package gameCore;
+
+import java.io.Serializable;
+
 /**
  * A Weapon is a type of item that has an attack to increase the character's attack value.
  * 
@@ -14,8 +17,8 @@ package gameCore;
  *
  * @version 1.0
  */
-public class Weapon extends Item {
-	private static final long serialVersionID = 1;
+public class Weapon extends Item implements Serializable  {
+	private static final long serialVersionUID = 1L;
 	//------------Fields------------//
 	private int attackValue;
 	

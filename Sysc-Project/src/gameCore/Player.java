@@ -5,6 +5,7 @@ import graphics2D.PlayerEvent;
 import graphics2D.PlayerListener;
 import gameLoader.EndGameException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -23,9 +24,9 @@ import java.util.List;
  *
  * @version 1.0
  */
-public class Player extends Character
+public class Player extends Character implements Serializable  
 {	//------------Fields------------//
-	private static final long serialVersionID = 1;
+	private static final long serialVersionUID = 1L;
 	
 	private int stamina;
 	private List<PlayerListener> pListeners;
@@ -287,6 +288,15 @@ public class Player extends Character
 	
 		for(PlayerListener pl: pListeners){
 			pl.positionChanged(pe, backDir);
+		}
+	}
+	
+	public void notifyPlayerRestored() {
+		PlayerEvent pe=new PlayerEvent(this);
+		pe.setPlayer(this);
+		
+		for(PlayerListener pl: pListeners){
+			pl.playerRestored(pe);
 		}
 	}
 	/**

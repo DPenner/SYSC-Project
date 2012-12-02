@@ -1,5 +1,7 @@
 package gameCore;
 
+import java.io.Serializable;
+
 /**
  * An exit is an Edge with a "lock." When locked, it is crossable only by a character with the specified key.
  * 
@@ -17,8 +19,8 @@ package gameCore;
  *
  */
 
-public class Exit extends Edge {
-	private static final long serialVersionID = 1;
+public class Exit extends Edge implements Serializable  {
+	private static final long serialVersionUID = 1L;
 	private Item key;
 	
 	/**

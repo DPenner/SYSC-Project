@@ -1,5 +1,6 @@
 package gameCore;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,9 +21,9 @@ import java.util.Set;
  * @version 1.0
  */
 
-public class Room 
+public class Room implements Serializable  
 {
-	private static final long serialVersionID = 1;
+	private static final long serialVersionUID = 1L;
 	
     private Set<Tile> tiles;
 

@@ -1,4 +1,7 @@
 package gameCore;
+
+import java.io.Serializable;
+
 /**
  * A Item is a basic unit that can be carried in the Inventory. 
  *  
@@ -14,8 +17,8 @@ package gameCore;
  *
  * @version 1.0
  */
-public class Item {
-	private static final long serialVersionID = 1;
+public class Item implements Serializable  {
+	private static final long serialVersionUID = 1L;
 	//------------Fields------------//
 	private String name;
 	private int weight;

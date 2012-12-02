@@ -1,6 +1,7 @@
 package gameCore;
 import gameLoader.EndGameException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Set;
@@ -19,8 +20,8 @@ import java.util.Set;
  *
  * @version 1.0
  */
-public class Monster extends Character{
-	private static final long serialVersionID = 1;
+public class Monster extends Character implements Serializable  {
+	private static final long serialVersionUID = 1L;
 	
 	Direction directions[]=Direction.values();
 	//------------Constructors------------//
