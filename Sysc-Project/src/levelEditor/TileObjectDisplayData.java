@@ -3,6 +3,9 @@ package levelEditor;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.swing.text.NumberFormatter;
+
 import gameCore.*;
 import gameCore.Character;
 
@@ -125,10 +128,70 @@ class TileObjectDisplayData implements Iterable<TileObjectDisplayData.TileObject
 	public int size(){
 		return displayData.size();
 	}
+	/**
+	 * Function to look up the value of the Datum given its name
+	 * @param datumName - label to compare with the datum
+	 * @return - value of the field
+	 */
+	public String getDatumValue(String datumName) {
+		String fieldName = datumName +": ";
+		String value = null;
+		 for (int i=0; i<displayData.size(); i++ ) {
+			 
+			 TileObjectDisplayDatum dataLine = displayData.get(i);
+			 
+			 String label = dataLine.getName();
+			 if(label.equals(fieldName)) 
+			 {		 
+				 value = dataLine.getValue();
+			 }
+		 }
+		 return value;
+	}
 	
 	@Override
 	public Iterator<TileObjectDisplayDatum> iterator() {
 		return displayData.iterator();
+	}
+	
+	//------------Get objects --------//
+	public Item getItem() {
+		String itemName = null;
+		int itemWeight = 0;
+		Item newItem = null;
+		
+		 if (type.equals("Item")) {
+			 
+			 itemName =  getDatumValue("Name");
+			 itemWeight = Integer.parseInt(getDatumValue("Weight"));
+			
+			 newItem = new Item(itemName, itemWeight);
+		 }
+		 return newItem;
+	}
+	
+	public Character getCharacter(Tile myPosition) {
+		String name = null;
+		int health = 0;
+		int attack = 0;
+		int stamina = 0;
+		Character newCharacter = null;
+		
+		if (type.equals("Monster")) { 
+			 
+			 name =  getDatumValue("Name");
+			 health = Integer.parseInt(getDatumValue("Health"));
+			 attack = Integer.parseInt(getDatumValue("Attack"));
+			 newCharacter = new Monster(name, health, attack, myPosition);
+		}else if (type.equals("Player")) {
+			name =  getDatumValue("Name");
+			health = Integer.parseInt(getDatumValue("Health"));
+			attack = Integer.parseInt(getDatumValue("Attack"));
+			stamina = Integer.parseInt(getDatumValue("Stamina"));
+			newCharacter = new Player(name, health, attack, stamina, myPosition);
+		}
+		
+		return newCharacter;
 	}
 	
 	//------------Single Datum------------//
