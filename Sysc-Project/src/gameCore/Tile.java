@@ -248,6 +248,12 @@ public class Tile extends LayoutObject implements Serializable   {
 		notifyObservers();
 	}
 	
+	public void removeEdge(Direction direction){
+		checkDirection(direction);
+		Edge e = edges.remove(direction);
+		e.disconnect(this);
+	}
+	
 	//------------Character Movement------------//
 	/**
 	 * Checks whether the edge in the given direction is crossable by the character in the tile

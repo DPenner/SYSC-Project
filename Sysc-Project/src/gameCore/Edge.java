@@ -189,10 +189,18 @@ public class Edge extends LayoutObject implements Serializable {
 	}
 	
 	/**
-	 * Checks if the edge has only one Tile associated with it
-	 * @return True if it is one-sided, false otherwise
+	 * Disconnects this edge from the given Tile
+	 * @param t The Tile to disconnect
 	 */
-	public final boolean isOneSided(){
-		return tile1 == null || tile2 == null;
+	public void disconnect(Tile t){
+		if (t == null){
+			throw new IllegalArgumentException("Can't disconnect null");
+		}
+		if (t == tile1){
+			tile1 = null;
+		}
+		else {
+			tile2 = null;
+		}
 	}
 }

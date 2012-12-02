@@ -24,7 +24,7 @@ public class LevelEditor extends MapController implements ActionListener {
 	Tile playerTile;
 	Room globalRoom; //No time to implement room support, everything goes into a single room
 	
-	public LevelEditor(LevelEditorView levelEditorFrame){
+	protected LevelEditor(LevelEditorView levelEditorFrame){
 		super(levelEditorFrame.getEditorView());
 		this.levelEditorFrame = levelEditorFrame;
 		this.view = levelEditorFrame.getEditorView();
@@ -94,6 +94,10 @@ public class LevelEditor extends MapController implements ActionListener {
 		if (t.removeCharacter() instanceof Player){
 			playerTile = null;
 		}
+	}
+	
+	protected void addEdge(){
+		
 	}
 	
 	protected boolean hasPlayer(){

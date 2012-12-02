@@ -13,7 +13,7 @@ public class LevelEditorView extends JFrame {
 	public static final String SAVE = "Save";
 	public static final String HELP = "Help";
 	private MapView editorView;
-	private LevelEditor controller;
+	//private LevelEditor controller;
 	
 	public LevelEditorView(){
 		super("Level Editor");
@@ -23,10 +23,10 @@ public class LevelEditorView extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			
 		editorView = new MapView();
-		controller = new LevelEditor(this);
+		LevelEditor controller = new LevelEditor(this);
 		
 		JMenuBar menuBar = new JMenuBar();	
-		initFileMenu(menuBar);
+		initFileMenu(menuBar, controller);
 		this.setJMenuBar(menuBar);
 		
 		JScrollPane mapScroller = new JScrollPane();
@@ -37,7 +37,7 @@ public class LevelEditorView extends JFrame {
 		this.setVisible(true);
 	}
 	
-	private void initFileMenu(JMenuBar menuBar){
+	private void initFileMenu(JMenuBar menuBar, LevelEditor controller){
 		JMenu fileMenu = new JMenu("File");
 		
 		JMenuItem help = new JMenuItem(HELP);
