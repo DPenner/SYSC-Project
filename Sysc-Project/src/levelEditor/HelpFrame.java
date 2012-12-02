@@ -4,6 +4,7 @@ import javax.swing.*;
 
 public class HelpFrame extends JFrame {
 	private static final int DEFAULT_SIZE = 500;
+	
 	public HelpFrame(){
 		super("Help");
 		String helpText = "Left Click to add/remove Tiles. Right Click on a Tile to Open the Tile Navigator.  " +

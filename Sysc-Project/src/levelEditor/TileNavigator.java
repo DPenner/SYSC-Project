@@ -37,12 +37,12 @@ class TileNavigator extends JDialog {
 		super(owner, "Tile Navigator", true);
 		
 		this.setLayout(new BorderLayout());
-		itemInfos = new TileInfoPanel();
+		itemInfos = new TileInfoPanel(tile);
 		JScrollPane scrollPane = new JScrollPane(itemInfos);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		
 		this.add(scrollPane, BorderLayout.CENTER);
-		this.setSize(800, 500);
+		this.setSize(800, 600);
 		NavigatorController nc = new NavigatorController(editor, this, tile);
 		
 		JPanel buttonPane = new JPanel();

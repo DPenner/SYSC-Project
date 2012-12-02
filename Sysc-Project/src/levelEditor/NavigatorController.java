@@ -62,9 +62,12 @@ class NavigatorController implements ActionListener {
 				break;
 			case CLOSE:
 				if (infoPanel.isDirty()){
-					if (JOptionPane.showConfirmDialog(navigator, "There are unsaved changes to the tile, discard them?",
-	                    "Unsaved changes", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
-						navigator.dispose();
+					int opt = JOptionPane.showConfirmDialog(navigator, "There are unsaved changes to the tile, would you like to save them?");
+					if (opt == JOptionPane.OK_OPTION){
+						navigator.dispose(); //more stuff soon
+					}
+					if (opt == JOptionPane.NO_OPTION){
+						navigator.dispose(); //more stuff soon
 					}
 				}
 				else navigator.dispose();

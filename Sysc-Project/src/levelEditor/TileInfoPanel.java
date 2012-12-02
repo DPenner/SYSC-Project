@@ -1,6 +1,8 @@
 package levelEditor;
 
+import gameCore.Character;
 import gameCore.Direction;
+import gameCore.Tile;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -31,22 +33,30 @@ import gameCore.*;
 
 class TileInfoPanel extends JPanel implements Scrollable
 {
-	List<TileObjectPanel> itemInfos;
-	TileObjectPanel selectedInfo;
+	private List<TileObjectPanel> itemInfos;
+	private TileObjectPanel selectedInfo;
 	
+	private Tile infoTile;
 	
-	TileObjectDisplayData characterData;
-	Map<Direction, TileObjectDisplayData> edgeData;
-	List<TileObjectDisplayData> itemData;
+	private TileObjectDisplayData characterData;
+	private Map<Direction, TileObjectDisplayData> edgeData;
+	private List<TileObjectDisplayData> itemData;
+	
+	private Tile defaultTile1;
+	private Tile defaultTile2;
 	
 	boolean isDirty;
 	
-	protected TileInfoPanel(){
+	protected TileInfoPanel(Tile infoTile){
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		itemInfos = new ArrayList<TileObjectPanel>();
 		edgeData = new HashMap<Direction, TileObjectDisplayData>();
+		itemData = new ArrayList<TileObjectDisplayData>();
 		characterData = null;
 		isDirty = false;
+		
+		defaultTile1 = new Tile(new Point(0, 0), new Room());
+		defaultTile2 = new Tile(new Point(0, 0), new Room());
 	}
 	
 	private void add(TileObjectDisplayData data){
@@ -59,14 +69,18 @@ class TileInfoPanel extends JPanel implements Scrollable
 	}
 	
 	private void addItem(Item i){
-		add(TileObjectDisplayData.getItemDisplayData(i));
+		TileObjectDisplayData newItemData = TileObjectDisplayData.getItemDisplayData(i);
+		itemData.add(newItemData);
+		add(newItemData);
 	}
 	protected void addItem(){
 		addItem(null);
 	}
 	
 	private void addWeapon(Weapon w){
-		add(TileObjectDisplayData.getWeaponDisplayData(w));
+		TileObjectDisplayData newWeaponData = TileObjectDisplayData.getWeaponDisplayData(w);
+		itemData.add(newWeaponData);
+		add(newWeaponData);
 	}
 	protected void addWeapon(){
 		addWeapon(null);
@@ -144,6 +158,37 @@ class TileInfoPanel extends JPanel implements Scrollable
 		}
 	}
 	
+	protected void loadTile(Tile t){
+		for (Item i : t.getInventory()){
+			if (i instanceof Weapon){
+				addWeapon((Weapon) i);
+			}
+			else {
+				addItem(i);
+			}
+		}
+		Character c = t.getCharacter();
+		if (c instanceof Player){
+			addPlayer((Player) c);
+		}
+		else if (c instanceof Monster){
+			addMonster((Monster) c);
+		}
+		
+		for (Direction d : t.getAllDirections()){
+			if (t.hasExit(d)){
+				addDoor(new Exit(defaultTile1, defaultTile2, true, new Item(t.getExitKey(d), 1)), d);
+			}
+			else if (t.isCrossableByDefault(d)){
+				addWall(d);
+			}
+		}
+	}
+	
+	void reloadTile(){
+		clear();
+		loadTile(infoTile);
+	}
 	
 	protected void clear(){
 		unSelect();

@@ -248,6 +248,12 @@ public class Tile extends LayoutObject {
 		return isCrossable(character, direction);
 	}
 	
+	public boolean isCrossableByDefault(Direction direction){
+		if (!hasDirection(direction)){
+			return false;
+		}
+		return getEdge(direction).isCrossableByDefault(); 
+	}
 	/**
 	 * Checks whether the edge is crossable in the given direction by the given Character
 	 * @param c The character to check
