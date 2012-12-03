@@ -170,6 +170,30 @@ class TileObjectDisplayData implements Iterable<TileObjectDisplayData.TileObject
 		 return newItem;
 	}
 	
+	/**
+	 * Get a Weapon from the data
+	 * @return Weapon 
+	 */
+	public Weapon getWeapon() {
+		int attack = 0;
+		int weight = 0;
+		Weapon newWeapon = null;
+		String weaponName;
+		
+		if(type.equals("Weapon")) {
+			weaponName=getDatumValue("Name");
+			attack = Integer.parseInt(getDatumValue("Attack"));
+			weight = Integer.parseInt(getDatumValue("Weight"));
+			newWeapon = new Weapon(weaponName, weight, attack);
+		}
+		return newWeapon;
+	}
+	
+	/**
+	 * Get the character that was created.
+	 * @param myPosition - position of the character
+	 * @return a character of of type Monster or Player
+	 */
 	public Character getCharacter(Tile myPosition) {
 		String name = null;
 		int health = 0;
@@ -188,12 +212,64 @@ class TileObjectDisplayData implements Iterable<TileObjectDisplayData.TileObject
 			health = Integer.parseInt(getDatumValue("Health"));
 			attack = Integer.parseInt(getDatumValue("Attack"));
 			stamina = Integer.parseInt(getDatumValue("Stamina"));
-			newCharacter = new Player(name, health, attack, stamina, myPosition);
+			newCharacter =  new Player(name, health, attack, stamina, myPosition);
 		}
 		
 		return newCharacter;
 	}
 	
+	/**
+	 * Function getWall creates an edge in specified direction between the two tiles and sets edge as un-crossable
+	 * @param t1 - first tile
+	 * @param t2 - second tile
+	 * @return edge that is not crossable ie a wall
+	 */
+	public Edge getWall(Tile t1, Tile t2) {
+		Edge newEdge=null;
+		Direction direction;
+		
+		if (type.endsWith("Wall")) {
+			direction = getDirection();
+			newEdge = new Edge(t1, t2, false, direction, direction.getOppositeDirection());
+		}
+		
+		return newEdge;
+	}
+	/**
+	 * Function to create an Exit that is a locked door.
+	 * @param t1 - first tile
+	 * @param t2 - second tile
+	 * @return an edge (Exit type)
+	 */
+	public Edge getDoor(Tile t1, Tile t2) {
+		Edge newEdge = null;
+		Direction direction;
+		Item key = null;
+		String keyName;
+		
+		if (type.endsWith("Door")) {
+			direction = getDirection();
+			
+			keyName = getDatumValue("Key Name");
+			key = new Item(keyName, 1);
+			
+			newEdge = new Exit(t1, t2, true, direction, direction.getOppositeDirection(), key);
+		}
+	
+		return newEdge;
+	}
+	
+	/**
+	 * Get the direction base on string ie NORTH Wall, EAST Wall
+	 * @return direction of the wall
+	 */
+	
+	private Direction getDirection() {
+		String sDir[]= type.split(" ");
+		Direction direction = Direction.getDirection(sDir[0]);
+		return direction;
+	}
+
 	//------------Single Datum------------//
 	class TileObjectDisplayDatum {
 		private String label;
