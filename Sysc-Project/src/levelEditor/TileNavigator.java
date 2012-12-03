@@ -43,7 +43,7 @@ class TileNavigator extends JDialog {
 		
 		this.add(scrollPane, BorderLayout.CENTER);
 		this.setSize(800, 600);
-		NavigatorController nc = new NavigatorController(editor, this, infoModel, infoPanel, tile);
+		NavigatorController nc = new NavigatorController(editor, this, infoModel, infoPanel);
 		
 		JPanel buttonPane = new JPanel();
 		buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.PAGE_AXIS));

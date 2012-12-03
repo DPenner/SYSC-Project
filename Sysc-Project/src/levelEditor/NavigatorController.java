@@ -1,8 +1,5 @@
 package levelEditor;
 
-import gameCore.Player;
-import gameCore.Tile;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -18,12 +15,10 @@ class NavigatorController implements ActionListener {
 	private TileInfoModel infoModel;
 	private TileInfoPanel infoPanel;
 	private List<JButton> buttons;
-	private Tile activeTile;
 	
-	public NavigatorController(LevelEditor editor, TileNavigator navigator, TileInfoModel infoModel, TileInfoPanel infoPanel, Tile activeTile){
+	public NavigatorController(LevelEditor editor, TileNavigator navigator, TileInfoModel infoModel, TileInfoPanel infoPanel){
 		this.editor = editor;
 		this.navigator = navigator;
-		this.activeTile = activeTile;
 		this.infoModel = infoModel;
 		this.infoPanel = infoPanel;
 		buttons = new ArrayList<JButton>();
