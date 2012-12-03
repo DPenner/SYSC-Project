@@ -268,6 +268,21 @@ public class Tile extends LayoutObject implements Serializable   {
 		e.disconnect(this);
 	}
 	
+	public void disconnectEdgeFully(Direction direction){
+		checkDirection(direction);
+		Edge e = getEdge(direction);
+		
+		//disconnects Edge from other Tile
+		if (e.isFullyConnected()){ //indicates another tile on the other side
+			Tile otherTile = getNextTile(direction);
+			otherTile.edges.remove(direction);
+			e.disconnect(otherTile);
+		}
+		
+		//disconnect from self
+		disconnectEdge(direction);
+	}
+	
 	/**
 	 * Connects a Tile to another in the specified directions. The edge in between will be
 	 * the edge already present in this Tile. This can fail for the following reasons:

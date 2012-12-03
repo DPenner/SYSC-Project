@@ -90,6 +90,7 @@ public class LevelEditor extends MapController implements ActionListener {
 	protected void addTile(Point tileLocation){
 		Tile newTile = new Tile(tileLocation, globalRoom);
 		newTile.setVisited(); //everything is visible in the level editor
+		connectTile(newTile);
 		view.addTile(newTile);
 		tiles.add(newTile);
 	}
@@ -163,7 +164,7 @@ public class LevelEditor extends MapController implements ActionListener {
 			playerTile = null;
 		}
 		for (Direction d: t.getAllDirections()){
-			t.disconnectEdge(d);
+			t.disconnectEdgeFully(d);
 		}
 	}
 	
