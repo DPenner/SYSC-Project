@@ -210,5 +210,9 @@ public class Character implements Serializable  {
 	public Tile getPosition() {
 		return myPosition;
 	}
+	
+	public String getName(){
+		return name;
+	}
 
 }

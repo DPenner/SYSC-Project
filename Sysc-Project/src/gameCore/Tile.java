@@ -248,6 +248,16 @@ public class Tile extends LayoutObject implements Serializable   {
 		notifyObservers();
 	}
 	
+	/**
+	 * Removes all of the items on the tile in the form of an Inventory
+	 * @return The Inventory that was removed
+	 */
+	public Inventory removeAllItems(){
+		Inventory retval = inventory;
+		inventory = new Inventory();
+		return retval;
+	}
+	
 	public void removeEdge(Direction direction){
 		checkDirection(direction);
 		Edge e = edges.remove(direction);
