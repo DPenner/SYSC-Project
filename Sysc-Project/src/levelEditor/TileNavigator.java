@@ -37,7 +37,7 @@ class TileNavigator extends JDialog {
 		super(owner, "Tile Navigator", true);
 		
 		this.setLayout(new BorderLayout());
-		itemInfos = new TileInfoPanel(tile);
+		itemInfos = new TileInfoPanel(tile, editor);
 		JScrollPane scrollPane = new JScrollPane(itemInfos);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		
@@ -50,8 +50,10 @@ class TileNavigator extends JDialog {
 		buttonPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		
 		//combo-box
+		JPanel directionPanel = new JPanel();
 		directionBox = new JComboBox(Direction.values());
-		buttonPane.add(directionBox);
+		directionPanel.add(directionBox);
+		buttonPane.add(directionPanel);
 		directionBox.addActionListener(nc);
 		
 		//buttons

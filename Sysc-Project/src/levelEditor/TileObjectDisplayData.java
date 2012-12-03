@@ -4,13 +4,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.text.NumberFormatter;
-
 import gameCore.*;
 import gameCore.Character;
 
 /**
- * Factory Methods helps edit a specific Tile including the Edges and contents.
+ * TileObjectDisplayData is a factory 
  * 
  * @author Group D
  * @author Main Author: Darrell Penner
@@ -66,7 +64,7 @@ class TileObjectDisplayData implements Iterable<TileObjectDisplayData.TileObject
 			addBasicCharacterData(data, "New Character", "1", "0");
 		}
 		else {
-			addBasicCharacterData(data, c.toString(), Integer.toString(c.getHealth()), Integer.toString(c.getAttack()));
+			addBasicCharacterData(data, c.getName(), Integer.toString(c.getHealth()), Integer.toString(c.getAttack()));
 		}
 		return data;
 	}
@@ -128,6 +126,7 @@ class TileObjectDisplayData implements Iterable<TileObjectDisplayData.TileObject
 	public int size(){
 		return displayData.size();
 	}
+	
 	/**
 	 * Function to look up the value of the Datum given its name
 	 * @param datumName - label to compare with the datum
@@ -147,6 +146,19 @@ class TileObjectDisplayData implements Iterable<TileObjectDisplayData.TileObject
 			 }
 		 }
 		 return value;
+	}
+	
+	/**
+	 * A TileObjectDisplayData is valid if all of its datum are valid
+	 * @return True if the display data is valid, false otherwise
+	 */
+	public boolean isValid(){
+		for (TileObjectDisplayDatum datum : displayData){
+			if (!datum.isValid()){
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	@Override
@@ -282,6 +294,12 @@ class TileObjectDisplayData implements Iterable<TileObjectDisplayData.TileObject
 			this.isInteger = isInteger;
 		}
 
+		/**
+		 * A datum is invalid if it is the empty string. In addition if it is an integer,
+		 * if it cannot be parsed as such, it is invalid. 
+		 * 
+		 * @return True if the value is valid, false otherwise.
+		 */
 		public boolean isValid(){
 			if (value.isEmpty()) return false;
 			if (!isInteger) return true;
@@ -300,6 +318,9 @@ class TileObjectDisplayData implements Iterable<TileObjectDisplayData.TileObject
 
 		public String getValue() {
 			return value;
+		}
+		public void setValue(String value) {
+			this.value = value;
 		}
 	}
 }

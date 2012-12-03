@@ -8,6 +8,23 @@ import graphics2D.MapView;
 
 import javax.swing.*;
 
+/**
+ * LevelEditorView displays the main Level Editor window
+ * 
+ * @author Group D
+ * @author Main Author: Darrell Penner
+ * 
+ * Group D Members
+ * ---------------
+ * Karen Madore
+ * Trang Pham
+ * Darrell Penner
+ * 
+ *
+ * @version 1.0
+ *
+ */
+
 public class LevelEditorView extends JFrame {
 
 	public static final String SAVE = "Save";

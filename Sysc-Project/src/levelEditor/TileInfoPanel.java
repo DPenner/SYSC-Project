@@ -34,6 +34,8 @@ import gameCore.*;
 
 class TileInfoPanel extends JPanel implements Scrollable
 {
+	private LevelEditor editor;
+	
 	private List<TileObjectPanel> tileObjectPanels;
 	private TileObjectPanel selectedInfo;
 	
@@ -48,8 +50,10 @@ class TileInfoPanel extends JPanel implements Scrollable
 	
 	boolean isDirty;
 	
-	protected TileInfoPanel(Tile infoTile){
+	protected TileInfoPanel(Tile infoTile, LevelEditor editor){
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		this.editor = editor;
+		this.infoTile = infoTile; 
 		tileObjectPanels = new ArrayList<TileObjectPanel>();
 		edgeData = new HashMap<Direction, TileObjectDisplayData>();
 		itemData = new ArrayList<TileObjectDisplayData>();
@@ -58,6 +62,8 @@ class TileInfoPanel extends JPanel implements Scrollable
 		
 		defaultTile1 = new Tile(new Point(0, 0), new Room());
 		defaultTile2 = new Tile(new Point(0, 0), new Room());
+		
+		loadTile(infoTile);
 	}
 	
 	private void add(TileObjectDisplayData data){
@@ -159,7 +165,7 @@ class TileInfoPanel extends JPanel implements Scrollable
 		}
 	}
 	
-	protected void loadTile(Tile t){
+	private void loadTile(Tile t){
 		for (Item i : t.getInventory()){
 			if (i instanceof Weapon){
 				addWeapon((Weapon) i);
@@ -184,18 +190,29 @@ class TileInfoPanel extends JPanel implements Scrollable
 				addWall(d);
 			}
 		}
+		setDirty(false);
 	}
 	
+	/**
+	 * 
+	 */
 	protected void reloadTile(){
-		clear();
-		loadTile(infoTile);
+		clear();    //clears the display
+		loadTile(infoTile);   //reloads the display from previous tile state
 	}
 	
 	protected void saveTile(){
-		//call factory methods
-		reloadTile();
+		editor.emptyTile(infoTile);   //dumps all previous knowledge of the tile
+		for (TileObjectDisplayData todd : itemData){
+			infoTile.addItem(todd.getItem());
+		}
+		characterData.getCharacter(infoTile);
+		setDirty(false);
 	}
 	
+	/**
+	 * This method clears the panel
+	 */
 	protected void clear(){
 		unSelect();
 		for (TileObjectPanel info : tileObjectPanels){
@@ -208,6 +225,10 @@ class TileInfoPanel extends JPanel implements Scrollable
 		this.revalidate();
 	}
 	
+	/**
+	 * Checks if this TileInfoPanel is dirty (changed since last save) or not
+	 * @return True if the panel is dirty, false otherwise
+	 */
 	protected boolean isDirty(){
 		return isDirty;
 	}

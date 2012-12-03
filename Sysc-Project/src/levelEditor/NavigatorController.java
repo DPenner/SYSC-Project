@@ -51,6 +51,7 @@ class NavigatorController implements ActionListener {
 				infoPanel.addDoor(navigator.getSelectedDirection()); 
 				break;
 			case RESET_TILE:
+				infoPanel.reloadTile();
 				break;
 			case REMOVE_SELECTION:
 				infoPanel.removeSelected();
@@ -59,6 +60,7 @@ class NavigatorController implements ActionListener {
 				infoPanel.clear();
 				break;
 			case SAVE_TILE:
+				infoPanel.saveTile();
 				break;
 			case CLOSE:
 				if (infoPanel.isDirty()){
@@ -96,7 +98,7 @@ class NavigatorController implements ActionListener {
 			case CLOSE:
 			case ADD_WEAPON:
 			case ADD_ITEM:
-			case REMOVE_SELECTION:
+			case REMOVE_SELECTION:   //remove selection always enabled to avoid extra complexity of listening to a new object for only one button
 				button.setEnabled(true);
 				break;
 			case ADD_MONSTER:

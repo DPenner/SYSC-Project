@@ -13,9 +13,27 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import gameCore.*;
+import gameCore.Character;
 import gameLoader.Level;
 import gameLoader.Serialize;
 import graphics2D.MapController;
+
+/**
+ * LevelEditorView displays the main Level Editor window
+ * 
+ * @author Group D
+ * @author Main Author: Darrell Penner
+ * 
+ * Group D Members
+ * ---------------
+ * Karen Madore
+ * Trang Pham
+ * Darrell Penner
+ * 
+ *
+ * @version 1.0
+ *
+ */
 
 public class LevelEditor extends MapController implements ActionListener {
 	
@@ -137,5 +155,25 @@ public class LevelEditor extends MapController implements ActionListener {
 		
 		Serialize s = new Serialize((Player) playerTile.getCharacter(), l);
 		s.saveToFile();
+	}
+	
+	/**
+	 * This method completely guts the Tile (removes all Items, Characters, Edges, etc.).
+	 * This method is generally used in conjunction with others to refill the Tile with user
+	 * requested objects. Use with caution.
+	 */
+	protected void emptyTile(Tile t){
+		t.removeAllItems();
+		Character c = t.removeCharacter();
+		if (c instanceof Player){
+			playerTile = null;
+		}
+		for (Direction d: t.getAllDirections()){
+			t.removeEdge(d);
+		}
+	}
+	
+	protected void setPlayerTile(Tile t){
+		playerTile = t;
 	}
 }
