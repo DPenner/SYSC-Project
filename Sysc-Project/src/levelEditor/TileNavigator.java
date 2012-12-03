@@ -30,20 +30,20 @@ import gameCore.*;
 class TileNavigator extends JDialog {
 	//extends JDialog so that it can be modal (ie blocking) -> once opened, this frame must be dealt with
 
-	private TileInfoPanel itemInfos;
 	private JComboBox directionBox;
 	
 	public TileNavigator(Frame owner, LevelEditor editor, Tile tile){
 		super(owner, "Tile Navigator", true);
 		
 		this.setLayout(new BorderLayout());
-		itemInfos = new TileInfoPanel(tile, editor);
-		JScrollPane scrollPane = new JScrollPane(itemInfos);
+		TileInfoModel infoModel = new TileInfoModel(editor, tile);
+		TileInfoPanel infoPanel = new TileInfoPanel(infoModel);
+		JScrollPane scrollPane = new JScrollPane(infoPanel);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		
 		this.add(scrollPane, BorderLayout.CENTER);
 		this.setSize(800, 600);
-		NavigatorController nc = new NavigatorController(editor, this, tile);
+		NavigatorController nc = new NavigatorController(editor, this, infoModel, infoPanel, tile);
 		
 		JPanel buttonPane = new JPanel();
 		buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.PAGE_AXIS));
@@ -70,10 +70,6 @@ class TileNavigator extends JDialog {
 		this.add(buttonScroll, BorderLayout.EAST);
 		
 		this.setVisible(true);
-	}
-	
-	protected TileInfoPanel getTileInfoPanel(){
-		return itemInfos;
 	}
 	
 	protected Direction getSelectedDirection(){

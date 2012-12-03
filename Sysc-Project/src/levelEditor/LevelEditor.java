@@ -22,7 +22,7 @@ import graphics2D.MapController;
  * LevelEditorView displays the main Level Editor window
  * 
  * @author Group D
- * @author Main Author: Darrell Penner
+ * @author Main Author: Trang Pham/Darrell Penner
  * 
  * Group D Members
  * ---------------
@@ -37,11 +37,10 @@ import graphics2D.MapController;
 
 public class LevelEditor extends MapController implements ActionListener {
 	
-	LevelEditorView levelEditorFrame;
-	List<Tile> tiles;
-	List<Edge> edges;
-	Tile playerTile;
-	Room globalRoom; //No time to implement room support, everything goes into a single room
+	private LevelEditorView levelEditorFrame;
+	private List<Tile> tiles;
+	private Tile playerTile;
+	private Room globalRoom; //No time to implement room support, everything goes into a single room
 	
 	protected LevelEditor(LevelEditorView levelEditorFrame){
 		super(levelEditorFrame.getEditorView());
@@ -61,20 +60,24 @@ public class LevelEditor extends MapController implements ActionListener {
 			Point tileLocation = view.getTileLocation(offsettedLocation);
 			
 			if (tileExists){
-				removeTile(view.getTile(offsettedLocation));
+				Tile clickTile = view.getTile(offsettedLocation);
+				if (clickTile.isEmpty()){
+					removeTile(clickTile);
+				}
+				else { //double check removal if there are things on the tile
+					if (JOptionPane.showConfirmDialog(levelEditorFrame, "This tile is not empty, remove anyways?") == JOptionPane.YES_OPTION){
+						removeTile(clickTile);
+					}
+				}
 			}
-			else { //add tile
+			else {
 				addTile(tileLocation);
 			}
 		}
 		else if (tileExists){
-			navigatorClick(offsettedLocation);
+			Tile clickTile = view.getTile(offsettedLocation);
+			new TileNavigator(levelEditorFrame, this, clickTile);
 		}
-	}
-	
-	private void navigatorClick(Point offsettedLocation){
-		Tile itemTile = view.getTile(offsettedLocation);	
-		new TileNavigator(levelEditorFrame, this, itemTile);
 	}
 
 	@Override
@@ -91,20 +94,11 @@ public class LevelEditor extends MapController implements ActionListener {
 		tiles.add(newTile);
 	}
 	
-	protected Tile getTile(Point location){
-		for (Tile t : tiles){
-			if (t.getLocation().equals(location)){
-				return t;
-			}
-		}
-		throw new IllegalArgumentException("No tile found at that location");
-	}
-	
 	protected void removeTile(Tile t){
 		tiles.remove(t);
 		view.removeTile(t);
 		for (Direction d : t.getAllDirections()){
-			t.removeEdge(d);
+			t.disconnectEdge(d); //disconnect the tile
 		}
 	}
 
@@ -169,8 +163,63 @@ public class LevelEditor extends MapController implements ActionListener {
 			playerTile = null;
 		}
 		for (Direction d: t.getAllDirections()){
-			t.removeEdge(d);
+			t.disconnectEdge(d);
 		}
+	}
+	
+	/**
+	 * Connects a Tile with Edges being unconnected to other Tiles
+	 * @param t
+	 */
+	protected void connectTile(Tile t){
+		Point location = t.getLocation();
+		Tile northTile = getTile(new Point(location.x, location.y - 1));
+		if (northTile != null && !northTile.hasDirection(Direction.SOUTH)){
+			t.connect(Direction.NORTH, Direction.SOUTH, northTile);
+		}
+		Tile southTile = getTile(new Point(location.x, location.y + 1));
+		if (southTile != null && !southTile.hasDirection(Direction.NORTH)){
+			t.connect(Direction.SOUTH, Direction.NORTH, southTile);
+		}
+		Tile westTile = getTile(new Point(location.x - 1, location.y));
+		if (westTile != null && !westTile.hasDirection(Direction.EAST)){
+			t.connect(Direction.WEST, Direction.EAST, westTile);
+		}
+		Tile eastTile = getTile(new Point(location.x + 1, location.y));
+		if (eastTile != null && !eastTile.hasDirection(Direction.WEST)){
+			t.connect(Direction.EAST, Direction.WEST, eastTile);
+		}
+	}
+	
+	/**
+	 * Gets the Tile one "step" in Direction of given step from given Tile
+	 * @param t Tile to step off of
+	 * @param step The direction to "step"
+	 */
+	protected Tile getTile(Tile t, Direction step){
+		Point location = t.getLocation();
+		switch (step){
+		case EAST:
+			return getTile(new Point(location.x + 1, location.y));
+		case NORTH:
+			return getTile(new Point(location.x, location.y - 1));
+		case SOUTH:
+			return getTile(new Point(location.x, location.y + 1));
+		case WEST:
+			return getTile(new Point(location.x - 1, location.y));
+		default:
+			return null;
+		}
+	}
+	
+	private Tile getTile(Point location){
+		Tile retval = null;
+		for (Tile t : tiles){
+			if (t.getLocation().equals(location)){
+				retval = t;
+			}
+		}
+		return retval;
 	}
 	
 	protected void setPlayerTile(Tile t){

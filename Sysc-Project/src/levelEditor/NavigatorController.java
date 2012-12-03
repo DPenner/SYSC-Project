@@ -1,6 +1,5 @@
 package levelEditor;
 
-import gameCore.Direction;
 import gameCore.Player;
 import gameCore.Tile;
 
@@ -16,15 +15,17 @@ class NavigatorController implements ActionListener {
 
 	private LevelEditor editor;
 	private TileNavigator navigator;
+	private TileInfoModel infoModel;
 	private TileInfoPanel infoPanel;
 	private List<JButton> buttons;
 	private Tile activeTile;
 	
-	public NavigatorController(LevelEditor editor, TileNavigator navigator, Tile activeTile){
+	public NavigatorController(LevelEditor editor, TileNavigator navigator, TileInfoModel infoModel, TileInfoPanel infoPanel, Tile activeTile){
 		this.editor = editor;
 		this.navigator = navigator;
 		this.activeTile = activeTile;
-		infoPanel = navigator.getTileInfoPanel();
+		this.infoModel = infoModel;
+		this.infoPanel = infoPanel;
 		buttons = new ArrayList<JButton>();
 	}
 	
@@ -33,44 +34,50 @@ class NavigatorController implements ActionListener {
 		if (NavigatorEditingButton.isNavigatorEditingbutton(e.getActionCommand())){
 			switch (NavigatorEditingButton.getNavigatorEditingButton(e.getActionCommand())){
 			case ADD_ITEM:
-				infoPanel.addItem();
+				infoModel.addItem();
 				break;
 			case ADD_WEAPON:
-				infoPanel.addWeapon();
+				infoModel.addWeapon();
 				break;
 			case ADD_MONSTER:
-				infoPanel.addMonster();
+				infoModel.addMonster();
 				break;
 			case ADD_PLAYER:
-				infoPanel.addPlayer();
+				infoModel.addPlayer();
 				break;
 			case ADD_WALL:
-				infoPanel.addWall(navigator.getSelectedDirection());
+				infoModel.addWall(navigator.getSelectedDirection());
 				break;
 			case ADD_DOOR:
-				infoPanel.addDoor(navigator.getSelectedDirection()); 
+				infoModel.addDoor(navigator.getSelectedDirection()); 
 				break;
 			case RESET_TILE:
-				infoPanel.reloadTile();
+				infoModel.reloadTile();
 				break;
 			case REMOVE_SELECTION:
-				infoPanel.removeSelected();
+				if (infoPanel.hasSelection()){
+					infoModel.remove(infoPanel.getSelected());
+				}
+				else {
+					JOptionPane.showMessageDialog(navigator, "There is nothing selected!");
+				}
 				break;
 			case REMOVE_ALL:
-				infoPanel.clear();
+				infoModel.clearData();
 				break;
 			case SAVE_TILE:
-				infoPanel.saveTile();
+				infoModel.saveTile();
 				break;
 			case CLOSE:
 				if (infoPanel.isDirty()){
 					int opt = JOptionPane.showConfirmDialog(navigator, "There are unsaved changes to the tile, would you like to save them?");
 					if (opt == JOptionPane.OK_OPTION){
-						navigator.dispose(); //more stuff soon
+						infoModel.saveTile();
+						navigator.dispose();
 					}
-					if (opt == JOptionPane.NO_OPTION){
-						navigator.dispose(); //more stuff soon
-					}
+					else if (opt == JOptionPane.NO_OPTION){
+						navigator.dispose();
+					} // if option is cancel, than do nothing
 				}
 				else navigator.dispose();
 				break;
@@ -87,13 +94,13 @@ class NavigatorController implements ActionListener {
 	}
 	
 	private void refreshButtons(){
-		boolean hasCharacter = infoPanel.hasCharacter();
+		boolean hasCharacter = infoModel.hasCharacter();
 		
 		for (JButton button : buttons){
 			switch (NavigatorEditingButton.getNavigatorEditingButton(button.getActionCommand())){
 			case ADD_WALL:
 			case ADD_DOOR:
-				button.setEnabled(!infoPanel.hasEdge(navigator.getSelectedDirection()));
+				button.setEnabled(!infoModel.hasEdge(navigator.getSelectedDirection()));
 				break;
 			case CLOSE:
 			case ADD_WEAPON:
@@ -105,11 +112,11 @@ class NavigatorController implements ActionListener {
 				button.setEnabled(!hasCharacter);
 				break;
 			case ADD_PLAYER:
-				boolean hasPlayerElseWhere = editor.hasPlayer() && !(activeTile.getCharacter() instanceof Player);
+				boolean hasPlayerElseWhere = editor.hasPlayer() && !(infoModel.hasPlayer());
 				button.setEnabled(!hasCharacter && !hasPlayerElseWhere);
 				break;
 			case REMOVE_ALL:
-				button.setEnabled(!infoPanel.isEmpty());
+				button.setEnabled(!infoModel.isEmpty());
 				break;
 			case RESET_TILE:
 			case SAVE_TILE:
@@ -117,9 +124,5 @@ class NavigatorController implements ActionListener {
 				break;
 			}
 		}
-	}
-	
-	private void clearActiveTile(){
-		editor.clearTile(activeTile);
 	}
 }

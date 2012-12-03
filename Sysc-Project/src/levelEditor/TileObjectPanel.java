@@ -24,6 +24,8 @@ class TileObjectPanel extends JPanel {
 	private JPanel typePanel;
 	public static final Color HIGH_LIGHT_COLOR = Color.decode("0x2277AA");
 	public static final Color DEFAULT_COLOR = Color.LIGHT_GRAY;
+	private static final Font TITLE_FONT = new Font(Font.SANS_SERIF, Font.BOLD, 14);
+	
 	TileObjectDisplayData displayData;
 	
 	TileObjectPanel(TileInfoPanel parentPanel, TileObjectDisplayData data){	
@@ -37,14 +39,14 @@ class TileObjectPanel extends JPanel {
 		//Add datum visually, and to controller
 		for (TileObjectDisplayDatum datum : data){
 			JTextField textBox = new JTextField(datum.getValue());
-			mainPanel.add(new JLabel(datum.getName()));
+			mainPanel.add(new JLabel(datum.getName() + ": "));
 			mainPanel.add(textBox);
 			toc.addTextBoxDatumPair(textBox, datum);
 		}
 		
 		//typePanel setup
 		typePanel = new JPanel();
-		Font typeFont = new Font(Font.SANS_SERIF, Font.BOLD, 14);
+		Font typeFont = TITLE_FONT;
 		JLabel typeLabel = new JLabel(data.getTypeName());
 		typeLabel.setFont(typeFont);
 		typePanel.add(typeLabel);

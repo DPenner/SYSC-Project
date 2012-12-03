@@ -202,8 +202,20 @@ public class Edge extends LayoutObject implements Serializable {
 		else {
 			tile2 = null;
 		}
-		setChanged();
+		setChanged();   //this is so observers can detect if it is stranded, and remove it if they like
 		notifyObservers();
+	}
+	
+	public void connect(Tile t){
+		if (isStranded() || isFullyConnected()){
+			throw new UnsupportedOperationException("Nowhere to connect");
+		}
+		if (tile1 == null){
+			tile1 = t;
+		}
+		else {
+			tile2 = t;
+		}
 	}
 	
 	/**
@@ -213,5 +225,9 @@ public class Edge extends LayoutObject implements Serializable {
 	 */
 	public boolean isStranded(){
 		return tile1 == null && tile2 == null;
+	}
+	
+	public boolean isFullyConnected(){
+		return tile1 != null && tile2 != null;
 	}
 }

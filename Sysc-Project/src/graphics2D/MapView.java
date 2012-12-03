@@ -166,7 +166,6 @@ public class MapView extends JLayeredPane implements Scrollable
 	}
 	
 	//------------Scaling and Size-----------//
-	//These methods scale back and forth between a Tile's location and its location in this MapView
 	protected int getOffsettedX(int tileX){
 		return tileX * tileSize;
 	}

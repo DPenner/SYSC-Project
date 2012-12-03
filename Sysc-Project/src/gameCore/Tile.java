@@ -258,10 +258,35 @@ public class Tile extends LayoutObject implements Serializable   {
 		return retval;
 	}
 	
-	public void removeEdge(Direction direction){
+	/**
+	 * Disconnects the Edge in the given direction
+	 * @param direction The direction in which to disconnect the edge
+	 */
+	public void disconnectEdge(Direction direction){
 		checkDirection(direction);
 		Edge e = edges.remove(direction);
 		e.disconnect(this);
+	}
+	
+	/**
+	 * Connects a Tile to another in the specified directions. The edge in between will be
+	 * the edge already present in this Tile. This can fail for the following reasons:
+	 * - This Tile does not have an edge in the specified Direction
+	 * - The other Tile already has an Edge in that direction
+	 * - This tile already has a different Tile attached in the given direction
+	 * @param direction The direction for this Tile
+	 * @param otherTileDirection The direction for the other Tile
+	 * @param otherTile The Tile to connect to
+	 */
+	public void connect(Direction direction, Direction otherTileDirection, Tile otherTile){
+		checkDirection(direction);
+		if (otherTile.hasDirection(otherTileDirection)) throw new IllegalArgumentException("Other Tile has edge in that direction already");
+		
+		Edge connectingEdge = getEdge(direction);
+		if (connectingEdge.isFullyConnected()) throw new IllegalArgumentException("Edge is fully connected");
+		
+		connectingEdge.connect(otherTile);
+		otherTile.setEdge(otherTileDirection, connectingEdge);		
 	}
 	
 	//------------Character Movement------------//

@@ -11,7 +11,7 @@ import gameCore.Character;
  * TileObjectDisplayData is a factory 
  * 
  * @author Group D
- * @author Main Author: Darrell Penner
+ * @author Main Authors: Karen Madore/Darrell Penner
  * 
  * Group D Members
  * ---------------
@@ -50,10 +50,10 @@ class TileObjectDisplayData implements Iterable<TileObjectDisplayData.TileObject
 		TileObjectDisplayData data = getItemDisplayData(w);
 		data.type = "Weapon";
 		if (w == null){
-			data.addDatum("Attack: ", "1", true);
+			data.addDatum("Attack", "1", true);
 		}
 		else {
-			data.addDatum("Attack: ", Integer.toString(w.getAttackValue()), true);
+			data.addDatum("Attack", Integer.toString(w.getAttackValue()), true);
 		}
 		return data;
 	}
@@ -78,10 +78,10 @@ class TileObjectDisplayData implements Iterable<TileObjectDisplayData.TileObject
 		TileObjectDisplayData data = getCharacterDisplayData(p);
 		data.type = "Player";
 		if (p == null){
-			data.addDatum("Stamina: ", "0", true);
+			data.addDatum("Stamina", "0", true);
 		}
 		else {
-			data.addDatum("Stamina: ", Integer.toString(p.getStamina()), true);
+			data.addDatum("Stamina", Integer.toString(p.getStamina()), true);
 		}
 		return data;
 	}
@@ -94,10 +94,10 @@ class TileObjectDisplayData implements Iterable<TileObjectDisplayData.TileObject
 	public static TileObjectDisplayData getDoorDisplayData(Exit door, Direction dir){
 		TileObjectDisplayData data = new TileObjectDisplayData(dir.toString().toUpperCase() + " Door");
 		if (door == null){
-			data.addDatum("Key Name: ", "MonKey", false);
+			data.addDatum("Key Name", "MonKey", false);
 		}
 		else {
-			data.addDatum("Key Name: ", door.getKeyName(), false);
+			data.addDatum("Key Name", door.getKeyName(), false);
 		}
 		return data;
 	}
@@ -108,14 +108,14 @@ class TileObjectDisplayData implements Iterable<TileObjectDisplayData.TileObject
 	}
 	
 	private static void addBasicItemData(TileObjectDisplayData data, String name, String weight){
-		data.addDatum("Name: ", name, false);
-		data.addDatum("Weight: ", weight, true);
+		data.addDatum("Name", name, false);
+		data.addDatum("Weight", weight, true);
 	}
 	
 	private static void addBasicCharacterData(TileObjectDisplayData data, String name, String health, String attack){
-		data.addDatum("Name: ", name, false);
-		data.addDatum("Health: ", health, true);
-		data.addDatum("Attack: ", attack, true);
+		data.addDatum("Name", name, false);
+		data.addDatum("Health", health, true);
+		data.addDatum("Attack", attack, true);
 	}
 	
 	//------------Getters------------//
@@ -133,7 +133,7 @@ class TileObjectDisplayData implements Iterable<TileObjectDisplayData.TileObject
 	 * @return - value of the field
 	 */
 	public String getDatumValue(String datumName) {
-		String fieldName = datumName +": ";
+		String fieldName = datumName;
 		String value = null;
 		 for (int i=0; i<displayData.size(); i++ ) {
 			 
@@ -146,6 +146,15 @@ class TileObjectDisplayData implements Iterable<TileObjectDisplayData.TileObject
 			 }
 		 }
 		 return value;
+	}
+	
+	public boolean hasDatumName(String datumName){
+		for (TileObjectDisplayDatum datum : displayData){
+			if (datum.getName().equals(datumName)){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
@@ -166,39 +175,21 @@ class TileObjectDisplayData implements Iterable<TileObjectDisplayData.TileObject
 		return displayData.iterator();
 	}
 	
-	//------------Get objects --------//
+	//------------Get objects (reverse-factory-ish)--------//
 	public Item getItem() {
-		String itemName = null;
-		int itemWeight = 0;
 		Item newItem = null;
+
+		String itemName = getDatumValue("Name");
+		int itemWeight = Integer.parseInt(getDatumValue("Weight"));
 		
-		 if (type.equals("Item")) {
-			 
-			 itemName =  getDatumValue("Name");
-			 itemWeight = Integer.parseInt(getDatumValue("Weight"));
-			
-			 newItem = new Item(itemName, itemWeight);
-		 }
-		 return newItem;
-	}
-	
-	/**
-	 * Get a Weapon from the data
-	 * @return Weapon 
-	 */
-	public Weapon getWeapon() {
-		int attack = 0;
-		int weight = 0;
-		Weapon newWeapon = null;
-		String weaponName;
-		
-		if(type.equals("Weapon")) {
-			weaponName=getDatumValue("Name");
-			attack = Integer.parseInt(getDatumValue("Attack"));
-			weight = Integer.parseInt(getDatumValue("Weight"));
-			newWeapon = new Weapon(weaponName, weight, attack);
+		if (type.equals("Weapon")){
+			int itemAttack = Integer.parseInt(getDatumValue("Attack"));
+			newItem = new Weapon(itemName, itemWeight, itemAttack);
 		}
-		return newWeapon;
+		else {
+			newItem = new Item(itemName, itemWeight);
+		}
+		return newItem;
 	}
 	
 	/**
@@ -231,18 +222,21 @@ class TileObjectDisplayData implements Iterable<TileObjectDisplayData.TileObject
 	}
 	
 	/**
-	 * Function getWall creates an edge in specified direction between the two tiles and sets edge as un-crossable
+	 * Function getEdge creates an edge in specified direction between the two tiles and sets edge as un-crossable
 	 * @param t1 - first tile
-	 * @param t2 - second tile
-	 * @return edge that is not crossable ie a wall
 	 */
-	public Edge getWall(Tile t1, Tile t2) {
+	public Edge getEdge(Tile t1) {
 		Edge newEdge=null;
-		Direction direction;
 		
+		if (type.endsWith("Door")) {
+			
+			String keyName = getDatumValue("Key Name");
+			Item key = new Item(keyName, 1);
+			
+			newEdge = new Exit(t1, null, true, key);
+		}
 		if (type.endsWith("Wall")) {
-			direction = getDirection();
-			newEdge = new Edge(t1, t2, false, direction, direction.getOppositeDirection());
+			newEdge = new Edge(t1, null, false);
 		}
 		
 		return newEdge;
@@ -258,29 +252,20 @@ class TileObjectDisplayData implements Iterable<TileObjectDisplayData.TileObject
 		Direction direction;
 		Item key = null;
 		String keyName;
-		
-		if (type.endsWith("Door")) {
-			direction = getDirection();
-			
-			keyName = getDatumValue("Key Name");
-			key = new Item(keyName, 1);
-			
-			newEdge = new Exit(t1, t2, true, direction, direction.getOppositeDirection(), key);
-		}
 	
 		return newEdge;
 	}
 	
-	/**
+	/*
 	 * Get the direction base on string ie NORTH Wall, EAST Wall
 	 * @return direction of the wall
-	 */
+	 *
 	
-	private Direction getDirection() {
+	protected Direction getDirection() {
 		String sDir[]= type.split(" ");
 		Direction direction = Direction.getDirection(sDir[0]);
 		return direction;
-	}
+	}*/
 
 	//------------Single Datum------------//
 	class TileObjectDisplayDatum {

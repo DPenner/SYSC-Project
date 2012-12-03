@@ -3,7 +3,7 @@ package levelEditor;
 enum NavigatorEditingButton {
 	ADD_ITEM ("Add Item", "Adds a generic item to the tile."),
 	ADD_WEAPON ("Add Weapon", "Adds a weapon to the tile."),
-	ADD_PLAYER ("Add Player", "Adds a player to the tile. Note that only one player may exist in the game."),
+	ADD_PLAYER ("Add Player", "Adds a player to the tile. Note that only one player may exist in the Level."),
 	ADD_MONSTER ("Add Monster", "Adds a monster to the tile. Only one character can exist on a tile."),
 	ADD_WALL("Add Wall", "Adds a wall in the set direction. Only one wall/door per direction."),
 	ADD_DOOR("Add Door", "Adds a door in the set direction. Only one wall/door per direction."),

@@ -32,38 +32,21 @@ import gameCore.*;
  *
  */
 
-class TileInfoPanel extends JPanel implements Scrollable
+class TileInfoPanel extends JPanel implements TileInfoListener, Scrollable
 {
-	private LevelEditor editor;
 	
 	private List<TileObjectPanel> tileObjectPanels;
 	private TileObjectPanel selectedInfo;
 	
-	private Tile infoTile;
-	
-	private TileObjectDisplayData characterData;
-	private Map<Direction, TileObjectDisplayData> edgeData;
-	private List<TileObjectDisplayData> itemData;
-	
-	private Tile defaultTile1;
-	private Tile defaultTile2;
-	
 	boolean isDirty;
 	
-	protected TileInfoPanel(Tile infoTile, LevelEditor editor){
+	protected TileInfoPanel(TileInfoModel model){
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		this.editor = editor;
-		this.infoTile = infoTile; 
 		tileObjectPanels = new ArrayList<TileObjectPanel>();
-		edgeData = new HashMap<Direction, TileObjectDisplayData>();
-		itemData = new ArrayList<TileObjectDisplayData>();
-		characterData = null;
 		isDirty = false;
 		
-		defaultTile1 = new Tile(new Point(0, 0), new Room());
-		defaultTile2 = new Tile(new Point(0, 0), new Room());
-		
-		loadTile(infoTile);
+		model.addListener(this);
+		model.reloadTile(); //quick way to get the model to fire necessary events for view to update without changing the model
 	}
 	
 	private void add(TileObjectDisplayData data){
@@ -75,54 +58,24 @@ class TileInfoPanel extends JPanel implements Scrollable
 		this.revalidate();
 	}
 	
-	private void addItem(Item i){
-		TileObjectDisplayData newItemData = TileObjectDisplayData.getItemDisplayData(i);
-		itemData.add(newItemData);
-		add(newItemData);
-	}
-	protected void addItem(){
-		addItem(null);
-	}
-	
-	private void addWeapon(Weapon w){
-		TileObjectDisplayData newWeaponData = TileObjectDisplayData.getWeaponDisplayData(w);
-		itemData.add(newWeaponData);
-		add(newWeaponData);
-	}
-	protected void addWeapon(){
-		addWeapon(null);
-	}
-	
-	private void addMonster(Monster m){
-		characterData = TileObjectDisplayData.getMonsterDisplayData(m);
-		add(characterData);
-	}
-	protected void addMonster(){
-		addMonster(null);
+	private void remove(TileObjectDisplayData data){
+		if (data == selectedInfo.getDisplayData()){
+			unSelect();
+		}
+		TileObjectPanel panelToRemove = null;
+		for (TileObjectPanel panel : tileObjectPanels){
+			if (panel.getDisplayData() == data){
+				panelToRemove = panel;
+				break;
+			}
+		}
+		
+		tileObjectPanels.remove(panelToRemove);
+		this.remove(panelToRemove);
+		this.setDirty(true);
+		this.revalidate();
 	}
 	
-	private void addPlayer(Player p){
-		characterData = TileObjectDisplayData.getPlayerDisplayData(p);
-		add(characterData);
-	}
-	protected void addPlayer(){
-		addPlayer(null);
-	}
-	
-	protected void addWall(Direction d){
-		TileObjectDisplayData wallData = TileObjectDisplayData.getWallDisplayData(d);
-		edgeData.put(d, wallData);
-		add(wallData);
-	}
-	
-	private void addDoor(Exit door, Direction d){
-		TileObjectDisplayData doorData = TileObjectDisplayData.getDoorDisplayData(door, d);
-		edgeData.put(d, doorData);
-		add(doorData);
-	}
-	protected void addDoor(Direction d){
-		addDoor(null, d);
-	}
 	
 	protected void setSelectedInfo(TileObjectPanel info){
 		unSelect(); //only one can be selected at a time
@@ -139,75 +92,11 @@ class TileInfoPanel extends JPanel implements Scrollable
 		return retval;
 	}
 	
-	protected void removeSelected(){
-		if (hasSelection()){
-			TileObjectPanel removed = unSelect();
-			tileObjectPanels.remove(removed);
-			this.remove(removed);
-			this.setDirty(true);
-			
-			TileObjectDisplayData removedData = removed.getDisplayData();
-			if (characterData == removedData){
-				characterData = null;
-			}
-			
-			Direction removeDirection = null;
-			for (Direction d : edgeData.keySet()){
-				if (edgeData.get(d) == removedData){
-					removeDirection = d;
-				}
-			}
-			if (removeDirection != null){
-				edgeData.remove(removeDirection);
-			}		
-			
-			this.revalidate();
+	protected TileObjectDisplayData getSelected(){
+		if (selectedInfo == null){
+			return null;
 		}
-	}
-	
-	private void loadTile(Tile t){
-		for (Item i : t.getInventory()){
-			if (i instanceof Weapon){
-				addWeapon((Weapon) i);
-			}
-			else {
-				addItem(i);
-			}
-		}
-		Character c = t.getCharacter();
-		if (c instanceof Player){
-			addPlayer((Player) c);
-		}
-		else if (c instanceof Monster){
-			addMonster((Monster) c);
-		}
-		
-		for (Direction d : t.getAllDirections()){
-			if (t.hasExit(d)){
-				addDoor(new Exit(defaultTile1, defaultTile2, true, new Item(t.getExitKey(d), 1)), d);
-			}
-			else if (t.isCrossableByDefault(d)){
-				addWall(d);
-			}
-		}
-		setDirty(false);
-	}
-	
-	/**
-	 * 
-	 */
-	protected void reloadTile(){
-		clear();    //clears the display
-		loadTile(infoTile);   //reloads the display from previous tile state
-	}
-	
-	protected void saveTile(){
-		editor.emptyTile(infoTile);   //dumps all previous knowledge of the tile
-		for (TileObjectDisplayData todd : itemData){
-			infoTile.addItem(todd.getItem());
-		}
-		characterData.getCharacter(infoTile);
-		setDirty(false);
+		return selectedInfo.getDisplayData();
 	}
 	
 	/**
@@ -219,8 +108,6 @@ class TileInfoPanel extends JPanel implements Scrollable
 			this.remove(info);
 		}
 		tileObjectPanels.clear();
-		characterData = null;
-		edgeData.clear();
 		this.setDirty(true);
 		this.revalidate();
 	}
@@ -232,24 +119,40 @@ class TileInfoPanel extends JPanel implements Scrollable
 	protected boolean isDirty(){
 		return isDirty;
 	}
+	
+	/**
+	 * Sets this panel as dirty or clean
+	 * @param b True for dirty, false for clean
+	 */
 	protected void setDirty(boolean b){
 		isDirty = b;
-	}
-	protected boolean isEmpty(){
-		return tileObjectPanels.isEmpty();
 	}
 	protected boolean hasSelection(){
 		return selectedInfo != null;
 	}
 	
-	protected boolean hasCharacter(){
-		return characterData != null;
+	//------------TileInfoListener methods------------//
+	@Override
+	public void dataAdded(TileInfoEvent e) {
+		add(e.getDisplayData());
 	}
-	protected boolean hasEdge(Direction d){
-		return edgeData.containsKey(d);
+
+	@Override
+	public void dataRemoved(TileInfoEvent e) {
+		remove(e.getDisplayData());
+	}
+
+	@Override
+	public void dataCleared(TileInfoEvent e) {
+		clear();
 	}
 	
-	//------------Scrolling support-----------//
+	@Override
+	public void dataSynched(TileInfoEvent e){
+		setDirty(false);
+	}
+	
+	//------------Scrollable methods-----------//
 	@Override
 	public Dimension getPreferredScrollableViewportSize() {
 		return getPreferredSize();
@@ -273,7 +176,5 @@ class TileInfoPanel extends JPanel implements Scrollable
 	@Override
 	public int getScrollableUnitIncrement(Rectangle arg0, int arg1, int arg2) {
 		return 1;
-	}
-
-	
+	}	
 }
