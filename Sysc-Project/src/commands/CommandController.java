@@ -1,5 +1,6 @@
 package commands;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,8 +8,25 @@ import gameCore.Direction;
 import gameCore.Player;
 import graphics2D.TextOutputPanelObservable;
 
-public class CommandController extends TextOutputPanelObservable{
-	
+/**
+ *  The CommandController is the superclass for keyCommandController
+ *  and is used to support player movement and undo/redo actions
+ * 
+ * @author Group D
+ * @author Main author: Karen Madore/Trang Pham
+ * 
+ * Group D Members
+ * ---------------
+ * Karen Madore
+ * Trang Pham
+ * Darrell Penner
+ * 
+ *
+ * @version 1.0
+ */
+
+public class CommandController extends TextOutputPanelObservable implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private static int undo_index;
     private static Player player;
     private static List<Command> undoList;

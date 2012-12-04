@@ -59,10 +59,12 @@ public class LevelEditorView extends JFrame {
 		
 		JMenuItem help = new JMenuItem(HELP);
 		JMenuItem save = new JMenuItem(SAVE);
+		
 		help.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.VK_CONTROL));
 		save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.VK_CONTROL));
 		help.setActionCommand(HELP);
 		save.setActionCommand(SAVE);
+		
 		help.addActionListener(controller);
 		save.addActionListener(controller);
 		
