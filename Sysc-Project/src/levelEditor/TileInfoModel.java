@@ -172,8 +172,7 @@ public class TileInfoModel {
 		//sets the edges present
 		for (Direction d : edgeData.keySet()){
 			TileObjectDisplayData data = edgeData.get(d);
-			Edge edgeToAdd = data.getEdge(activeTile);
-			activeTile.setEdge(d, edgeToAdd);
+			Edge edgeToAdd = data.getEdge(activeTile, editor.getTile(activeTile, d), d);
 			editor.addEdge(edgeToAdd);
 		}
 		
@@ -181,18 +180,15 @@ public class TileInfoModel {
 		for (Direction d : Direction.values()){
 			if (!activeTile.hasDirection(d)){
 				if (editor.getTile(activeTile, d) != null){
-					Edge edgeToAdd = new Edge(activeTile, null, true);
-					activeTile.setEdge(d, edgeToAdd);
+					Edge edgeToAdd = new Edge(activeTile, editor.getTile(activeTile, d), true, d, d.getOppositeDirection());
 					editor.addEdge(edgeToAdd);
 				}			
 			}
 		}
 		
-		editor.connectTile(activeTile); //connect to neighbours
-		
 		notifyDataSynched();
 	}
-	
+
 	//------------Removing Data------------//
 	protected void clearData(){
 		clearCharacterData();

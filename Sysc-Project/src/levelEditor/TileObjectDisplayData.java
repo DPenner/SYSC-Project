@@ -225,7 +225,7 @@ class TileObjectDisplayData implements Iterable<TileObjectDisplayData.TileObject
 	 * Function getEdge creates an edge in specified direction between the two tiles and sets edge as un-crossable
 	 * @param t1 - first tile
 	 */
-	public Edge getEdge(Tile t1) {
+	public Edge getEdge(Tile t1, Tile t2, Direction d1) {
 		Edge newEdge=null;
 		
 		if (type.endsWith("Door")) {
@@ -233,10 +233,10 @@ class TileObjectDisplayData implements Iterable<TileObjectDisplayData.TileObject
 			String keyName = getDatumValue("Key Name");
 			Item key = new Item(keyName, 1);
 			
-			newEdge = new Exit(t1, null, true, key);
+			newEdge = new Exit(t1, t2, true, d1, d1.getOppositeDirection(), key);
 		}
 		if (type.endsWith("Wall")) {
-			newEdge = new Edge(t1, null, false);
+			newEdge = new Edge(t1, t2, false, d1, d1.getOppositeDirection());
 		}
 		
 		return newEdge;

@@ -8,6 +8,23 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
+/**
+ * Navigator Controller controls the main navigator window, and its main TileInfoPanel
+ * 
+ * @author Group D
+ * @author Main Author: Darrell Penner
+ * 
+ * Group D Members
+ * ---------------
+ * Karen Madore
+ * Trang Pham
+ * Darrell Penner
+ * 
+ *
+ * @version 1.0
+ *
+ */
+
 class NavigatorController implements ActionListener {
 
 	private LevelEditor editor;
