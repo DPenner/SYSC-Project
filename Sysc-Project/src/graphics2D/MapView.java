@@ -100,7 +100,9 @@ public class MapView extends JLayeredPane implements Scrollable
 	    if (l != null){
 	        for (int i = 0; i < l.getTiles().length; i++){
 	        	for (int j = 0; j < l.getTiles()[i].length; j++){
-	        		addTile(l.getTiles()[i][j]);
+	        		if(l.getTiles()[i][j] !=null) {
+	        			addTile(l.getTiles()[i][j]);
+	        		}
 	        	}
 	        }
 	        for (Edge edge : l.getEdges()){

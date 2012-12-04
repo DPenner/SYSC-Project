@@ -85,6 +85,8 @@ public class LevelEditor extends MapController implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals(LevelEditorView.HELP)){
 			new HelpFrame();
+		} else if (e.getActionCommand().equals(LevelEditorView.SAVE)) {
+			this.save(); //save the level
 		}
 	}
 	
