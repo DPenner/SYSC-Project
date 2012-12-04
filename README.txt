@@ -23,6 +23,8 @@ Trang Pham:
    TextOutputPanel, HelpListener, TextOutputPanelObserver
 - graphics3D
    FirstPersonView, ForegroundLayer, BackgroundLayer
+- iteration 4:
+     Updated Game class, refactored KeyCommandController and CommandController
 
 Darrell Penner:
 - Game Layout
