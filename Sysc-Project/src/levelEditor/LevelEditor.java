@@ -150,6 +150,7 @@ public class LevelEditor extends MapController implements ActionListener {
 			l.setTile(t.getLocation().x, t.getLocation().y, t);
 		}
 		
+		globalRoom.setVisited(); //make all tiles visible, better than all tiles dark
 		Serialize s = new Serialize((Player) playerTile.getCharacter(), l);
 		s.saveToFile();
 	}
