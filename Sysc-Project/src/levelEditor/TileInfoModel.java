@@ -146,12 +146,12 @@ public class TileInfoModel {
 				Tile defaultTile2 = new Tile(new Point(0, 0), new Room());
 				addDoor(new Exit(defaultTile1, defaultTile2, true, new Item(t.getExitKey(d), 1)), d);
 			}
-			else if (t.isCrossableByDefault(d)){
+			else if (!t.isCrossableByDefault(d)){
 				addWall(d);
 			}
 		}
 		
-		notifyDataSaved(); //Though not explicitly "saved", after loading a tile, the info exactly represents a tile
+		notifyDataSynched();
 	}
 	
 	/**
@@ -174,25 +174,23 @@ public class TileInfoModel {
 			TileObjectDisplayData data = edgeData.get(d);
 			Edge edgeToAdd = data.getEdge(activeTile);
 			activeTile.setEdge(d, edgeToAdd);
+			editor.addEdge(edgeToAdd);
 		}
 		
 		//Invisible edges still need to be set in the other directions for connection
 		for (Direction d : Direction.values()){
 			if (!activeTile.hasDirection(d)){
-				Edge edgeToAdd;
-				if (editor.getTile(activeTile, d) == null){
-					edgeToAdd = new Edge(activeTile, null, false);
-				}
-				else{
-					edgeToAdd = new Edge(activeTile, null, true);
-				}
-				activeTile.setEdge(d, edgeToAdd);
+				if (editor.getTile(activeTile, d) != null){
+					Edge edgeToAdd = new Edge(activeTile, null, true);
+					activeTile.setEdge(d, edgeToAdd);
+					editor.addEdge(edgeToAdd);
+				}			
 			}
 		}
 		
 		editor.connectTile(activeTile); //connect to neighbours
 		
-		notifyDataSaved();
+		notifyDataSynched();
 	}
 	
 	//------------Removing Data------------//
@@ -288,7 +286,7 @@ public class TileInfoModel {
 		}
 	}
 	
-	private void notifyDataSaved(){
+	private void notifyDataSynched(){
 		for (TileInfoListener l : listeners){
 			l.dataSynched(new TileInfoEvent(this, null));
 		}

@@ -46,6 +46,7 @@ public class TileObjectController extends MouseAdapter implements DocumentListen
 	public TileObjectController(TileInfoPanel infoPanel, TileObjectPanel objectPanel){
 		this.objectPanel = objectPanel;
 		this.infoPanel = infoPanel;
+		objectPanel.addMouseListener(this);
 		currentKey = 0;
 		
 		textBoxes = new HashMap<Integer, JTextField>();

@@ -92,22 +92,29 @@ class EdgePanel extends LayoutPanel<Edge>{
 			edgeDirection = edge.getDirection1();	
 		}
 		
-		switch (edgeDirection)
+		if (edgeDirection != null)
 		{
-		case NORTH:
-			return new Rectangle(parentMap.getOffsettedX(referenceLocation) + lengthOffset, 
-					parentMap.getOffsettedY(referenceLocation) - widthOffset, effectiveEdgeLength, edgeWidth);
-		case SOUTH:
-			return new Rectangle(parentMap.getOffsettedX(referenceLocation) + lengthOffset, 
-					parentMap.getOffsettedY(referenceLocation) + tileSize - widthOffset, effectiveEdgeLength, edgeWidth);
-		case EAST:
-			return new Rectangle(parentMap.getOffsettedX(referenceLocation) + tileSize - widthOffset, 
-					parentMap.getOffsettedY(referenceLocation)  + lengthOffset, edgeWidth, effectiveEdgeLength);
-		case WEST:
-			return new Rectangle(parentMap.getOffsettedX(referenceLocation) - widthOffset, 
-					parentMap.getOffsettedY(referenceLocation)  + lengthOffset, edgeWidth, effectiveEdgeLength);
-		default:
-			return new Rectangle(0, 0, 0, 0); //Essentially returns a blank - other unforeseen directions simply won't be drawn
+			switch (edgeDirection)
+			{
+			case NORTH:
+				return new Rectangle(parentMap.getOffsettedX(referenceLocation) + lengthOffset, 
+						parentMap.getOffsettedY(referenceLocation) - widthOffset, effectiveEdgeLength, edgeWidth);
+			case SOUTH:
+				return new Rectangle(parentMap.getOffsettedX(referenceLocation) + lengthOffset, 
+						parentMap.getOffsettedY(referenceLocation) + tileSize - widthOffset, effectiveEdgeLength, edgeWidth);
+			case EAST:
+				return new Rectangle(parentMap.getOffsettedX(referenceLocation) + tileSize - widthOffset, 
+						parentMap.getOffsettedY(referenceLocation)  + lengthOffset, edgeWidth, effectiveEdgeLength);
+			case WEST:
+				return new Rectangle(parentMap.getOffsettedX(referenceLocation) - widthOffset, 
+						parentMap.getOffsettedY(referenceLocation)  + lengthOffset, edgeWidth, effectiveEdgeLength);
+			default:
+				return new Rectangle(0, 0, 0, 0); //Essentially returns a blank - other unforeseen directions simply won't be drawn
+			}
+		}
+		else {
+			//repaint();
+			return new Rectangle(0, 0, 0, 0);
 		}
 	}
 	

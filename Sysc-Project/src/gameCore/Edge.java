@@ -179,6 +179,7 @@ public class Edge extends LayoutObject implements Serializable {
 	 * @return True if the edge is visited, false otherwise.
 	 */
 	public final boolean isVisited(){
+		if (isStranded()) return false;
 		if (tile1 == null){
 			return tile2.isVisited();
 		}

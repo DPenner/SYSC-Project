@@ -6,7 +6,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -22,7 +24,7 @@ import graphics2D.MapController;
  * LevelEditorView displays the main Level Editor window
  * 
  * @author Group D
- * @author Main Author: Trang Pham/Darrell Penner
+ * @author Main Author: Darrell Penner
  * 
  * Group D Members
  * ---------------
@@ -50,7 +52,6 @@ public class LevelEditor extends MapController implements ActionListener {
 		globalRoom = new Room();
 	}
 	
-
 	//------------Mouse Events------------//
 	@Override
 	public void mouseClicked(MouseEvent e){
@@ -96,11 +97,12 @@ public class LevelEditor extends MapController implements ActionListener {
 	}
 	
 	protected void removeTile(Tile t){
-		tiles.remove(t);
-		view.removeTile(t);
-		for (Direction d : t.getAllDirections()){
+		Set<Direction> directions = new HashSet<Direction>(t.getAllDirections());
+		for (Direction d : directions){
 			t.disconnectEdge(d); //disconnect the tile
 		}
+		tiles.remove(t);
+		view.removeTile(t);
 	}
 
 	protected void clearTile(Tile t){
@@ -119,10 +121,8 @@ public class LevelEditor extends MapController implements ActionListener {
 	
 	protected void addEdge(Edge e){
 		view.addEdge(e);
-		//edges.add(e);
 	}
 	protected void removeEdge(Edge e){
-		//edges.remove(e);
 		view.removeEdge(e);
 	}
 	
@@ -163,7 +163,10 @@ public class LevelEditor extends MapController implements ActionListener {
 		if (c instanceof Player){
 			playerTile = null;
 		}
-		for (Direction d: t.getAllDirections()){
+		
+		// This step to avoid concurrentmodificationException from t.getAllDirections()
+		Set<Direction> directions = new HashSet<Direction>(t.getAllDirections()); 
+		for (Direction d: directions){
 			t.disconnectEdgeFully(d);
 		}
 	}
@@ -173,22 +176,27 @@ public class LevelEditor extends MapController implements ActionListener {
 	 * @param t
 	 */
 	protected void connectTile(Tile t){
-		Point location = t.getLocation();
-		Tile northTile = getTile(new Point(location.x, location.y - 1));
-		if (northTile != null && !northTile.hasDirection(Direction.SOUTH)){
-			t.connect(Direction.NORTH, Direction.SOUTH, northTile);
+		for (Direction d : Direction.values()){
+			connectTile(t, d);
 		}
-		Tile southTile = getTile(new Point(location.x, location.y + 1));
-		if (southTile != null && !southTile.hasDirection(Direction.NORTH)){
-			t.connect(Direction.SOUTH, Direction.NORTH, southTile);
+	}
+	
+	private void connectTile(Tile t, Direction d){
+		Tile otherTile = getTile(t, d);
+		if (otherTile != null){
+			t.connect(d, d.getOppositeDirection(), otherTile);
 		}
-		Tile westTile = getTile(new Point(location.x - 1, location.y));
-		if (westTile != null && !westTile.hasDirection(Direction.EAST)){
-			t.connect(Direction.WEST, Direction.EAST, westTile);
+	}
+	
+	private void reverseConnectTile(Tile t){
+		for (Direction d : Direction.values()){
+			reverseConnectTile(t, d);
 		}
-		Tile eastTile = getTile(new Point(location.x + 1, location.y));
-		if (eastTile != null && !eastTile.hasDirection(Direction.WEST)){
-			t.connect(Direction.EAST, Direction.WEST, eastTile);
+	}
+	private void reverseConnectTile(Tile t, Direction d){
+		Tile otherTile = getTile(t, d);
+		if (otherTile != null){
+			otherTile.connect(d.getOppositeDirection(), d, t);
 		}
 	}
 	

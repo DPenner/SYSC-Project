@@ -61,7 +61,12 @@ class NavigatorController implements ActionListener {
 				infoModel.clearData();
 				break;
 			case SAVE_TILE:
-				infoModel.saveTile();
+				if (infoPanel.isValid()){
+					infoModel.saveTile();
+				} 
+				else {
+					JOptionPane.showMessageDialog(navigator, "Illegal entries in some text boxes! Perhaps an integer is required?");
+				}
 				break;
 			case CLOSE:
 				if (infoPanel.isDirty()){
@@ -100,7 +105,9 @@ class NavigatorController implements ActionListener {
 			case CLOSE:
 			case ADD_WEAPON:
 			case ADD_ITEM:
-			case REMOVE_SELECTION:   //remove selection always enabled to avoid extra complexity of listening to a new object for only one button
+			case RESET_TILE:
+			case SAVE_TILE:
+			case REMOVE_SELECTION: 
 				button.setEnabled(true);
 				break;
 			case ADD_MONSTER:
@@ -112,10 +119,6 @@ class NavigatorController implements ActionListener {
 				break;
 			case REMOVE_ALL:
 				button.setEnabled(!infoModel.isEmpty());
-				break;
-			case RESET_TILE:
-			case SAVE_TILE:
-				button.setEnabled(infoPanel.isDirty());
 				break;
 			}
 		}

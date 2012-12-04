@@ -268,6 +268,11 @@ public class Tile extends LayoutObject implements Serializable   {
 		e.disconnect(this);
 	}
 	
+	/**
+	 * Disconnects the edge
+	 * @param direction
+	 * @param otherDirection
+	 */
 	public void disconnectEdgeFully(Direction direction){
 		checkDirection(direction);
 		Edge e = getEdge(direction);
@@ -275,7 +280,7 @@ public class Tile extends LayoutObject implements Serializable   {
 		//disconnects Edge from other Tile
 		if (e.isFullyConnected()){ //indicates another tile on the other side
 			Tile otherTile = getNextTile(direction);
-			otherTile.edges.remove(direction);
+			otherTile.edges.remove(direction.getOppositeDirection());
 			e.disconnect(otherTile);
 		}
 		
@@ -284,24 +289,33 @@ public class Tile extends LayoutObject implements Serializable   {
 	}
 	
 	/**
-	 * Connects a Tile to another in the specified directions. The edge in between will be
-	 * the edge already present in this Tile. This can fail for the following reasons:
-	 * - This Tile does not have an edge in the specified Direction
-	 * - The other Tile already has an Edge in that direction
-	 * - This tile already has a different Tile attached in the given direction
+	 * Connects a Tile to another in the specified manner:
+	 * Trying to connect two tiles in directions where they both have edges will throw an exception.
+	 * If neither Tile has an edge in the specified direction, a new generic crossable edge is created between them.
+	 * Otherwise, the Tile with the Edge, connects that Edge to the other.
+	 * 
 	 * @param direction The direction for this Tile
 	 * @param otherTileDirection The direction for the other Tile
 	 * @param otherTile The Tile to connect to
 	 */
 	public void connect(Direction direction, Direction otherTileDirection, Tile otherTile){
-		checkDirection(direction);
-		if (otherTile.hasDirection(otherTileDirection)) throw new IllegalArgumentException("Other Tile has edge in that direction already");
+		if (hasDirection(direction) && otherTile.hasDirection(otherTileDirection)){
+			throw new IllegalArgumentException("Trying to connect two existing edges");
+		}
 		
-		Edge connectingEdge = getEdge(direction);
-		if (connectingEdge.isFullyConnected()) throw new IllegalArgumentException("Edge is fully connected");
-		
-		connectingEdge.connect(otherTile);
-		otherTile.setEdge(otherTileDirection, connectingEdge);		
+		if (hasDirection(direction)){
+			Edge connector = getEdge(direction);
+			otherTile.setEdge(otherTileDirection, connector);
+			connector.connect(otherTile);
+		}
+		else if (otherTile.hasDirection(otherTileDirection)){
+			Edge connector = otherTile.getEdge(otherTileDirection);
+			this.setEdge(direction, connector);
+			connector.connect(this);
+		}
+		else {
+			new Edge(this, otherTile, true, direction, otherTileDirection);
+		}	
 	}
 	
 	//------------Character Movement------------//
