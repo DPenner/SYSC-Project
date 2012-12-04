@@ -61,7 +61,7 @@ class NavigatorController implements ActionListener {
 				infoModel.clearData();
 				break;
 			case SAVE_TILE:
-				if (infoPanel.isValid()){
+				if (infoModel.isValid()){
 					infoModel.saveTile();
 				} 
 				else {

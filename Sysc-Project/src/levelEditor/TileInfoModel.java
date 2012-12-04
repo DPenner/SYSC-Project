@@ -249,6 +249,28 @@ public class TileInfoModel {
 		return !hasCharacter() && itemData.isEmpty() && edgeData.isEmpty();
 	}
 	
+	protected boolean isValid(){
+		if (hasCharacter()){
+			if (!characterData.isValid()){
+				return false;
+			}
+		}
+		
+		for (TileObjectDisplayData data : itemData){
+			if (!data.isValid()){
+				return false;
+			}
+		}
+		
+		for (TileObjectDisplayData data : edgeData.values()){
+			if (!data.isValid()){
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
 	/**
 	 * Checks if this TileInfoModel contains the given TileObjectDisplayData.
 	 * @param displayData The data to check.
