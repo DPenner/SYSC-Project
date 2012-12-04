@@ -34,17 +34,20 @@ import commands.KeyCommandController;
  */
 
 public class Serialize {
+	//------------Fields------------//
 	public static final int MODE_OPEN = 0;
 	public static final int MODE_SAVE = 1;
 	
 	private Player p;
 	private Level l;
-
+	
+	//------------Constructors------------//
 	public Serialize(Player p, Level l){
 		this.l=l;
 		this.p=p;
 	}
 	
+	//----------- Getters ----------------//
 	public Player getP() {
 		return p;
 	}
@@ -53,7 +56,11 @@ public class Serialize {
 		return l;
 	}
 
-	
+	/**
+	 * Save the state of the game by writing the main objects out using Serialisation
+	 * @param fileName - fileName to save the state of the game
+	 * @return true if write was successful. Otherwise false.
+	 */
 	public boolean write_serialize(String fileName){
 		boolean writeSuccessful = false;
 		FileOutputStream oStream = null;
@@ -88,6 +95,11 @@ public class Serialize {
 			
 	}
 	
+	/**
+	 * Restore the game by reading the player and level instance objects back from the file using serialisation
+	 * @param fileName - path and name of file to restore game state from
+	 * @return true is game state was restored properly.  Otherwise, false.
+	 */
 	private boolean read_serialize(String fileName) {
 		boolean readSuccessful = false;
 		FileInputStream iStream = null;
@@ -151,6 +163,9 @@ public class Serialize {
 		return readSuccessful;
 	}
 	
+	/**
+	 * SaveToFile method to handle dialogs for this operation
+	 */
 	public void saveToFile() {
 		boolean writeSuccess;
 		String fileName = selectFile(MODE_SAVE);
@@ -166,7 +181,10 @@ public class Serialize {
 			}
 		}
 	}
-	
+	/**
+	 * Restores the game state by reading from the serialised file.
+	 * @return true if the game was restored successfully.  Otherwise, false.
+	 */
 
 	public boolean loadFromFile() {
 		boolean readSuccessful =false;
@@ -185,7 +203,11 @@ public class Serialize {
 		}
 		return readSuccessful;
 	}
-	
+	/**
+	 * Function to use the JFileChooser to select a file for save and restore operations of serialisation.
+	 * @param mode - open/save dialog selection
+	 * @return - filepath and name of the file chosen
+	 */
 	public String selectFile(int mode) {
 			
 		String returnVal = null;

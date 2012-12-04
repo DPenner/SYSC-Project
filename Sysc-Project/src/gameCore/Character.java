@@ -191,6 +191,7 @@ public class Character implements Serializable  {
 		return name + "(hp: " + health + " atk:" + attack +")" ;
 	}
 	
+	//----------- Getters/Setters ------------------//
 	public int getAttack() {
 		return attack;
 	}
@@ -211,7 +212,7 @@ public class Character implements Serializable  {
 		return myPosition;
 	}
 	
-	public String getName(){
+	public String getName() {
 		return name;
 	}
 
