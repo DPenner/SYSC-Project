@@ -175,7 +175,7 @@ public class LevelEditor extends MapController implements ActionListener {
 	 * Connects a Tile with Edges being unconnected to other Tiles
 	 * @param t
 	 */
-	protected void connectTile(Tile t){
+	private void connectTile(Tile t){
 		for (Direction d : Direction.values()){
 			connectTile(t, d);
 		}
